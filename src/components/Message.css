@@ -1,0 +1,22 @@
+.messageContainer {
+	position: absolute;
+	width: 100%;
+	height: 60%;
+	z-index: 50;
+}
+
+.message {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	font-size: 1.5rem;
+	color: gray;
+}
+
+.fade {
+	opacity: 0;
+	transition: opacity 5s ease-out;
+	z-index: auto;
+}

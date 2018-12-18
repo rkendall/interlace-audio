@@ -1,0 +1,53 @@
+.headerContainer {
+	margin-top: -80px;
+	opacity: 0;
+	transition: all 300ms ease-in 300ms;
+}
+
+.header {
+	height: 80px;
+}
+
+.toggleContainer {
+	position: absolute;
+	top: 0;
+}
+
+.title {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: Verdana;
+}
+
+.toggle {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+.toggle svg {
+	transform: scale(1.5);
+}
+
+.visible {
+	margin-top: 0;
+	opacity: 1;
+	transition: all 300ms ease-in 300ms;
+}
+
+.header .prompt {
+	margin-right: 10px;
+	font-size: .9rem;
+}
+
+.select {
+	width: 340px;
+}
+
+.select div {
+	cursor: pointer;
+	font-size: .9rem;
+}

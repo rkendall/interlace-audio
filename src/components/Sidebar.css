@@ -1,0 +1,64 @@
+.sidebar {
+  width: 270px;
+}
+
+.top {
+  display: flex;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.5rem;
+}
+
+h2 {
+  margin: 5px 0 10px 0;
+  font-size: 1.2rem
+}
+
+.byline {
+  margin: 0;
+}
+
+.close {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
+  padding: 0 10px 0 0;
+  cursor: pointer;
+}
+
+.close svg {
+  transform: scale(1.5);
+}
+
+.sidbar .prompt {
+  margin: 5px 5px 10px 5px;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.box {
+  margin: 10px;
+  padding: 10px 5px;
+  border: solid lightgray 1px;
+  box-shadow: lightgray 2px 2px 8px 0px;
+}
+
+.menuOption {
+  padding-left: 18px !important;
+  text-indent: -18px;
+}
+
+.selectFade * {
+  cursor: pointer;
+}
+
+.fadeSquaresLabel {
+  margin-left: 5px;
+}

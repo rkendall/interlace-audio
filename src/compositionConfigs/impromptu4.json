@@ -1,0 +1,305 @@
+{
+  "name": "Impromptu 4",
+  "maxSoundCount": 6,
+  "groupLimits": {
+    "per": 4,
+    "bra": 3,
+    "bas": 1,
+    "mel": 1,
+    "mel2": 1
+  },
+  "audioItems": [
+    [
+      "Celesta",
+      "per"
+    ],
+    [
+      "Clarinet 1",
+      "mel"
+    ],
+    [
+      "Clarinet 2",
+      "mel2"
+    ],
+    [
+      "String Bass",
+      "bas"
+    ],
+    [
+      "Tam Tams 1",
+      "per"
+    ],
+    [
+      "Sitar 1",
+      "per"
+    ],
+    [
+      "Flute 3",
+      "mel2"
+    ],
+    [
+      "Steel Drums 1",
+      "per"
+    ],
+    [
+      "Violin 4",
+      "mel2"
+    ],
+    [
+      "String Bass",
+      "bas"
+    ],
+    [
+      "Flute 6",
+      "mel2"
+    ],
+    [
+      "Bassoon",
+      "bas"
+    ],
+    [
+      "Viola 1",
+      "mel2"
+    ],
+    [
+      "Violin 3",
+      "mel"
+    ],
+    [
+      "Flute 6",
+      "mel2"
+    ],
+    [
+      "Cello 1",
+      "bas"
+    ],
+    [
+      "Singing Bowls 1",
+      "per"
+    ],
+    [
+      "Harp 1",
+      "per"
+    ],
+    [
+      "Oboe",
+      "mel"
+    ],
+    [
+      "Flute 7",
+      "mel2"
+    ],
+    [
+      "Violin 7",
+      "mel2"
+    ],
+    [
+      "Violin 6",
+      "mel"
+    ],
+    [
+      "Violin 8",
+      "mel"
+    ],
+    [
+      "Flute 5",
+      "mel2"
+    ],
+    [
+      "Violin 2",
+      "mel2"
+    ],
+    [
+      "Violin 5",
+      "mel"
+    ],
+    [
+      "Marimba",
+      "per"
+    ],
+    [
+      "Violin 9",
+      "mel2"
+    ],
+    [
+      "Clarinet 4",
+      "mel2"
+    ],
+    [
+      "Celesta",
+      "per"
+    ],
+    [
+      "Tubular Bells",
+      "per"
+    ],
+    [
+      "Glockenspiel 1",
+      "per"
+    ],
+    [
+      "Glockenspiel 2",
+      "per"
+    ],
+    [
+      "Piano 5",
+      "mel2"
+    ],
+    [
+      "Violin 1",
+      "mel"
+    ],
+    [
+      "Flute 4",
+      "mel2"
+    ],
+    [
+      "Cymbals 1",
+      "per"
+    ],
+    [
+      "Xylophone 1",
+      "per"
+    ],
+    [
+      "Vibes 1",
+      "per"
+    ],
+    [
+      "Vibes 2",
+      "per"
+    ],
+    [
+      "Flute 1",
+      "mel2"
+    ],
+    [
+      "Gongs",
+      "per"
+    ],
+    [
+      "Piano 1",
+      "mel2"
+    ],
+    [
+      "Bassoon",
+      "bas"
+    ],
+    [
+      "Clarinet 3",
+      "mel"
+    ],
+    [
+      "Tom Toms",
+      "per"
+    ],
+    [
+      "Violin 2",
+      "mel2"
+    ],
+    [
+      "Flute 4",
+      "mel2"
+    ],
+    [
+      "Taiko Drums 1",
+      "per"
+    ],
+    [
+      "Marimba",
+      "per"
+    ],
+    [
+      "Cello 2",
+      "bas"
+    ],
+    [
+      "Flute 4",
+      "mel2"
+    ],
+    [
+      "Glockenspiel 3",
+      "per"
+    ],
+    [
+      "Tom Toms",
+      "per"
+    ],
+    [
+      "Tam Tams 1",
+      "per"
+    ],
+    [
+      "Temple Blocks",
+      "per"
+    ],
+    [
+      "Taiko Drums 1",
+      "per"
+    ],
+    [
+      "Taiko Drums 2",
+      "per"
+    ],
+    [
+      "Xylophone 1",
+      "per"
+    ],
+    [
+      "Log Drums",
+      "per"
+    ],
+    [
+      "Cymbals 1",
+      "per"
+    ],
+    [
+      "Marimba",
+      "per"
+    ],
+    [
+      "Gongs",
+      "per"
+    ],
+    [
+      "Piano 4",
+      "mel2"
+    ],
+    [
+      "Bass",
+      "bas"
+    ],
+    [
+      "Piano 2",
+      "mel2"
+    ],
+    [
+      "Piano 3",
+      "mel2"
+    ],
+    [
+      "Horn 1",
+      "bra"
+    ],
+    [
+      "Horn 2",
+      "bra"
+    ],
+    [
+      "Trumpet 1",
+      "bra"
+    ],
+    [
+      "Trombone 1",
+      "bra"
+    ],
+    [
+      "Tuba",
+      "bra"
+    ],
+    [
+      "Tympani",
+      "per"
+    ]
+  ]
+}
