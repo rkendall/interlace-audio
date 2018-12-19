@@ -9,6 +9,7 @@ export default class Trigger extends Component {
     super()
     this.state = {
       active: false,
+      isDisplayed: false,
       isTextAnimating: false,
       isSquareActive: false,
       isSquareHovered: false,
@@ -20,16 +21,21 @@ export default class Trigger extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { play, fadeSquares } = this.props
+    const {play, disabled, fadeSquares} = this.props
     return play !== nextProps.play ||
-        fadeSquares !== nextProps.fadeSquares ||
-      !shallowEqual(this.state, nextState)
+      disabled !== nextProps.disabled ||
+      fadeSquares !== nextProps.fadeSquares || !shallowEqual(this.state, nextState)
 
   }
 
   componentDidUpdate(prevProps, prevState) {
     const {fadeSquares} = this.props
-    const {isSquareActive} = this.state
+    const {isSquareActive, isDisplayed} = this.state
+    if (isSquareActive && !isDisplayed) {
+      this.setState({
+        isDisplayed: true,
+      })
+    }
     if (fadeSquares && isSquareActive) {
       clearTimeout(this.timer)
       const timeout = 1000
@@ -43,10 +49,11 @@ export default class Trigger extends Component {
   }
 
   render() {
-    const {play, audioIndex, audioName, group} = this.props
-    const {isSquareSelected, isSquareActive, isSecondaryActive, isSquareHovered, isGlowAnimating, isTextAnimating} = this.state
+    const {play, disabled, audioIndex, audioName, group} = this.props
+    const {isSquareSelected, isDisplayed, isSquareActive, isSecondaryActive, isSquareHovered, isGlowAnimating, isTextAnimating} = this.state
     const active = play || isTextAnimating
-    const isGlowActive = isSquareSelected || isGlowAnimating
+    const isGlowActive = (isSquareSelected || isGlowAnimating)
+    const showDisabled = disabled && isDisplayed
     const displayName = audioName.replace(/ \d+\w?$/, '')
 
     return (
@@ -79,7 +86,15 @@ export default class Trigger extends Component {
               onEntering={this.startGlow}
               onEntered={this.stopGlow}
             >
-              <div className={classNames('square', group) }/>
+              <div className={classNames('square', group) }>
+                <CSSTransition
+                  in={showDisabled}
+                  timeout={500}
+                  classNames="disabled"
+                >
+                  <div className="disabled"/>
+                </CSSTransition>
+              </div>
             </CSSTransition>
           </CSSTransition>
         </CSSTransition>

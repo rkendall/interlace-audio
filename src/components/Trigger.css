@@ -82,6 +82,31 @@
 	transition: all 1000ms ease-out;
 }
 
+.disabled {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	background: white;
+	opacity: 0;
+	z-index: auto;
+	transition: all 500ms ease-out;
+}
+
+.disabled-enter-active, .disabled-enter-done {
+	opacity: 0.7;
+	z-index: 15;
+}
+
+.disabled-enter-active {
+	transition: all 500ms ease-out;
+}
+
+.disabled-exit-done {
+	opacity: 0;
+	transition: all 500ms ease-out;
+}
+
 .secondary {
 	display: flex;
 	justify-content: center;
@@ -120,35 +145,35 @@
 }
 
 .str, .str2 {
-	background-image: linear-gradient(120deg, #F2DAB3 0%, #d14a6e 100%);
+	background: linear-gradient(120deg, #F2DAB3 0%, #d14a6e 100%);
 }
 
 .win {
-	background-image: linear-gradient(120deg, #DEF2F2 0%, #5a87c1 100%);
+	background: linear-gradient(120deg, #DEF2F2 0%, #5a87c1 100%);
 }
 
 .bra {
-	background-image: linear-gradient(120deg, #dbcaf2 0%, #161e98 100%);
+	background: linear-gradient(120deg, #dbcaf2 0%, #161e98 100%);
 }
 
 .per {
-	background-image: linear-gradient(120deg, #DFEAF2 0%, #ada8a2 100%);
+	background: linear-gradient(120deg, #DFEAF2 0%, #ada8a2 100%);
 }
 
 .pia, .vib, .tuned {
-	background-image: linear-gradient(120deg, #F2EDD2 0%, #dbb517 100%);
+	background: linear-gradient(120deg, #F2EDD2 0%, #dbb517 100%);
 }
 
 .bas {
-	background-image: linear-gradient(120deg, #ffcccc 0%, #864811 100%);
+	background: linear-gradient(120deg, #ffcccc 0%, #864811 100%);
 }
 
 .mel {
-	background-image: linear-gradient(120deg, #d7f0f2 0%, #318266 100%);
+	background: linear-gradient(120deg, #d7f0f2 0%, #318266 100%);
 }
 
 .mel2 {
-	background-image: linear-gradient(120deg, #D1F2CB 0%, #5F8223 100%);
+	background: linear-gradient(120deg, #D1F2CB 0%, #5F8223 100%);
 }
 
 .text {

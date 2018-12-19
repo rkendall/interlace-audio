@@ -10,6 +10,7 @@ class MusicPane extends Component {
     this.state = {
       loading: true,
       activeAudioIndex: null,
+      audioEventCount: 0,
       squareCount: null,
       composition: null,
     }
@@ -47,6 +48,7 @@ class MusicPane extends Component {
                   audioName,
                   group,
                   key,
+                  disabled: !this.isAudioPlayable(group),
                   play: activeAudioIndex === ind,
                   fadeSquares,
                 }
@@ -159,11 +161,18 @@ class MusicPane extends Component {
     this.addAudioToQueue(this.state.composition[audioIndex])
   }
 
+  isAudioPlayable = group => {
+    const {maxInQueue} = this.state
+    console.log(!this.isMaxActiveAudio() && this.audioQueue.length < maxInQueue && !this.isGroupFull(group), 'maxInQueue', maxInQueue, this.isMaxActiveAudio(), this.audioQueue.length)
+    return !this.isMaxActiveAudio() && this.audioQueue.length < maxInQueue && !this.isGroupFull(group)
+  }
+
   addAudioToQueue = audioItem => {
     const {maxInQueue} = this.state
     const {group} = audioItem
-    if (this.audioQueue.length < maxInQueue && !this.isGroupFull(group)) {
+    if (this.isAudioPlayable(group)) {
       this.audioQueue.push(audioItem)
+      this.incrementActiveAudioCount(group)
     }
   }
 
@@ -174,6 +183,13 @@ class MusicPane extends Component {
     if (superGroup) {
       this.activeAudioCounts[superGroup]++
     }
+    this.incrementAudioEventCount()
+  }
+
+  incrementAudioEventCount = () => {
+    this.setState(state => ({
+      audioEventCount: state.audioEventCount ++,
+    }))
   }
 
   isGroupFull = group => {
@@ -211,10 +227,7 @@ class MusicPane extends Component {
   playAudioInQueue = () => {
     this.audioQueue.forEach(audioItem => {
       const {group} = audioItem
-      if (!this.isMaxActiveAudio() && !this.isGroupFull(group)) {
-        this.playAudio(audioItem)
-        this.incrementActiveAudioCount(group)
-      }
+      this.playAudio(audioItem)
     })
     this.audioQueue = []
   }
@@ -249,6 +262,7 @@ class MusicPane extends Component {
     if (superGroup && this.activeAudioCounts[superGroup] > 0) {
       this.activeAudioCounts[superGroup]--
     }
+    this.incrementAudioEventCount()
   }
 
 }
