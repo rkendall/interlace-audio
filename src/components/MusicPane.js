@@ -8,18 +8,18 @@ class MusicPane extends Component {
   constructor() {
     super()
     this.state = {
+      initialized: false,
       loading: true,
       activeAudioIndex: null,
-      audioEventCount: 0,
       squareCount: null,
       composition: null,
-      groupDisabledStates: {},
+      groupFullStates: {},
     }
   }
 
   componentDidUpdate(prevProps) {
     const {squareCount, currentCompositionName} = this.props
-    const { initialized } = this.state
+    const {initialized} = this.state
     if (!initialized || currentCompositionName !== prevProps.currentCompositionName) {
       this.initializeComposition()
       this.setState({initialized: true})
@@ -34,9 +34,9 @@ class MusicPane extends Component {
   }
 
   render() {
-    const { composition } = this.state
+    const {composition} = this.state
     const {loading, activeAudioIndex} = this.state
-    const { squareCount, fadeSquares } = this.props
+    const {squareCount, fadeSquares} = this.props
     return !loading && composition && squareCount ?
       (<Fragment>
           <div className="paneWrapper">
@@ -49,7 +49,7 @@ class MusicPane extends Component {
                   audioName,
                   group,
                   key,
-                  disabled: !this.isAudioPlayable(group),
+                  enabled: this.isAudioPlayable(group),
                   play: activeAudioIndex === ind,
                   fadeSquares,
                 }
@@ -77,32 +77,40 @@ class MusicPane extends Component {
 
   initializeStatus =
     ({audioItems, maxSoundCount, maxInQueue, groupLimits, superGroups = {}, lengths, endOffset = 3000}) => {
-    this.activeAudioCounts = {
-      all: 0,
-    }
-    this.audioQueue = []
-    const groups = {}
-    Object.keys(superGroups).forEach(superGroup => {
-      superGroups[superGroup].forEach(group => {
-        this.activeAudioCounts[superGroup] = 0
-        groups[group] = superGroup
+      this.activeAudioCounts = {
+        all: 0,
+      }
+      this.audioQueue = []
+      const superGroupCollection = {}
+      const groupFullStates = {}
+      audioItems.forEach(item => {
+        const group = item[1]
+        if (!groupFullStates[group]) {
+          groupFullStates[group] = false
+        }
       })
-    })
-    this.setState({
-      maxSoundCount,
-      maxInQueue: maxInQueue || maxSoundCount,
-      groupLimits,
-      superGroups: groups,
-      lengths,
-      endOffset,
-    })
-    Object.keys(groupLimits).forEach(group => {
-      this.activeAudioCounts[group] = 0
-    })
-  }
+      Object.keys(superGroups).forEach(superGroup => {
+        superGroups[superGroup].forEach(group => {
+          this.activeAudioCounts[superGroup] = 0
+          superGroupCollection[group] = superGroup
+        })
+      })
+      this.setState({
+        maxSoundCount,
+        maxInQueue: maxInQueue || maxSoundCount,
+        groupLimits,
+        groupFullStates,
+        superGroups: superGroupCollection,
+        lengths,
+        endOffset,
+      })
+      Object.keys(groupLimits).forEach(group => {
+        this.activeAudioCounts[group] = 0
+      })
+    }
 
   loadAllAudio = currentCompositionName => {
-    const { rawCompositions } = this.props
+    const {rawCompositions} = this.props
     const audioPromises = rawCompositions[currentCompositionName].audioItems.map(item => {
       const audioName = item[0]
       return this.getAudioBuffer(audioName)
@@ -148,7 +156,7 @@ class MusicPane extends Component {
         const audioLoadPromises = this.loadAllAudio(currentCompositionName)
         Promise.all(audioLoadPromises).then(() => {
           this.timer = setInterval(this.playAudioInQueue, 500)
-          this.setState({ loading: false, initialized: true })
+          this.setState({loading: false, initialized: true})
         })
       }, 1500)
     })
@@ -163,13 +171,11 @@ class MusicPane extends Component {
   }
 
   isAudioPlayable = group => {
-    const {maxInQueue} = this.state
-    console.log(!this.isMaxActiveAudio() && this.audioQueue.length < maxInQueue && !this.isGroupFull(group), 'maxInQueue', maxInQueue, this.isMaxActiveAudio(), this.audioQueue.length)
-    return !this.isMaxActiveAudio() && this.audioQueue.length < maxInQueue && !this.isGroupFull(group)
+    const {maxInQueue, groupFullStates} = this.state
+    return !this.isMaxActiveAudio() && this.audioQueue.length < maxInQueue && !groupFullStates[group]
   }
 
   addAudioToQueue = audioItem => {
-    const {maxInQueue} = this.state
     const {group} = audioItem
     if (this.isAudioPlayable(group)) {
       this.audioQueue.push(audioItem)
@@ -184,19 +190,26 @@ class MusicPane extends Component {
     if (superGroup) {
       this.activeAudioCounts[superGroup]++
     }
-    this.incrementAudioEventCount()
+    this.setGroupFullState(group)
   }
 
-  incrementAudioEventCount = () => {
-    this.setState(state => ({
-      audioEventCount: state.audioEventCount ++,
-    }))
+  setGroupFullState = group => {
+    const isFull = this.isGroupFull(group)
+    const {groupFullStates} = this.state
+    if (groupFullStates[group] !== isFull) {
+      this.setState({
+        groupFullStates: {
+          ...groupFullStates,
+          [group]: isFull,
+        }
+      })
+    }
   }
 
   isGroupFull = group => {
     const superGroup = this.state.superGroups[group]
     return this.activeAudioCounts[group] === this.state.groupLimits[group] ||
-      (superGroup && this.activeAudioCounts[superGroup] === this.state.groupLimits[superGroup])
+      (Boolean(superGroup) && this.activeAudioCounts[superGroup] === this.state.groupLimits[superGroup])
   }
 
   isMaxActiveAudio = () => {
@@ -227,7 +240,6 @@ class MusicPane extends Component {
 
   playAudioInQueue = () => {
     this.audioQueue.forEach(audioItem => {
-      const {group} = audioItem
       this.playAudio(audioItem)
     })
     this.audioQueue = []
@@ -263,7 +275,7 @@ class MusicPane extends Component {
     if (superGroup && this.activeAudioCounts[superGroup] > 0) {
       this.activeAudioCounts[superGroup]--
     }
-    this.incrementAudioEventCount()
+    this.setGroupFullState(group)
   }
 
 }
