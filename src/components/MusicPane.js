@@ -13,6 +13,7 @@ class MusicPane extends Component {
       audioEventCount: 0,
       squareCount: null,
       composition: null,
+      groupDisabledStates: {},
     }
   }
 

@@ -25,7 +25,6 @@ export default class Trigger extends Component {
     return play !== nextProps.play ||
       disabled !== nextProps.disabled ||
       fadeSquares !== nextProps.fadeSquares || !shallowEqual(this.state, nextState)
-
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -53,7 +52,7 @@ export default class Trigger extends Component {
     const {isSquareSelected, isDisplayed, isSquareActive, isSecondaryActive, isSquareHovered, isGlowAnimating, isTextAnimating} = this.state
     const active = play || isTextAnimating
     const isGlowActive = (isSquareSelected || isGlowAnimating)
-    const showDisabled = disabled && isDisplayed
+    const showDisabled = !disabled && isDisplayed
     const displayName = audioName.replace(/ \d+\w?$/, '')
 
     return (
@@ -89,10 +88,10 @@ export default class Trigger extends Component {
               <div className={classNames('square', group) }>
                 <CSSTransition
                   in={showDisabled}
-                  timeout={500}
+                  timeout={1000}
                   classNames="disabled"
                 >
-                  <div className="disabled"/>
+                  <div className="disabled" />
                 </CSSTransition>
               </div>
             </CSSTransition>
