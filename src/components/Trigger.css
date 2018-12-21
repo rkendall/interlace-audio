@@ -44,7 +44,6 @@
 	z-index: 10;
 	transform: rotate(90deg);
 	transition: all 300ms ease-out;
-	will-change: transform, z-index;
 }
 
 .square-enter-active {
@@ -70,7 +69,7 @@
 	height: 90px;
 	transform: rotate(90deg);
 	transition: all 300ms ease-out;
-	will-change: box-shadow, opacity, transform;
+	will-change: box-shadow;
 }
 
 .glow-enter-done {
@@ -107,12 +106,12 @@
 	animation-name: expand;
 	animation-timing-function: ease-in;
 	z-index: 15;
-	will-change: transform, opacity;
 }
 
 .enabled-exit {
 	opacity: 1;
 	transform: scale(1);
+	will-change: transform, opacity;
 }
 
 .enabled-exit-active {
@@ -141,14 +140,12 @@
 	height: 80px;
 	border: 1px solid black;
 	opacity: 0;
-	will-change: transform, opacity;
 }
 
 .secondary-enter-active {
 	animation-name: spin;
 	animation-duration: 1000ms;
 	animation-timing-function: linear;
-	will-change: transform, opacity;
 }
 
 .str, .str2 {
@@ -197,6 +194,7 @@
 	position: absolute;
 	top: 0;
 	opacity: 1;
+	will-change: top;
 }
 
 .text-enter-active {

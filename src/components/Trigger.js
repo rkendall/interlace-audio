@@ -52,7 +52,7 @@ export default class Trigger extends Component {
     const {isSquareSelected, isDisplayed, isSquareActive, isSecondaryActive, isSquareHovered, isGlowAnimating, isTextAnimating} = this.state
     const active = play || isTextAnimating
     const isGlowActive = (isSquareSelected || isGlowAnimating)
-    const showEnabled = enabled && isDisplayed
+    const showEnabled = !enabled && isDisplayed
     const displayName = audioName.replace(/ \d+\w?$/, '')
 
     return (
