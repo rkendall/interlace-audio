@@ -49,7 +49,7 @@ class MusicPane extends Component {
                   audioName,
                   group,
                   key,
-                  enabled: this.isAudioPlayable(group),
+                  disabled: !this.isAudioPlayable(group),
                   play: activeAudioIndex === ind,
                   fadeSquares,
                 }
