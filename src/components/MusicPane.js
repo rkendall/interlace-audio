@@ -190,20 +190,22 @@ class MusicPane extends Component {
     if (superGroup) {
       this.activeAudioCounts[superGroup]++
     }
-    this.setGroupFullState(group)
+    this.setGroupFullState()
   }
 
-  setGroupFullState = group => {
-    const isFull = this.isGroupFull(group)
-    const {groupFullStates} = this.state
-    if (groupFullStates[group] !== isFull) {
-      this.setState({
-        groupFullStates: {
-          ...groupFullStates,
-          [group]: isFull,
-        }
-      })
-    }
+  setGroupFullState = () => {
+    const { groupFullStates } = this.state
+    Object.keys(groupFullStates).forEach(group => {
+      const isFull = this.isGroupFull(group)
+      if (groupFullStates[group] !== isFull) {
+        this.setState({
+          groupFullStates: {
+            ...groupFullStates,
+            [group]: isFull,
+          }
+        })
+      }
+    })
   }
 
   isGroupFull = group => {
@@ -275,7 +277,7 @@ class MusicPane extends Component {
     if (superGroup && this.activeAudioCounts[superGroup] > 0) {
       this.activeAudioCounts[superGroup]--
     }
-    this.setGroupFullState(group)
+    this.setGroupFullState()
   }
 
 }

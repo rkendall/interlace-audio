@@ -62,21 +62,17 @@
 	box-shadow: none;
 }
 
-.glow-enter, .glow-enter-active {
-	box-shadow: 0px 0px 20px 5px rgb(255, 250, 225);
-	opacity: 1;
-	width: 90px;
-	height: 90px;
-	transform: rotate(90deg);
-	transition: all 300ms ease-out;
-	will-change: box-shadow;
+@keyframes glow {
+	0% {height: 100%; width: 100%; opacity: 0.7; box-shadow: none;}
+	30% {height: 110%; width: 110%; opacity: 1; box-shadow: 0px 0px 20px 5px rgb(255, 250, 225);}
+	100% {height: 100%; width: 100%; opacity: 0.7; box-shadow: none;}
 }
 
-.glow-enter-done {
-	box-shadow: none;
-	opacity: 1;
-	width: 90px;
-	height: 90px;
+.glow-enter-active {
+	animation-name: glow;
+	animation-duration: 800ms;
+	animation-timing-function: ease-in;
+	animation-fill-mode: forwards;
 }
 
 .square-exit {
@@ -84,44 +80,48 @@
 }
 
 .disabled {
-	width: 85%;
-	height: 85%;
-	opacity: 0;
+	width: 80%;
+	height: 80%;
+	opacity: 0	;
 	background: rgba(255, 255, 255, 0.5);
-	box-shadow: none;
 	z-index: auto;
-	transform: scale(1);
-	transition: opacity 500ms ease;
 }
 
 @keyframes expand {
-	0% {transform: scale(0.6); opacity: 0;}
-	10% {transform: scale(0.8); opacity: 0.3;}
-	30%, 100% {transform: scale(1); opacity: 1;}
-	50% {transform: scale(0.9);}
+	0% {opacity: 0; transform: scale(0.6); background: rgba(255, 255, 255, 0.2);}
+	100% {opacity: 1; transform: scale(0.8); background: rgba(255, 255, 255, 0.2);}
+}
+
+@keyframes pulse {
+	0% {opacity: 1; transform: scale(0.8); background: rgba(255, 255, 255, 0.2);}
+	100% {opacity: 1; transform: scale(1); background: rgba(255, 255, 255, 0.5);}
 }
 
 @keyframes contract {
-	0% {transform: scale(1); opacity: 1;}
-	100% {transform: scale(0.8); opacity: 0;}
+	0% {opacity: 1;}
+	100% {opacity: 0;}
 }
 
 .disabled-enter-active {
 	animation-name: expand;
 	animation-duration: 500ms;
 	animation-timing-function: ease-in;
-	z-index: 15;
 }
 
 .disabled-enter-done {
-	opacity: 1;
-	z-index: 15;
+	animation-name: pulse;
+	animation-duration: 500ms;
+	animation-direction: alternate;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-out;
+	animation-fill-mode: forwards;
 }
 
 .disabled-exit-active {
 	animation-name: contract;
 	animation-duration: 500ms;
-	animation-timing-function: ease-in;
+	animation-timing-function: ease-out;
+	animation-fill-mode: forwards;
 }
 
 @keyframes spin {
