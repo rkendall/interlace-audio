@@ -80,48 +80,62 @@
 }
 
 .disabled {
-	width: 80%;
-	height: 80%;
-	opacity: 0	;
-	background: rgba(255, 255, 255, 0.5);
-	z-index: auto;
-}
-
-@keyframes expand {
-	0% {opacity: 0; transform: scale(0.6); background: rgba(255, 255, 255, 0.2);}
-	100% {opacity: 1; transform: scale(0.8); background: rgba(255, 255, 255, 0.2);}
+	width: 50%;
+	height: 50%;
+	opacity: 0;
+	background: rgba(255, 255, 255, 0.8);
+	box-shadow: 0px 0px 20px 15px rgba(255, 255, 255, 0.8);
 }
 
 @keyframes pulse {
-	0% {opacity: 1; transform: scale(0.8); background: rgba(255, 255, 255, 0.2);}
-	100% {opacity: 1; transform: scale(1); background: rgba(255, 255, 255, 0.5);}
+	0% {opacity: 0.4; transform: scale(0.8);}
+	100% {opacity: 0.9; transform: scale(1); box-shadow: 0px 0px 20px 15px rgba(255, 255, 255, 0.8);}
 }
 
-@keyframes contract {
-	0% {opacity: 1;}
-	100% {opacity: 0;}
+@keyframes fade {
+	0% {opacity: 1}
+	100% {opacity: 0}
 }
 
-.disabled-enter-active {
-	animation-name: expand;
+.disabledContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+.disabledContainer-enter-active {
+	animation-name: fade;
+	animation-direction: reverse;
 	animation-duration: 500ms;
-	animation-timing-function: ease-in;
+	animation-timing-function: ease-out;
+	animation-fill-mode: forwards;
 }
 
-.disabled-enter-done {
+.disabledContainer-exit-active {
+	animation-name: fade;
+	animation-duration: 1000ms;
+	animation-timing-function: ease-out;
+	animation-fill-mode: forwards;
+}
+
+.disabledContainer-exit-done {
+	opacity: 0;
+}
+
+.disabled-enter-active, .disabled-enter-done, .disabled-exit, .disabled-exit-active {
 	animation-name: pulse;
 	animation-duration: 500ms;
 	animation-direction: alternate;
 	animation-iteration-count: infinite;
 	animation-timing-function: ease-out;
 	animation-fill-mode: forwards;
+	will-change: opacity, background, box-shadow;
 }
 
-.disabled-exit-active {
-	animation-name: contract;
-	animation-duration: 500ms;
-	animation-timing-function: ease-out;
-	animation-fill-mode: forwards;
+.disabled-exit-done {
+	opacity: 0;
 }
 
 @keyframes spin {
@@ -139,6 +153,7 @@
 	height: 80px;
 	border: 1px solid black;
 	opacity: 0;
+	will-change: width, height, transform, opacity, bottom, z-index;
 }
 
 .secondary-enter-active {

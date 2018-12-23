@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {CSSTransition} from 'react-transition-group'
+import {Transition, CSSTransition} from 'react-transition-group'
 import classNames from 'classnames'
 import shallowEqual from 'shallowequal';
 import './Trigger.css'
@@ -17,7 +17,6 @@ export default class Trigger extends Component {
       isSecondaryDone: false,
       isSquareSelected: false,
       isGlowAnimating: false,
-      isDisabledAnimating: false,
     }
   }
 
@@ -29,12 +28,14 @@ export default class Trigger extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {fadeSquares} = this.props
+    const {fadeSquares, disabled} = this.props
     const {isSquareActive, isDisplayed} = this.state
+    const newState = {}
     if (isSquareActive && !isDisplayed) {
-      this.setState({
-        isDisplayed: true,
-      })
+      newState.isDisplayed = true
+    }
+    if (Object.keys(newState).length) {
+      this.setState(newState)
     }
     if (fadeSquares && isSquareActive) {
       clearTimeout(this.timer)
@@ -50,6 +51,9 @@ export default class Trigger extends Component {
 
   render() {
     const {play, disabled, audioIndex, audioName, group} = this.props
+    if (audioIndex === 2) {
+      console.log('render', audioIndex, audioName)
+    }
     const {isSquareSelected, isDisplayed, isSquareActive, isSecondaryActive, isSquareHovered, isGlowAnimating, isTextAnimating} = this.state
     const active = play || isTextAnimating
     const isGlowActive = isGlowAnimating
@@ -83,14 +87,23 @@ export default class Trigger extends Component {
               classNames="glow"
               addEndListener={node => {
                 node.addEventListener('animationend', this.stopGlow, false);
-              }}            >
+              }}
+            >
               <div className={classNames('square', group) }>
                 <CSSTransition
                   in={showDisabled}
-                  classNames="disabled"
-                  timeout={{enter: 500}}
+                  classNames="disabledContainer"
+                  timeout={{enter: 500, exit: 1000}}
                 >
-                  <div className="disabled" />
+                  <div className="disabledContainer">
+                    <CSSTransition
+                      in={showDisabled}
+                      classNames="disabled"
+                      addEndListener={() => {}}
+                    >
+                      <div className="disabled"/>
+                    </CSSTransition>
+                  </div>
                 </CSSTransition>
               </div>
             </CSSTransition>
@@ -106,7 +119,9 @@ export default class Trigger extends Component {
           <div className={classNames('secondary', group) }/>
         </CSSTransition>
         <div className="sensor"
-             onMouseEnter={this.onHover} onMouseDown={this.onClick}
+             onMouseEnter={this.onHover}
+             onMouseDown={this.onClick}
+             onMouseUp={this.onMouseUp}
              onMouseLeave={this.onUnhover}/>
       </div>
     )
