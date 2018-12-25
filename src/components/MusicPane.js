@@ -195,17 +195,21 @@ class MusicPane extends Component {
 
   setGroupFullState = () => {
     const { groupFullStates } = this.state
+    const newStates = {}
     Object.keys(groupFullStates).forEach(group => {
       const isFull = this.isGroupFull(group)
       if (groupFullStates[group] !== isFull) {
-        this.setState({
-          groupFullStates: {
-            ...groupFullStates,
-            [group]: isFull,
-          }
-        })
+        newStates[group] = isFull
       }
     })
+    if (Object.keys(newStates).length) {
+      this.setState({
+        groupFullStates: {
+          ...groupFullStates,
+          ...newStates,
+        }
+      })
+    }
   }
 
   isGroupFull = group => {

@@ -28,55 +28,70 @@
 	justify-content: center;
 	align-items: center;
 	position: absolute;
-	width: 20px;
-	height: 20px;
+	width: 80px;
+	height: 80px;
 	bottom: 0;
+	opacity: 0;
 	border: 1px solid #6a6a6a;
 	box-shadow: none;
-	opacity: 0;
 	user-select: none;
 	transform: rotate(0deg);
-	transition: box-shadow 500ms ease-in, width 500ms ease-in, height 500ms ease-in, opacity 3s ease-in, transform 3s ease-in;
 	z-index: 5;
 }
 
-.squareHovered-enter {
-	z-index: 10;
-	transform: rotate(90deg);
-	transition: all 300ms ease-out;
+.square-enter {
+	opacity: 0;
+	transform: scale(0.25);
 }
 
 .square-enter-active {
 	opacity: 0.7;
-	width: 80px;
-	height: 80px;
 	box-shadow: none;
-	transform: rotate(90deg);
+	transform: scale(1) rotate(90deg);
 	transition: all 300ms ease-out;
 }
 
 .square-enter-done {
-	width: 80px;
-	height: 80px;
+	transform: scale(1) rotate(90deg);
 	opacity: 0.7;
-	box-shadow: none;
+}
+
+.rotateBack {
+	opacity: 0.7;
+	transform: scale(1) rotate(0deg);
+	transition: transform 3s ease-in;
+}
+
+
+.squareHovered-enter-active {
+	z-index: 10;
+	transform: rotate(90deg);
+	transition: transform 300ms ease-out;
 }
 
 @keyframes glow {
-	0% {height: 100%; width: 100%; opacity: 0.7; box-shadow: none;}
-	30% {height: 110%; width: 110%; opacity: 1; box-shadow: 0px 0px 20px 5px rgb(255, 250, 225);}
-	100% {height: 100%; width: 100%; opacity: 0.7; box-shadow: none;}
+	/*0% {height: 100%; width: 100%; opacity: 0.7; box-shadow: none;}*/
+	/*30% {height: 110%; width: 110%; opacity: 1; box-shadow: 0px 0px 20px 5px rgb(255, 250, 225);}*/
+	/*100% {height: 100%; width: 100%; opacity: 0.7; box-shadow: none;}*/
+	0% {transform: scale(1); opacity: 0.7; box-shadow: none;}
+	50% {transform: scale(1.1); opacity: 1; box-shadow: 0px 0px 20px 5px rgb(255, 250, 225);}
+	100% {transform: scale(1); opacity: 0.7; box-shadow: none;}
+}
+
+.rotateForward {
+	transform: rotate(90deg);
+	transition: transform 1000ms ease-in;
 }
 
 .glow-enter-active {
 	animation-name: glow;
 	animation-duration: 800ms;
 	animation-timing-function: ease-in;
-	animation-fill-mode: forwards;
 }
 
-.square-exit {
-	transition: all 1000ms ease-out;
+.glow-exit-active {
+	transform: rotate(0deg);
+	transition: transform 3000ms ease-out;
 }
 
 .disabled {
@@ -88,13 +103,13 @@
 }
 
 @keyframes pulse {
-	0% {opacity: 0.4; transform: scale(0.8);}
-	100% {opacity: 0.9; transform: scale(1); box-shadow: 0px 0px 20px 15px rgba(255, 255, 255, 0.8);}
+	from {opacity: 0.4; transform: scale(0.8);}
+	to {opacity: 0.9; transform: scale(1);}
 }
 
 @keyframes fade {
-	0% {opacity: 1}
-	100% {opacity: 0}
+	from {opacity: 1}
+	to {opacity: 0}
 }
 
 .disabledContainer {
@@ -113,6 +128,10 @@
 	animation-fill-mode: forwards;
 }
 
+.disabled-enter {
+	will-change: opacity;
+}
+
 .disabledContainer-exit-active {
 	animation-name: fade;
 	animation-duration: 1000ms;
@@ -124,6 +143,10 @@
 	opacity: 0;
 }
 
+.disabled-enter {
+	will-change: opacity, background, box-shadow;
+}
+
 .disabled-enter-active, .disabled-enter-done, .disabled-exit, .disabled-exit-active {
 	animation-name: pulse;
 	animation-duration: 500ms;
@@ -131,7 +154,6 @@
 	animation-iteration-count: infinite;
 	animation-timing-function: ease-out;
 	animation-fill-mode: forwards;
-	will-change: opacity, background, box-shadow;
 }
 
 .disabled-exit-done {
@@ -139,27 +161,28 @@
 }
 
 @keyframes spin {
-	0% {transform: rotate(0deg); opacity: 0; bottom: 0;}
-	50% {width: 200%; height: 200%; transform: rotate(180deg); opacity: 0.7; bottom: auto; z-index: 20;}
-	100% {width: 400%; height: 400%; transform: rotate(360deg); opacity: 0; bottom: auto; z-index: 20;}
+	0% {transform: rotate(0deg); opacity: 0;}
+	50% {width: 160px; height: 160px; transform: rotate(180deg); opacity: 0.7;}
+	100% {width: 320px; height: 320px; transform: rotate(360deg); opacity: 0;}
 }
 
 .secondary {
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	position: absolute;
 	width: 80px;
 	height: 80px;
 	border: 1px solid black;
 	opacity: 0;
-	will-change: width, height, transform, opacity, bottom, z-index;
+}
+
+.secondary-enter {
+	will-change: width, height, transform, opacity, z-index;
 }
 
 .secondary-enter-active {
 	animation-name: spin;
 	animation-duration: 1000ms;
 	animation-timing-function: linear;
+	z-index: 20;
 }
 
 .str, .str2 {
@@ -196,6 +219,7 @@
 
 .text {
 	position: absolute;
+	top: 0;
 	margin-top: calc(50% - 6px);
 	font-size: 12px;
 	opacity: 0;
@@ -205,16 +229,13 @@
 }
 
 .text-enter {
-	position: absolute;
-	top: 0;
 	opacity: 1;
-	will-change: top;
+	will-change: transform;
 }
 
 .text-enter-active {
-	position: absolute;
-	top: -100vh;
-	transition: all 3s ease-in;
+	transform: translate(0, -100vh);
+	transition: transform 3s ease-in;
 }
 
 .text-enter-done {
