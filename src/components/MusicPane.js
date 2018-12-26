@@ -40,7 +40,10 @@ class MusicPane extends Component {
     return !loading && composition && squareCount ?
       (<Fragment>
           <div className="paneWrapper">
-            <div className="pane" onContextMenu={this.suppressContextMenu}>
+            <div
+              className="pane"
+              onContextMenu={this.suppressContextMenu}
+            >
               {composition.map(({audioName, group}, ind) => {
                 const key = `${audioName}-${ind}`
                 const triggerProps = {
@@ -78,7 +81,7 @@ class MusicPane extends Component {
   initializeStatus =
     ({audioItems, maxSoundCount, maxInQueue, groupLimits, superGroups = {}, lengths, endOffset = 3000}) => {
       this.activeAudioCounts = {
-        all: 0,
+        _all: 0,
       }
       this.audioQueue = []
       const superGroupCollection = {}
@@ -172,7 +175,7 @@ class MusicPane extends Component {
 
   isAudioPlayable = group => {
     const {maxInQueue, groupFullStates} = this.state
-    return !this.isMaxActiveAudio() && this.audioQueue.length < maxInQueue && !groupFullStates[group]
+    return !groupFullStates[group]
   }
 
   addAudioToQueue = audioItem => {
@@ -185,7 +188,7 @@ class MusicPane extends Component {
 
   incrementActiveAudioCount = group => {
     const superGroup = this.state.superGroups[group]
-    this.activeAudioCounts.all++
+    this.activeAudioCounts._all++
     this.activeAudioCounts[group]++
     if (superGroup) {
       this.activeAudioCounts[superGroup]++
@@ -194,10 +197,11 @@ class MusicPane extends Component {
   }
 
   setGroupFullState = () => {
-    const { groupFullStates } = this.state
+    const { groupFullStates, maxInQueue } = this.state
     const newStates = {}
+    const isAllFull = this.isMaxActiveAudio() || this.isQueueFull()
     Object.keys(groupFullStates).forEach(group => {
-      const isFull = this.isGroupFull(group)
+      const isFull = isAllFull || this.isGroupFull(group)
       if (groupFullStates[group] !== isFull) {
         newStates[group] = isFull
       }
@@ -219,7 +223,12 @@ class MusicPane extends Component {
   }
 
   isMaxActiveAudio = () => {
-    return this.activeAudioCounts.all === this.state.maxSoundCount
+    return this.activeAudioCounts._all === this.state.maxSoundCount
+  }
+
+  isQueueFull = () => {
+    const { maxInQueue } = this.state
+    return this.audioQueue.length >= maxInQueue
   }
 
   getAudioBuffer = audioName => {
@@ -271,8 +280,8 @@ class MusicPane extends Component {
   }
 
   onAudioEnd = group => {
-    if (this.activeAudioCounts.all > 0) {
-      this.activeAudioCounts.all--
+    if (this.activeAudioCounts._all > 0) {
+      this.activeAudioCounts._all--
     }
     if (this.activeAudioCounts[group] > 0) {
       this.activeAudioCounts[group]--

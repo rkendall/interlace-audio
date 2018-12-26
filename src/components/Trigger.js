@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {CSSTransition} from 'react-transition-group'
+import {Transition, CSSTransition} from 'react-transition-group'
 import classNames from 'classnames'
 import shallowEqual from 'shallowequal';
 import './Trigger.css'
@@ -16,6 +16,7 @@ export default class Trigger extends Component {
       isSecondaryActive: false,
       isSecondaryDone: false,
       isGlowActive: false,
+      isDisabled: false,
     }
   }
 
@@ -28,10 +29,13 @@ export default class Trigger extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const {fadeSquares, disabled} = this.props
-    const {isSquareActive, isDisplayed} = this.state
+    const { isSquareActive, isDisabled, isDisplayed, isSecondaryActive, isGlowActive } = this.state
     const newState = {}
     if (isSquareActive && !isDisplayed) {
       newState.isDisplayed = true
+    }
+    if (isDisplayed && disabled !== isDisabled && (!disabled || (!isSecondaryActive && !isGlowActive))) {
+      newState.isDisabled = disabled
     }
     if (Object.keys(newState).length) {
       this.setState(newState)
@@ -49,10 +53,9 @@ export default class Trigger extends Component {
   }
 
   render() {
-    const {play, disabled, audioIndex, audioName, group} = this.props
-    const {isDisplayed, isSquareActive, isSecondaryActive, isSquareHovered, isGlowActive, isTextAnimating} = this.state
+    const {play, audioIndex, audioName, group} = this.props
+    const {isDisplayed, isDisabled, isSquareActive, isSecondaryActive, isSquareHovered, isGlowActive, isTextAnimating} = this.state
     const active = play || isTextAnimating
-    const showDisabled = disabled && isDisplayed && !isSecondaryActive && !isGlowActive
     const displayName = audioName.replace(/ \d+\w?$/, '')
 
     return (
@@ -68,56 +71,55 @@ export default class Trigger extends Component {
           <div className="text" key={audioIndex}>{displayName}</div>
         </CSSTransition>
         <CSSTransition
-          in={isSquareActive}
+          in={isSquareHovered}
           timeout={300}
-          classNames={{
-            enterActive: 'square-enter-active',
-            enterDone: 'rotateBack square-enter-done',
-            exitDone: 'square-exit-done',
-          }}
+          classNames="squareHovered"
+          onEntered={this.stopHover}
         >
-          <CSSTransition
-            in={isSquareHovered}
-            timeout={300}
-            classNames="squareHovered"
-          >
+          <div className="squareContainer">
             <CSSTransition
-              in={isGlowActive}
-              classNames={{
-                enterActive: 'glow-enter-active',
-                enterDone: 'glow-enter-done',
-                exitActive: 'rotateBack',
-              }}
-              timeout={{enter: 800, exit: 3000}}
-              addEndListener={node => {
-                node.addEventListener('animationend', this.stopGlow, false);
-              }}
+              in={isSquareActive}
+              timeout={300}
+              classNames="squareDisplay"
             >
-              <div className={classNames('square', group) }>
-                <CSSTransition
-                  in={showDisabled}
-                  classNames="disabledContainer"
-                  timeout={{enter: 500, exit: 1000}}
-                >
-                  <div className="disabledContainer">
-                    <CSSTransition
-                      in={showDisabled}
-                      classNames="disabled"
-                      addEndListener={() => {}}
-                    >
-                      <div className="disabled"/>
-                    </CSSTransition>
-                  </div>
-                </CSSTransition>
-              </div>
+              <CSSTransition
+                in={isGlowActive}
+                classNames="glow"
+                timeout={{enter: 800, exit: 0}}
+                onEntered={this.stopGlow}
+              >
+                <div className={classNames('square', group) }>
+                  <CSSTransition
+                    in={isDisabled}
+                    classNames="disabledContainer"
+                    timeout={{enter: 500, exit: 1000}}
+                  >
+                    <div className="disabledContainer">
+                      <Transition
+                        in={isDisabled}
+                        timeout={{enter: 500, exit: 1000}}
+                      >
+                        {status => {
+                          let className = ''
+                          if (status === 'exited') {
+                            className = 'disabled-exit-done'
+                          } else if (isDisabled || /exit/.test(status)) {
+                            className = 'disabled-enter-active'
+                          }
+                          return <div className={classNames('disabled', className)} />
+                        }}
+                      </Transition>
+                    </div>
+                  </CSSTransition>
+                </div>
+              </CSSTransition>
             </CSSTransition>
-          </CSSTransition>
+          </div>
         </CSSTransition>
         <CSSTransition
           in={isSecondaryActive}
-          addEndListener={node => {
-            node.addEventListener('animationend', this.stopSecondary, false);
-          }}
+          timeout={{enter: 1000, exit: 0}}
+          onEntered={this.stopSecondary}
           classNames="secondary"
         >
           <div className={classNames('secondary', group) }/>
@@ -125,7 +127,8 @@ export default class Trigger extends Component {
         <div className="sensor"
              onMouseEnter={this.handleInteraction}
              onMouseDown={this.handleInteraction}
-             onMouseLeave={this.handleInteraction}/>
+             onMouseLeave={this.handleInteraction}
+        />
       </div>
     )
   }
@@ -145,31 +148,27 @@ export default class Trigger extends Component {
   }
 
   startHover = () => {
-    this.setState({isSquareActive: true, isSquareHovered: true})
+    this.setState({isSquareHovered: true})
   }
 
   stopHover = () => {
     this.setState({isSquareHovered: false})
   }
 
-  stopGlow = ({animationName}) => {
-    if (animationName === 'glow') {
-      this.setState({isGlowActive: false})
-    }
+  stopGlow = () => {
+    this.setState({isGlowActive: false})
   }
 
   stopSecondary = ({animationName}) => {
-    if (animationName === 'spin') {
       this.setState({
         isSecondaryActive: false,
       })
-    }
   }
 
   handleInteraction = event => {
     const {onTrigger, audioIndex} = this.props
-    const { isDisplayed } = this.state
-    const { type, buttons } = event
+    const {isDisplayed, isSquareHovered} = this.state
+    const {type, buttons} = event
     const isClicked = type === 'mousedown' || (type === 'mouseenter' && buttons !== 0)
     const isHovered = type === 'mouseenter'
     const isUnhovered = type === 'mouseleave'
@@ -184,8 +183,6 @@ export default class Trigger extends Component {
     if (isHovered) {
       newState.isSquareActive = true
       newState.isSquareHovered = true
-    } else if (isUnhovered) {
-      newState.isSquareHovered = false
     }
     this.setState({
       ...newState,
