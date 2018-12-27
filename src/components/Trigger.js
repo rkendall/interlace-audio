@@ -34,7 +34,7 @@ export default class Trigger extends Component {
     if (isSquareActive && !isDisplayed) {
       newState.isDisplayed = true
     }
-    if (isDisplayed && disabled !== isDisabled && (!disabled || (!isSecondaryActive && !isGlowActive))) {
+    if (isDisplayed && disabled !== isDisabled && (!disabled || !isGlowActive)) {
       newState.isDisabled = disabled
     }
     if (Object.keys(newState).length) {
@@ -53,7 +53,7 @@ export default class Trigger extends Component {
   }
 
   render() {
-    const {play, audioIndex, audioName, group} = this.props
+    const { play, audioIndex, audioName, group } = this.props
     const {isDisplayed, isDisabled, isSquareActive, isSecondaryActive, isSquareHovered, isGlowActive, isTextAnimating} = this.state
     const active = play || isTextAnimating
     const displayName = audioName.replace(/ \d+\w?$/, '')
@@ -168,7 +168,7 @@ export default class Trigger extends Component {
   }
 
   handleInteraction = event => {
-    const {onTrigger, audioIndex} = this.props
+    const { onTrigger, audioIndex, onSelect } = this.props
     const {isDisplayed, isSquareHovered} = this.state
     const {type, buttons} = event
     const isClicked = type === 'mousedown' || (type === 'mouseenter' && buttons !== 0)
@@ -176,6 +176,7 @@ export default class Trigger extends Component {
     const isUnhovered = type === 'mouseleave'
     const newState = {}
     if (isClicked) {
+      onSelect()
       onTrigger(audioIndex)
       newState.isSecondaryActive = true
       if (isDisplayed && !isHovered) {

@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react'
 import {Howl, Howler} from 'howler'
 import ReactLoading from 'react-loading'
+import debounce from 'lodash/debounce'
 import './MusicPane.css'
 import Trigger from './Trigger'
 
@@ -14,6 +15,7 @@ class MusicPane extends Component {
       squareCount: null,
       composition: null,
       groupFullStates: {},
+      allowDisabled : true,
     }
   }
 
@@ -35,7 +37,7 @@ class MusicPane extends Component {
 
   render() {
     const {composition} = this.state
-    const {loading, activeAudioIndex} = this.state
+    const {loading, activeAudioIndex, allowDisabled} = this.state
     const {squareCount, fadeSquares} = this.props
     return !loading && composition && squareCount ?
       (<Fragment>
@@ -52,9 +54,10 @@ class MusicPane extends Component {
                   audioName,
                   group,
                   key,
-                  disabled: !this.isAudioPlayable(group),
+                  disabled: allowDisabled && !this.isAudioPlayable(group),
                   play: activeAudioIndex === ind,
                   fadeSquares,
+                  onSelect: this.onSelect,
                 }
                 return (
                   <Trigger {...triggerProps} />
@@ -291,6 +294,22 @@ class MusicPane extends Component {
       this.activeAudioCounts[superGroup]--
     }
     this.setGroupFullState()
+  }
+
+  resetAllowDisabled = debounce(() => {
+    this.setState({
+      allowDisabled: true,
+    })
+  }, 200, {leading: false, trailing: true})
+
+  onSelect = () => {
+    const { allowDisabled } = this.state
+    if (allowDisabled) {
+      this.setState({
+        allowDisabled: false,
+      })
+    }
+    this.resetAllowDisabled()
   }
 
 }
