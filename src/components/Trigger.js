@@ -29,7 +29,7 @@ export default class Trigger extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const {fadeSquares, disabled} = this.props
-    const { isSquareActive, isDisabled, isDisplayed, isSecondaryActive, isGlowActive } = this.state
+    const {isSquareActive, isDisabled, isDisplayed, isSecondaryActive, isGlowActive} = this.state
     const newState = {}
     if (isSquareActive && !isDisplayed) {
       newState.isDisplayed = true
@@ -106,7 +106,7 @@ export default class Trigger extends Component {
                           } else if (isDisabled || /exit/.test(status)) {
                             className = 'disabled-enter-active'
                           }
-                          return <div className={classNames('disabled', className)} />
+                          return <div className={classNames('disabled', className)}/>
                         }}
                       </Transition>
                     </div>
@@ -119,10 +119,12 @@ export default class Trigger extends Component {
         <CSSTransition
           in={isSecondaryActive}
           timeout={{enter: 1000, exit: 0}}
+          classNames="secondaryWrapper"
           onEntered={this.stopSecondary}
-          classNames="secondary"
         >
-          <div className={classNames('secondary', group) }/>
+          <div className="secondaryWrapper">
+            <div className={classNames('secondary', group) }/>
+          </div>
         </CSSTransition>
         <div className="sensor"
              onMouseEnter={this.handleInteraction}
@@ -160,9 +162,9 @@ export default class Trigger extends Component {
   }
 
   stopSecondary = ({animationName}) => {
-      this.setState({
-        isSecondaryActive: false,
-      })
+    this.setState({
+      isSecondaryActive: false,
+    })
   }
 
   handleInteraction = event => {

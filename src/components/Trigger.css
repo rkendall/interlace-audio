@@ -60,6 +60,17 @@
 	transform: scale(1);
 }
 
+.squareDisplay-exit {
+	opacity: 0.7;
+	transform: scale(1);
+}
+
+.squareDisplay-exit-active {
+	opacity: 0;
+	transform: scale(0.25);
+	transition: all 300ms ease-out;
+}
+
 @keyframes glow {
 	0% {transform: scale(1); opacity: 0.7;}
 	50% {transform: scale(1.2); opacity: 1;}
@@ -138,29 +149,41 @@
 	opacity: 0;
 }
 
-@keyframes spin {
-	0% {transform: rotate(0deg); opacity: 0;}
-	50% {width: 160px; height: 160px; transform: rotate(180deg); opacity: 0.7;}
-	100% {width: 320px; height: 320px; transform: rotate(360deg); opacity: 0;}
+@keyframes spinBorder {
+	0% {transform: scale(1) rotate(0deg); opacity: 0;}
+	50% {transform: scale(2) rotate(180deg); opacity: 0.7;}
+	100% {transform: scale(4) rotate(360deg); opacity: 0;}
+}
+
+.secondaryWrapper {
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	background: black;
+	opacity: 0;
+}
+
+.secondaryWrapper-enter {
+	will-change: transform, opacity;
+}
+
+.secondaryWrapper-enter-active {
+	animation-name: spinBorder;
+	animation-duration: 1000ms;
+	animation-timing-function: linear;
+	z-index: 20;
 }
 
 .secondary {
 	position: absolute;
 	width: 80px;
 	height: 80px;
-	border: 1px solid black;
-	opacity: 0;
+	opacity: 1;
+	transform: scale(0.99);
 }
 
 .secondary-enter {
 	will-change: width, height, transform, opacity, z-index;
-}
-
-.secondary-enter-active {
-	animation-name: spin;
-	animation-duration: 1000ms;
-	animation-timing-function: linear;
-	z-index: 20;
 }
 
 .str, .str2 {
