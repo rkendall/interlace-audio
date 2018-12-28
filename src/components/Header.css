@@ -51,3 +51,7 @@
 	cursor: pointer;
 	font-size: .9rem;
 }
+
+.onTop, .onTop div {
+	z-index: 50;
+}

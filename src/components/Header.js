@@ -44,6 +44,8 @@ export default class Header extends Component {
             value={value}
             onChange={onSelect}
             styles={selectStyles}
+            onMenuOpen={this.putMenuOnTop}
+            onMenuClose={this.putMenuUnderneath}
           />
         </div>
       </div>
@@ -51,9 +53,9 @@ export default class Header extends Component {
   }
 
   putMenuOnTop = () => {
-    // this.setState({
-    //   isMenuOnTop: true,
-    // })
+    this.setState({
+      isMenuOnTop: true,
+    })
   }
 
   putMenuUnderneath = () => {

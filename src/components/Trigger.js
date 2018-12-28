@@ -17,6 +17,7 @@ export default class Trigger extends Component {
       isSecondaryDone: false,
       isGlowActive: false,
       isDisabled: false,
+      isDisabledAnimating: false,
     }
   }
 
@@ -34,7 +35,7 @@ export default class Trigger extends Component {
     if (isSquareActive && !isDisplayed) {
       newState.isDisplayed = true
     }
-    if (isDisplayed && disabled !== isDisabled && (!disabled || !isGlowActive)) {
+    if (isDisplayed && disabled !== isDisabled) {
       newState.isDisabled = disabled
     }
     if (Object.keys(newState).length) {
@@ -53,8 +54,8 @@ export default class Trigger extends Component {
   }
 
   render() {
-    const { play, audioIndex, audioName, group } = this.props
-    const {isDisplayed, isDisabled, isSquareActive, isSecondaryActive, isSquareHovered, isGlowActive, isTextAnimating} = this.state
+    const {play, audioIndex, audioName, group} = this.props
+    const {isDisplayed, isDisabled, isDisabledAnimating, isSquareActive, isSecondaryActive, isSquareHovered, isGlowActive, isTextAnimating} = this.state
     const active = play || isTextAnimating
     const displayName = audioName.replace(/ \d+\w?$/, '')
 
@@ -89,28 +90,26 @@ export default class Trigger extends Component {
                 onEntered={this.stopGlow}
               >
                 <div className={classNames('square', group) }>
-                  <CSSTransition
-                    in={isDisabled}
-                    classNames="disabledContainer"
-                    timeout={{enter: 500, exit: 1000}}
-                  >
                     <div className="disabledContainer">
                       <Transition
-                        in={isDisabled}
-                        timeout={{enter: 500, exit: 1000}}
-                      >
-                        {status => {
+                        in={isDisabled || isDisabledAnimating}
+                        enter={false}
+                        exit={false}
+                        onEnter={this.disabledAnimationStarted}
+                        addEndListener={node => {
+                          node.addEventListener('animationiteration', this.disabledAnimationDone, false);
+                        }}>
+                        {() => {
                           let className = ''
-                          if (status === 'exited') {
-                            className = 'disabled-exit-done'
-                          } else if (isDisabled || /exit/.test(status)) {
-                            className = 'disabled-enter-active'
+                          if (isDisabled || isDisabledAnimating)  {
+                            className = 'pulse'
+                          } else {
+                            className = 'pulseFade'
                           }
                           return <div className={classNames('disabled', className)}/>
                         }}
                       </Transition>
                     </div>
-                  </CSSTransition>
                 </div>
               </CSSTransition>
             </CSSTransition>
@@ -167,8 +166,32 @@ export default class Trigger extends Component {
     })
   }
 
+  disabledAnimationStarted = () => {
+    const { isDisabledAnimating } = this.state
+    if (!isDisabledAnimating) {
+      this.setState({
+        isDisabledAnimating: true,
+      })
+    }
+  }
+
+  disabledAnimationDone = () => {
+    const {isDisabled, isDisabledAnimating} = this.state
+    if (this.props.audioIndex === 2) {
+      console.log('callback', isDisabled, this.isDisabledAnimating)
+    }
+    if (!isDisabled && isDisabledAnimating) {
+      if (this.props.audioIndex === 2) {
+        console.log('done', this.props.audioIndex)
+      }
+      this.setState({
+        isDisabledAnimating: false,
+      })
+    }
+  }
+
   handleInteraction = event => {
-    const { onTrigger, audioIndex, onSelect } = this.props
+    const {onTrigger, audioIndex, onSelect} = this.props
     const {isDisplayed, isSquareHovered} = this.state
     const {type, buttons} = event
     const isClicked = type === 'mousedown' || (type === 'mouseenter' && buttons !== 0)

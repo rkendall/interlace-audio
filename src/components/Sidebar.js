@@ -32,7 +32,10 @@ export default ({onChange, onFadeSelected, closeSidebar, selectedValue, composit
           <div className="box">
             <p>Click on squares to play individual instruments. To play multiple instruments at once, hold
               down the mouse button and drag the pointer over multiple squares.
-              The colors denote different types of instruments.</p>
+              The colors denote different types of instruments.
+              Some limits are placed on the number of instruments that can play at once, and
+              glowing squares indicate instruments that are temporarily restricted from playing.
+            </p>
           </div>
           <div className="box selectFade">
             <label>

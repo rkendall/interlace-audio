@@ -300,7 +300,7 @@ class MusicPane extends Component {
     this.setState({
       allowDisabled: true,
     })
-  }, 200, {leading: false, trailing: true})
+  }, 300, {leading: false, trailing: true})
 
   onSelect = () => {
     const { allowDisabled } = this.state
