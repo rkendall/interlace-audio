@@ -72,16 +72,16 @@
 }
 
 @keyframes glow {
-	0% {transform: scale(1); opacity: 0.7;}
+	0% {transform: scale(1) rotate(0deg) !important; opacity: 0.7;}
 	50% {transform: scale(1.2); opacity: 1;}
 	100% {transform: scale(1); opacity: 0.7;}
 }
 
 .glow-enter-active {
 	animation-name: glow;
-	animation-duration: 800ms;
-	animation-timing-function: ease-in;
-	z-index: 25;
+	animation-duration: 1500ms;
+	animation-timing-function: ease-in-out;
+	z-index: 10;
 }
 
 .disabledContainer {
@@ -93,9 +93,11 @@
 }
 
 @keyframes pulse {
-	0% {opacity: 0.2; transform: scale(0.8);}
-	50% {opacity: 0.8; transform: scale(1);}
-	100% {opacity: 0.2; transform: scale(0.8);}
+	0% {opacity: 0.4; transform: scale(0.8);}
+	5% {opacity: 0.4; transform: scale(0.8);}
+	50% {opacity: 0.6; transform: scale(1); animation-timing-function: ease-in-out;}
+	95% {opacity: 0.4; transform: scale(0.8); animation-timing-function: ease-in-out;}
+	100% {opacity: 0.4; transform: scale(0.8);}
 }
 
 .disabled {
@@ -110,20 +112,18 @@
 	animation-name: pulse;
 	animation-duration: 800ms;
 	animation-iteration-count: infinite;
-	animation-timing-function: ease-out;
 	animation-fill-mode: forwards;
 }
 
 @keyframes pulseFade {
-	0% {opacity: 0.2; transform: scale(0.8);}
-	100% {opacity: 0; transform: scale(0.8);}
+	0% {opacity: 0.4; transform: scale(0.8);}
+	100% {opacity: 0; transform: scale(0.8); animation-timing-function: ease-out;}
 }
 
 .disabled.pulseFade {
 	animation-name: pulseFade;
 	animation-duration: 500ms;
-	animation-timing-function: ease-out;
-	animation-fill-mode: forwards;
+	animation-fill-mode: backwards;
 }
 
 @keyframes spinBorder {
@@ -161,6 +161,26 @@
 
 .secondary-enter {
 	will-change: width, height, transform, opacity, z-index;
+}
+
+.str .disabled.pulse, .str2 .disabled.pulse {
+	animation-delay: 100ms;
+}
+
+.win .disabled.pulse {
+	animation-delay: 200ms;
+}
+
+.bra .disabled.pulse {
+	animation-delay: 300ms;
+}
+
+.per .disabled.pulse {
+	animation-delay: 400ms;
+}
+
+.pia .disabled.pulse, .vib .disabled.pulse, .tuned .disabled.pulse {
+	animation-delay: 500ms;
 }
 
 .str, .str2 {

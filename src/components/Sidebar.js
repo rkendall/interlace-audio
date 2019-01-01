@@ -44,7 +44,7 @@ export default ({onChange, onFadeSelected, closeSidebar, selectedValue, composit
                 type="checkbox"
                 onChange={onFadeSelected}
               />
-              <span className="fadeSquaresLabel">Fade squares out</span>
+              <span className="fadeSquaresLabel">Evaporate Squares</span>
             </label>
           </div>
         </div>

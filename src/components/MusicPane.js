@@ -177,7 +177,7 @@ class MusicPane extends Component {
   }
 
   isAudioPlayable = group => {
-    const {maxInQueue, groupFullStates} = this.state
+    const { groupFullStates } = this.state
     return !groupFullStates[group]
   }
 
@@ -200,7 +200,7 @@ class MusicPane extends Component {
   }
 
   setGroupFullState = () => {
-    const { groupFullStates, maxInQueue } = this.state
+    const { groupFullStates } = this.state
     const newStates = {}
     const isAllFull = this.isMaxActiveAudio() || this.isQueueFull()
     Object.keys(groupFullStates).forEach(group => {

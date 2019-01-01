@@ -30,7 +30,7 @@ export default class Trigger extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const {fadeSquares, disabled} = this.props
-    const {isSquareActive, isDisabled, isDisplayed, isSecondaryActive, isGlowActive} = this.state
+    const {isSquareActive, isDisabled, isDisplayed} = this.state
     const newState = {}
     if (isSquareActive && !isDisplayed) {
       newState.isDisplayed = true
@@ -55,7 +55,7 @@ export default class Trigger extends Component {
 
   render() {
     const {play, audioIndex, audioName, group} = this.props
-    const {isDisplayed, isDisabled, isDisabledAnimating, isSquareActive, isSecondaryActive, isSquareHovered, isGlowActive, isTextAnimating} = this.state
+    const {isDisabled, isDisabledAnimating, isSquareActive, isSecondaryActive, isSquareHovered, isGlowActive, isTextAnimating} = this.state
     const active = play || isTextAnimating
     const displayName = audioName.replace(/ \d+\w?$/, '')
 
@@ -86,30 +86,30 @@ export default class Trigger extends Component {
               <CSSTransition
                 in={isGlowActive}
                 classNames="glow"
-                timeout={{enter: 800, exit: 0}}
+                timeout={{enter: 1500, exit: 0}}
                 onEntered={this.stopGlow}
               >
                 <div className={classNames('square', group) }>
-                    <div className="disabledContainer">
-                      <Transition
-                        in={isDisabled || isDisabledAnimating}
-                        enter={false}
-                        exit={false}
-                        onEnter={this.disabledAnimationStarted}
-                        addEndListener={node => {
-                          node.addEventListener('animationiteration', this.disabledAnimationDone, false);
-                        }}>
-                        {() => {
-                          let className = ''
-                          if (isDisabled || isDisabledAnimating)  {
-                            className = 'pulse'
-                          } else {
-                            className = 'pulseFade'
-                          }
-                          return <div className={classNames('disabled', className)}/>
-                        }}
-                      </Transition>
-                    </div>
+                  <div className="disabledContainer">
+                    <Transition
+                      in={isDisabled || isDisabledAnimating}
+                      exit={false}
+                      onEnter={this.disabledAnimationStarted}
+                      addEndListener={node => {
+                        node.addEventListener('animationiteration', this.disabledAnimationDone, false);
+                      }}
+                    >
+                      {() => {
+                        let className = ''
+                        if (isDisabled || isDisabledAnimating) {
+                          className = 'pulse'
+                        } else {
+                          className = 'pulseFade'
+                        }
+                        return <div className={classNames('disabled', className)}/>
+                      }}
+                    </Transition>
+                  </div>
                 </div>
               </CSSTransition>
             </CSSTransition>
@@ -167,7 +167,7 @@ export default class Trigger extends Component {
   }
 
   disabledAnimationStarted = () => {
-    const { isDisabledAnimating } = this.state
+    const {isDisabledAnimating} = this.state
     if (!isDisabledAnimating) {
       this.setState({
         isDisabledAnimating: true,
@@ -177,13 +177,7 @@ export default class Trigger extends Component {
 
   disabledAnimationDone = () => {
     const {isDisabled, isDisabledAnimating} = this.state
-    if (this.props.audioIndex === 2) {
-      console.log('callback', isDisabled, this.isDisabledAnimating)
-    }
     if (!isDisabled && isDisabledAnimating) {
-      if (this.props.audioIndex === 2) {
-        console.log('done', this.props.audioIndex)
-      }
       this.setState({
         isDisabledAnimating: false,
       })
@@ -192,17 +186,16 @@ export default class Trigger extends Component {
 
   handleInteraction = event => {
     const {onTrigger, audioIndex, onSelect} = this.props
-    const {isDisplayed, isSquareHovered} = this.state
+    const {isDisplayed} = this.state
     const {type, buttons} = event
     const isClicked = type === 'mousedown' || (type === 'mouseenter' && buttons !== 0)
     const isHovered = type === 'mouseenter'
-    const isUnhovered = type === 'mouseleave'
     const newState = {}
     if (isClicked) {
       onSelect()
       onTrigger(audioIndex)
       newState.isSecondaryActive = true
-      if (isDisplayed && !isHovered) {
+      if (isDisplayed) {
         newState.isGlowActive = true
       }
     }
