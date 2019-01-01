@@ -110,7 +110,7 @@
 
 .disabled.pulse {
 	animation-name: pulse;
-	animation-duration: 800ms;
+	animation-duration: 500ms;
 	animation-iteration-count: infinite;
 	animation-fill-mode: forwards;
 }
@@ -164,23 +164,23 @@
 }
 
 .str .disabled.pulse, .str2 .disabled.pulse {
-	animation-delay: 100ms;
+	animation-delay: 50ms;
 }
 
 .win .disabled.pulse {
-	animation-delay: 200ms;
+	animation-delay: 100ms;
 }
 
 .bra .disabled.pulse {
-	animation-delay: 300ms;
+	animation-delay: 150ms;
 }
 
 .per .disabled.pulse {
-	animation-delay: 400ms;
+	animation-delay: 200ms;
 }
 
 .pia .disabled.pulse, .vib .disabled.pulse, .tuned .disabled.pulse {
-	animation-delay: 500ms;
+	animation-delay: 250ms;
 }
 
 .str, .str2 {

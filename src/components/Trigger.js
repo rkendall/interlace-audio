@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, createRef} from 'react'
 import {Transition, CSSTransition} from 'react-transition-group'
 import classNames from 'classnames'
 import shallowEqual from 'shallowequal';
@@ -19,6 +19,7 @@ export default class Trigger extends Component {
       isDisabled: false,
       isDisabledAnimating: false,
     }
+    this.disabledElement = createRef()
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -51,6 +52,10 @@ export default class Trigger extends Component {
         })
       }, timeout)
     }
+  }
+
+  componentWillUnmount() {
+    this.disabledElement.current.removeEventListener('animationiteration', this.disabledAnimationDone, false)
   }
 
   render() {
@@ -96,7 +101,7 @@ export default class Trigger extends Component {
                       exit={false}
                       onEnter={this.disabledAnimationStarted}
                       addEndListener={node => {
-                        node.addEventListener('animationiteration', this.disabledAnimationDone, false);
+                        node.addEventListener('animationiteration', this.disabledAnimationDone, false)
                       }}
                     >
                       {() => {
@@ -106,7 +111,10 @@ export default class Trigger extends Component {
                         } else {
                           className = 'pulseFade'
                         }
-                        return <div className={classNames('disabled', className)}/>
+                        return <div
+                          className={classNames('disabled', className)}
+                          ref={this.disabledElement}
+                        />
                       }}
                     </Transition>
                   </div>
