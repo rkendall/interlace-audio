@@ -3,7 +3,6 @@ import Sidebar from 'react-sidebar'
 import moment from 'moment'
 import {detect} from 'detect-browser'
 import ReactResizeDetector from 'react-resize-detector'
-import Header from './components/Header'
 import SidebarContent from './components/Sidebar';
 import MusicPane from './components/MusicPane'
 import Message from './components/Message'
@@ -57,28 +56,24 @@ class App extends Component {
     }
 
     const { currentCompositionName, squareCount, fadeSquares, sidebarOpen } = this.state
+
     return (
       <div className="main">
         <Sidebar
           sidebar={<SidebarContent
-            closeSidebar={this.closeSidebar}
+            toggleSidebar={this.toggleSidebar}
             compositionTitles={compositionTitles}
             onChange={this.onCompositionSelected}
             onFadeSelected={this.onFadeSelected}
             selectedValue={currentCompositionName}
+            sidebarOpen={sidebarOpen}
           />}
-          open={this.state.sidebarOpen}
-          docked={this.state.sidebarOpen}
-          styles={{sidebar: {background: "white"}}}
+          open={sidebarOpen}
+          docked={sidebarOpen}
+          sidebarClassName="reactSidebar"
+          contentClassName="sidebarContent"
         >
           <div className="content">
-            <Header
-              isSidebarOpen={sidebarOpen}
-              openSidebar={this.openSidebar}
-              compositionTitles={compositionTitles}
-              onSelect={this.onCompositionSelected}
-              selectedValue={currentCompositionName}
-            />
             <div ref={this.musicPaneRef} className="musicPaneContainer">
               <ReactResizeDetector handleWidth handleHeight onResize={this.getSquareCount} refreshMode="debounce" refreshRate={500}>
                 <Message/>
@@ -96,12 +91,9 @@ class App extends Component {
     )
   }
 
-  openSidebar = () => {
-    this.setState({sidebarOpen: true});
-  }
-
-  closeSidebar = () => {
-    this.setState({sidebarOpen: false});
+  toggleSidebar = () => {
+    const {sidebarOpen} = this.state
+    this.setState({sidebarOpen: !sidebarOpen});
   }
 
   onCompositionSelected = ({value, id}) => {
