@@ -3,14 +3,16 @@ import {SideNav, Nav} from 'react-sidenav'
 import classNames from 'classnames';
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import ChevronRight from '@material-ui/icons/ChevronRight'
+import { AwesomeButton as Button } from 'react-awesome-button'
+import 'react-awesome-button/dist/styles.css'
 import './Sidebar.css'
 
 const menuTheme = {
-  selectionBgColor: '#d6f2fb',
-  hoverBgColor: '#ececec',
+  selectionBgColor: '#e5e1e8',
+  hoverBgColor: '#d0cdd7',
 }
 
-export default ({onChange, onFadeSelected, toggleSidebar, selectedValue, compositionTitles, sidebarOpen}) => {
+export default ({onChange, onFadeSelected, onStopLooping, toggleSidebar, selectedValue, compositionTitles, sidebarOpen}) => {
   return (
     <Fragment>
       <div className="header">
@@ -24,35 +26,41 @@ export default ({onChange, onFadeSelected, toggleSidebar, selectedValue, composi
               <h2>Interactive Music</h2>
               <div className="byline">By Robert Kendall</div>
             </div>
-            <div className="box">
-              <div className="prompt">Select One</div>
+            <div className="box menu">
+              <div className="prompt">Select Music</div>
               <SideNav
                 selectedPath={selectedValue}
                 onItemSelection={onChange}
                 theme={menuTheme}
               >
                 {compositionTitles.map(({name, title}, ind) => (
-                  <Nav className="menuOption" id={name} key={name}>{`${ind + 1}. ${title}`}</Nav>
+                  <Nav className="menuOption" id={name} key={name}><div className="optionText">{`${ind + 1}. ${title}`}</div></Nav>
                 ))}
               </SideNav>
             </div>
-            <div className="box selectFade">
-              <label>
-                <input
-                  name="fade"
-                  type="checkbox"
-                  onChange={onFadeSelected}
-                />
-                <span className="fadeSquaresLabel">Evaporation</span>
-              </label>
+            <div className="box controls">
+                <Button
+                  action={onStopLooping}
+                >Stop Looping
+              </Button>
+              <div className="selectFade">
+                <label>
+                  <input
+                    name="fade"
+                    type="checkbox"
+                    onChange={onFadeSelected}
+                  />
+                  <span className="label">Evaporate</span>
+                </label>
+              </div>
             </div>
-            <div className="box">
-              <p>Click on squares to play individual instruments. To play multiple instruments at once, hold
-                down the mouse button and drag the pointer over multiple squares.
-                The colors denote different types of instruments.
-                Some limits are placed on the number of instruments that can play at once, and
-                glowing squares indicate instruments that are temporarily restricted from playing.
-              </p>
+            <div className="box description">
+                <p>Click squares to play. Colors denote types of instruments.</p>
+                <p>To play multiple instruments, hold
+                down the mouse button and drag the pointer.</p>
+                <p>Glowing instruments are temporarily disabled (for musical reasons).</p>
+                <p>To loop an instrument, hold down the mouse button.
+                  Click and hold again to stop looping.</p>
             </div>
           </div>
         </div>

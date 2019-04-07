@@ -63,6 +63,7 @@
 .squareDisplay-exit {
 	opacity: 0.7;
 	transform: scale(1);
+	will-change: opacity, transform;
 }
 
 .squareDisplay-exit-active {
@@ -140,15 +141,48 @@
 	opacity: 0;
 }
 
-.secondaryWrapper-enter {
-	will-change: transform, opacity;
-}
-
 .secondaryWrapper-enter-active {
 	animation-name: spinBorder;
 	animation-duration: 1000ms;
 	animation-timing-function: linear;
 	z-index: 20;
+}
+
+@keyframes loop {
+	0% {transform: rotate(0deg)}
+	100% {transform: rotate(-360deg)}
+}
+
+@keyframes loop1 {
+	0% {opacity: 0.7}
+	100% {opacity: 0.7; transform: rotate(0deg); animation-timing-function: ease-in}
+}
+
+.looping-enter-active {
+	opacity: 0.7;
+	transition: opacity 300ms ease-in;
+	animation: loop 1000ms linear infinite;
+}
+
+/* Need to specify animation in .looping-exit or transitions are terminated */
+
+.looping-enter-done, .looping-exit {
+	opacity: 0.7;
+	animation: loop 1000ms linear infinite;
+}
+
+.looping-exit-active {
+	opacity: 0;
+	transition: opacity 300ms ease-out;
+	animation: loop 1000ms linear infinite;
+}
+
+.looping-exit-done {
+	opacity: 0;
+}
+
+.looping-exit-done {
+	opacity: 0;
 }
 
 .secondary {
@@ -157,10 +191,6 @@
 	height: 80px;
 	opacity: 1;
 	transform: scale(0.99);
-}
-
-.secondary-enter {
-	will-change: width, height, transform, opacity, z-index;
 }
 
 .str .disabled.pulse, .str2 .disabled.pulse {

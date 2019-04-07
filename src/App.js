@@ -45,6 +45,14 @@ class App extends Component {
       sidebarOpen: true,
       squareCount: 0,
       fadeSquares: false,
+      stopLooping: false,
+    }
+  }
+
+  componentDidUpdate() {
+    const { stopLooping } = this.state
+    if (stopLooping) {
+      this.resetStopLooping()
     }
   }
 
@@ -55,7 +63,7 @@ class App extends Component {
       alert('This site currently supports only Chrome and Firefox and does not support mobile devices.')
     }
 
-    const { currentCompositionName, squareCount, fadeSquares, sidebarOpen } = this.state
+    const { currentCompositionName, squareCount, fadeSquares, sidebarOpen, stopLooping } = this.state
 
     return (
       <div className="main">
@@ -65,6 +73,7 @@ class App extends Component {
             compositionTitles={compositionTitles}
             onChange={this.onCompositionSelected}
             onFadeSelected={this.onFadeSelected}
+            onStopLooping={this.onStopLooping}
             selectedValue={currentCompositionName}
             sidebarOpen={sidebarOpen}
           />}
@@ -82,6 +91,7 @@ class App extends Component {
                   squareCount={squareCount}
                   rawCompositions={rawCompositions}
                   fadeSquares={fadeSquares}
+                  stopLooping={stopLooping}
                 />
               </ReactResizeDetector>
             </div>
@@ -108,6 +118,18 @@ class App extends Component {
   onFadeSelected = () => {
     this.setState({
       fadeSquares: !this.state.fadeSquares,
+    })
+  }
+
+  onStopLooping = () => {
+    this.setState({
+      stopLooping: true,
+    })
+  }
+
+  resetStopLooping = () => {
+    this.setState({
+      stopLooping: false,
     })
   }
 

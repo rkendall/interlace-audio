@@ -1,8 +1,8 @@
 .sidebar {
-	width: 240px;
-	height: 100%;
-	margin-left: -25px;
-	overflow: auto;
+  width: 240px;
+  height: 100%;
+  margin-left: -25px;
+  overflow: hidden;
 }
 
 .header {
@@ -24,7 +24,7 @@ h1 {
 
 h2 {
   margin: 5px 0 10px 0;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 .byline {
@@ -51,9 +51,13 @@ h2 {
 }
 
 p {
-  margin: 0;
+  margin: 0 0 10px 0;
   padding: 0;
   font-size: 0.9rem;
+}
+
+p:last-of-type {
+  margin-bottom: 0;
 }
 
 .box {
@@ -63,15 +67,54 @@ p {
   box-shadow: lightgray 2px 2px 8px 0px;
 }
 
+.box:last-of-type {
+  margin-bottom: 0;
+}
+
+.controls button {
+  margin-bottom: 10px;
+}
+
+.menu {
+  padding: 10px 0 0 0;
+}
+
 .menuOption {
+  margin: 0;
+}
+
+.optionText {
   padding-left: 18px !important;
-  text-indent: -18px;
+  text-indent: -13px;
 }
 
 .selectFade * {
   cursor: pointer;
 }
 
-.fadeSquaresLabel {
+.label {
   margin-left: 5px;
+}
+
+.aws-btn {
+  --button-default-height: 30px;
+  --button-default-font-size: 14px;
+  --button-default-border-radius: 4px;
+  --button-horizontal-padding: 20px;
+  --button-raise-level: 1px;
+  --button-hover-pressure: 0;
+  --transform-speed: 0.1s;
+  --button-primary-color: #e5e1e8;
+  --button-primary-color-dark: #6f6e77;
+  /* Text */
+  --button-primary-color-light: #000000;
+  --button-primary-color-hover: #d0cdd7;
+  --button-primary-color-active: #d0cdd7;
+  --button-primary-border: none;
+}
+
+.description {
+  height: calc(100vh - 452px);
+  overflow-x: hidden;
+  overflow-y: auto;
 }
