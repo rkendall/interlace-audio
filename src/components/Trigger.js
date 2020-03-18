@@ -1,7 +1,7 @@
 import React, {Component, createRef} from 'react'
 import {Transition, CSSTransition} from 'react-transition-group'
 import classNames from 'classnames'
-import shallowEqual from 'shallowequal';
+import shallowEqual from 'shallowequal'
 import './Trigger.css'
 
 export default class Trigger extends Component {

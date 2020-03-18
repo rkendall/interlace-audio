@@ -100,6 +100,12 @@ class MusicPane extends Component {
     event.preventDefault()
   }
 
+  getAudioItems = () => {
+    const { squareCount } = this.props
+    const audioItems = []
+
+  }
+
   initializeStatus =
     ({audioItems, maxSoundCount, maxInQueue, groupLimits, superGroups = {}, lengths, endOffset = 3000}) => {
       this.audioQueue = []
