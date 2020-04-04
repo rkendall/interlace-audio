@@ -114,7 +114,7 @@ p:last-of-type {
 }
 
 .description {
-  height: calc(100vh - 452px);
+  height: calc(100vh - 520px);
   overflow-x: hidden;
   overflow-y: auto;
 }

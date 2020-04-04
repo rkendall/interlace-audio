@@ -213,7 +213,7 @@
 	animation-delay: 250ms;
 }
 
-.str, .str2 {
+.str {
 	background: linear-gradient(120deg, #F2DAB3 0%, #d14a6e 100%);
 }
 
@@ -229,6 +229,10 @@
 	background: linear-gradient(120deg, #DFEAF2 0%, #ada8a2 100%);
 }
 
+.drums {
+	background: linear-gradient(120deg, #8d9499 0%, #000000 100%);
+}
+
 .pia, .vib, .tuned {
 	background: linear-gradient(120deg, #F2EDD2 0%, #dbb517 100%);
 }
@@ -237,11 +241,11 @@
 	background: linear-gradient(120deg, #ffcccc 0%, #864811 100%);
 }
 
-.mel {
+.guitar, .plucked {
 	background: linear-gradient(120deg, #d7f0f2 0%, #318266 100%);
 }
 
-.mel2 {
+.rhythm {
 	background: linear-gradient(120deg, #D1F2CB 0%, #5F8223 100%);
 }
 

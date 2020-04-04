@@ -1,0 +1,92 @@
+{
+  "title": "After Coffee",
+  "maxSoundCount": 5,
+  "maxInQueue": 4,
+  "groups": {
+    "str": {
+      "instruments": {
+        "high": [
+          "Violins 3",
+          "Violins 4",
+          "Violins 5"
+        ],
+        "medium": [
+          "Violins 1",
+          "Violins 2",
+          "Violas 1",
+          "Violas 2",
+          "Violas 3",
+          "Violas 4"
+        ]
+      },
+      "maxActive": 3
+    },
+    "bas": {
+      "instruments": {
+        "low": [
+          "Cellos 1",
+          "Basses 1"
+        ]
+      },
+      "maxActive": 2
+    },
+    "win": {
+      "instruments": {
+        "high": [
+          "Flutes 2",
+          "Piccolo 1"
+        ],
+        "medium": [
+          "Flutes 1",
+          "Oboe 1",
+          "Clarinet 1"
+        ]
+      },
+      "maxActive": 3
+    },
+    "bra": {
+      "instruments": {
+        "high": [
+          "Trumpets 1",
+          "Trumpets 2",
+          "Trumpets 3"
+        ],
+        "medium": [
+          "Horns 1"
+        ],
+        "low": [
+          "Trombones 1"
+        ]
+      },
+      "maxActive": 2
+    },
+    "pia": {
+      "instruments": {
+        "medium": [
+          "Harp 1"
+        ]
+      },
+      "maxActive": 2
+    },
+    "per": {
+      "instruments": {
+        "high": [
+          "Xylophone 1",
+          "Xylophone 2"
+        ],
+        "medium": [
+          "Marimba 1",
+          "Marimba 2",
+          "Bells 1",
+          "Bells 2"
+        ],
+        "low": [
+          "Tympani 1",
+          "Tympani 2",
+          "Gong 1"
+        ]
+      },
+      "maxActive": 3
+    }
+  }
+}

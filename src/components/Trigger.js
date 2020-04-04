@@ -68,8 +68,8 @@ export default class Trigger extends Component {
     const { isDisabled, isDisabledAnimating, isSquareActive, isSecondaryActive, isSquareHovered, isGlowActive, isTextAnimating, isLoopingAnimationActive } = this.state
     const active = (play || isTextAnimating) && !isLoopingAnimationActive
     const displayName = audioName.replace(/ \d+\w?$/, '')
-    const activateGlow = isGlowActive && !isLoopingAnimationActive
     const activateSecondary = isSecondaryActive && !isLoopingAnimationActive
+    const groupClassName = group.replace(/\d+$/, '')
 
     return (
       <div className="trigger">
@@ -101,7 +101,7 @@ export default class Trigger extends Component {
                 timeout={{enter: 1500, exit: 0}}
                 onEntered={this.stopGlow}
               >
-                <div className={classNames('square', group) }>
+                <div className={classNames('square', groupClassName) }>
                   <div className="disabledContainer">
                     <Transition
                       in={isDisabled || isDisabledAnimating}
@@ -143,7 +143,7 @@ export default class Trigger extends Component {
             onExited={this.stopLooping}
           >
             <div className="secondaryWrapper">
-              <div className={classNames('secondary', group) }/>
+              <div className={classNames('secondary', groupClassName) }/>
             </div>
           </CSSTransition>
         </CSSTransition>

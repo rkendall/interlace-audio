@@ -2,42 +2,71 @@
   "title": "Dance of the Afternoon Shadows",
   "maxSoundCount": 4,
   "maxInQueue": 2,
+  "superGroups": {
+    "mel": {
+      "groups": [
+        "str",
+        "str2",
+        "win",
+        "bra"
+      ],
+      "maxActive": 2
+    },
+    "acc": {
+      "groups": [
+        "pia",
+        "vib"
+      ],
+      "maxActive": 1
+    }
+  },
+  "lengths": {
+    "pia": 3000,
+    "vib": 2000,
+    "win": 2000,
+    "bra": 2000,
+    "str2": 2000
+  },
   "groups": {
     "str": {
       "instruments": {
         "high": [
+          "Violin 3",
+          "Violin 11",
+          "Violin 14",
+          "Violin 15",
+          "Violin 16"
+        ],
+        "medium": [
           "Violin 1",
           "Violin 2",
-          "Violin 3",
           "Violin 4",
           "Violin 5",
           "Violin 6",
-          "Violin 11",
-          "Violin 12",
           "Violin 13",
-          "Violin 14",
-          "Violin 15",
-          "Violin 16",
           "Violin 17"
         ],
-        "medium": [],
-        "low": []
+        "low": [
+          "Violin 12"
+        ]
       },
       "maxActive": 1
     },
     "str2": {
       "instruments": {
         "high": [
-          "Viola 1",
-          "Viola 2",
-          "Violin 5",
-          "Violin 7",
-          "Violin 8",
           "Violin 9",
           "Violin 10"
         ],
-        "medium": [],
-        "low": []
+        "medium": [
+          "Violin 5",
+          "Violin 7",
+          "Violin 8"
+        ],
+        "low": [
+          "Viola 1",
+          "Viola 2"
+        ]
       },
       "maxActive": 1,
       "length": 2000
@@ -61,13 +90,14 @@
     "win": {
       "instruments": {
         "high": [
+          "Oboe 1"
+        ],
+        "medium": [
           "Clarinet 1",
           "Flute 1",
           "Flute 2",
-          "Flute 3",
-          "Oboe 1"
+          "Flute 3"
         ],
-        "medium": [],
         "low": []
       },
       "maxActive": 2,
@@ -76,13 +106,15 @@
     "pia": {
       "instruments": {
         "high": [
+        ],
+        "medium": [
           "Piano 1",
-          "Piano 2",
+          "Piano 2"
+        ],
+        "low": [
           "Piano 3",
           "Piano 4"
-        ],
-        "medium": [],
-        "low": []
+        ]
       },
       "maxActive": 1,
       "length": 3000
@@ -90,11 +122,12 @@
     "tuned": {
       "instruments": {
         "high": [
-          "Harp 1",
-          "Harp 2",
           "Marimba 1"
         ],
-        "medium": [],
+        "medium": [
+          "Harp 1",
+          "Harp 2"
+        ],
         "low": []
       },
       "maxActive": 2
@@ -103,11 +136,12 @@
       "instruments": {
         "high": [
           "Vibes 1",
-          "Vibes 2",
+          "Vibes 2"
+        ],
+        "medium": [
           "Vibes 3",
           "Vibes 4"
         ],
-        "medium": [],
         "low": []
       },
       "maxActive": 1,
@@ -116,13 +150,15 @@
     "bra": {
       "instruments": {
         "high": [
-          "Horn 1",
-          "Trombone 1",
-          "Trumpet 1",
           "Trumpet 2"
         ],
-        "medium": [],
-        "low": []
+        "medium": [
+          "Trumpet 1",
+          "Horn 1"
+        ],
+        "low": [
+          "Trombone 1"
+        ]
       },
       "maxActive": 2,
       "length": 2000
@@ -130,6 +166,9 @@
     "bas": {
       "instruments": {
         "high": [
+        ],
+        "medium": [],
+        "low": [
           "Cello 1",
           "Cello 2",
           "Cello 3",
@@ -137,342 +176,9 @@
           "String Bass 1",
           "String Bass 2",
           "String Bass 3"
-        ],
-        "medium": [],
-        "low": []
+        ]
       },
       "maxActive": 1
     }
-  },
-  "groupLimits": {
-    "pia": 1,
-    "vib": 1,
-    "tuned": 2,
-    "mel": 2,
-    "acc": 1,
-    "str": 1,
-    "str2": 1,
-    "win": 2,
-    "bra": 2,
-    "bas": 1,
-    "per": 2
-  },
-  "superGroups": {
-    "mel": [
-      "str",
-      "str2",
-      "win",
-      "bra"
-    ],
-    "acc": [
-      "pia",
-      "vib"
-    ]
-  },
-  "lengths": {
-    "pia": 3000,
-    "vib": 2000,
-    "win": 2000,
-    "bra": 2000,
-    "str2": 2000
-  },
-  "endOffset": 3000,
-  "audioItems": [
-    [
-      "Violin 1",
-      "str"
-    ],
-    [
-      "Violin 10",
-      "str2"
-    ],
-    [
-      "Violin 2",
-      "str"
-    ],
-    [
-      "Temple Blocks 1",
-      "per"
-    ],
-    [
-      "Flute 1",
-      "win"
-    ],
-    [
-      "Piano 2",
-      "pia"
-    ],
-    [
-      "Violin 3",
-      "str"
-    ],
-    [
-      "Oboe 1",
-      "win"
-    ],
-    [
-      "Violin 11",
-      "str"
-    ],
-    [
-      "Piano 1",
-      "pia"
-    ],
-    [
-      "Flute 2",
-      "win"
-    ],
-    [
-      "Violin 4",
-      "str"
-    ],
-    [
-      "Violin 14",
-      "str"
-    ],
-    [
-      "Oboe 1",
-      "win"
-    ],
-    [
-      "Violin 5",
-      "str2"
-    ],
-    [
-      "Violin 6",
-      "str"
-    ],
-    [
-      "Cymbals 1",
-      "per"
-    ],
-    [
-      "Marimba 1",
-      "tuned"
-    ],
-    [
-      "Clarinet 1",
-      "win"
-    ],
-    [
-      "Violin 7",
-      "str2"
-    ],
-    [
-      "Violin 12",
-      "str"
-    ],
-    [
-      "Taiko Drums 1",
-      "per"
-    ],
-    [
-      "Vibes 3",
-      "vib"
-    ],
-    [
-      "Vibes 1",
-      "vib"
-    ],
-    [
-      "Violin 8",
-      "str2"
-    ],
-    [
-      "Piano 4",
-      "pia"
-    ],
-    [
-      "Tom Toms 3",
-      "per"
-    ],
-    [
-      "Violin 15",
-      "str"
-    ],
-    [
-      "Violin 5",
-      "str2"
-    ],
-    [
-      "Vibes 2",
-      "vib"
-    ],
-    [
-      "Trumpet 1",
-      "bra"
-    ],
-    [
-      "Violin 16",
-      "str"
-    ],
-    [
-      "Piano 3",
-      "pia"
-    ],
-    [
-      "Violin 9",
-      "str2"
-    ],
-    [
-      "Violin 10",
-      "str2"
-    ],
-    [
-      "Tom Toms 2",
-      "per"
-    ],
-    [
-      "Flute 3",
-      "win"
-    ],
-    [
-      "Violin 2",
-      "str"
-    ],
-    [
-      "Harp 1",
-      "tuned"
-    ],
-    [
-      "Piano 2",
-      "pia"
-    ],
-    [
-      "Violin 3",
-      "str"
-    ],
-    [
-      "Piano 1",
-      "pia"
-    ],
-    [
-      "Violin 4",
-      "str"
-    ],
-    [
-      "Xylophone 1",
-      "per"
-    ],
-    [
-      "Horn 1",
-      "bra"
-    ],
-    [
-      "Violin 5",
-      "str"
-    ],
-    [
-      "Harp 2",
-      "tuned"
-    ],
-    [
-      "Trumpet 2",
-      "bra"
-    ],
-    [
-      "Violin 6",
-      "str"
-    ],
-    [
-      "Violin 7",
-      "str2"
-    ],
-    [
-      "Viola 1",
-      "str2"
-    ],
-    [
-      "Violin 13",
-      "str"
-    ],
-    [
-      "Vibes 4",
-      "vib"
-    ],
-    [
-      "Trombone 1",
-      "bra"
-    ],
-    [
-      "Vibes 1",
-      "vib"
-    ],
-    [
-      "Violin 8",
-      "str2"
-    ],
-    [
-      "Viola 1",
-      "str2"
-    ],
-    [
-      "Piano 4",
-      "pia"
-    ],
-    [
-      "Viola 2",
-      "str2"
-    ],
-    [
-      "Tympani 1",
-      "per"
-    ],
-    [
-      "Violin 11",
-      "str"
-    ],
-    [
-      "Violin 5",
-      "str"
-    ],
-    [
-      "Vibes 2",
-      "vib"
-    ],
-    [
-      "Viola 2",
-      "str2"
-    ],
-    [
-      "Cello 1",
-      "bas"
-    ],
-    [
-      "Violin 17",
-      "str"
-    ],
-    [
-      "String Bass 1",
-      "bas"
-    ],
-    [
-      "Piano 3",
-      "pia"
-    ],
-    [
-      "Violin 9",
-      "str2"
-    ],
-    [
-      "String Bass 2",
-      "bas"
-    ],
-    [
-      "String Bass 3",
-      "bas"
-    ],
-    [
-      "Cello 2",
-      "bas"
-    ],
-    [
-      "Double Bass 1",
-      "bas"
-    ],
-    [
-      "Cello 3",
-      "bas"
-    ]
-  ]
+  }
 }

@@ -7,16 +7,22 @@ import SidebarContent from './components/Sidebar';
 import MusicPane from './components/MusicPane'
 import Message from './components/Message'
 import './App.css'
-import morning from './compositionConfigs/morning.json'
+import aubade from './compositionConfigs/morning.json'
+import afterCoffee from './compositionConfigs/morning2.json'
 import noon from './compositionConfigs/noon.json'
 import afternoon from './compositionConfigs/afternoon.json'
 import night from './compositionConfigs/night.json'
+import afterMidnight from './compositionConfigs/afterMidnight.json'
+import eveningEmbers from './compositionConfigs/impromptu4.json'
 
 const compositionData = [
-  { morning },
-  { noon },
-  { afternoon },
-  { night },
+  {aubade},
+  {afterCoffee},
+  {noon},
+  {afternoon},
+  {eveningEmbers},
+  {night},
+  {afterMidnight},
 ]
 let rawCompositionTemp = {}
 compositionData.forEach(async data => {
@@ -50,7 +56,7 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    const { stopLooping } = this.state
+    const {stopLooping} = this.state
     if (stopLooping) {
       this.resetStopLooping()
     }
@@ -63,7 +69,7 @@ class App extends Component {
       alert('This site currently supports only Chrome and Firefox and does not support mobile devices.')
     }
 
-    const { currentCompositionName, squareCount, fadeSquares, sidebarOpen, stopLooping } = this.state
+    const {currentCompositionName, squareCount, fadeSquares, sidebarOpen, stopLooping} = this.state
 
     return (
       <div className="main">
@@ -84,7 +90,8 @@ class App extends Component {
         >
           <div className="content">
             <div ref={this.musicPaneRef} className="musicPaneContainer">
-              <ReactResizeDetector handleWidth handleHeight onResize={this.getSquareCount} refreshMode="debounce" refreshRate={500}>
+              <ReactResizeDetector handleWidth handleHeight onResize={this.getSquareCount} refreshMode="debounce"
+                                   refreshRate={500}>
                 <Message/>
                 <MusicPane
                   currentCompositionName={currentCompositionName}
@@ -135,20 +142,26 @@ class App extends Component {
 
   selectCompositionByTimeOfDay = () => {
     const hour = moment().hour()
-    let timeOfDay = null
-    if (hour > 17 || hour < 5) {
-      timeOfDay = 'night'
-    } else if (hour > 12) {
-      timeOfDay = 'afternoon'
-    } else if (hour === 12) {
-      timeOfDay = 'noon'
-    } else {
-      timeOfDay = 'morning'
+    const currentHour = hour === 24 ? 0 : hour
+    const timeSlots =
+    {
+      audabe: 5,
+      afterCoffe: 9,
+      noon: 12,
+      afternoon: 13,
+      eveningEmbers: 18,
+      night: 21,
+      afterMidnight: 0
     }
-    return timeOfDay
+    return Object.keys(timeSlots).find((name, ind, arr) => {
+      const compTime = timeSlots[name]
+      const nextTimeKey = arr[ind + 1] || arr[0]
+      const nextCompTime = timeSlots[nextTimeKey]
+      return compTime >= currentHour && compTime < nextCompTime
+    })
   }
 
-  getSquareCount= (width, height) => {
+  getSquareCount = (width, height) => {
     const rowSize = Math.floor(width / 80)
     const columnSize = Math.floor(height / 80)
     const newSquareCount = rowSize * columnSize

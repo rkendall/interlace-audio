@@ -1,335 +1,23 @@
 {
   "title": "Nocturne",
   "maxSoundCount": 10,
-  "groupLimits": {
-    "per": 6,
-    "pia": 3,
-    "win": 3,
-    "bra": 3,
-    "str": 3,
-    "bas": 3
-  },
-  "audioItems": [
-    [
-      "Flute 4",
-      "win"
-    ],
-    [
-      "Flute 1",
-      "win"
-    ],
-    [
-      "Tubular Bells 2",
-      "per"
-    ],
-    [
-      "Glockenspiel 2",
-      "per"
-    ],
-    [
-      "Flute 5",
-      "win"
-    ],
-    [
-      "Celesta 1",
-      "per"
-    ],
-    [
-      "Tubular Bells 3",
-      "per"
-    ],
-    [
-      "Marimba 1",
-      "per"
-    ],
-    [
-      "Violin 1",
-      "str"
-    ],
-    [
-      "Tubular Bells 1",
-      "per"
-    ],
-    [
-      "Xylophone 1",
-      "per"
-    ],
-    [
-      "Violin 4",
-      "str"
-    ],
-    [
-      "Violin 5",
-      "str"
-    ],
-    [
-      "Violin 3",
-      "str"
-    ],
-    [
-      "Violin 5",
-      "str"
-    ],
-    [
-      "Violin 6",
-      "str"
-    ],
-    [
-      "Flute 3",
-      "win"
-    ],
-    [
-      "Flute 4",
-      "win"
-    ],
-    [
-      "Violin 6",
-      "str"
-    ],
-    [
-      "Flute 6",
-      "win"
-    ],
-    [
-      "Tubular Bells 1",
-      "per"
-    ],
-    [
-      "Taiko Drums 1",
-      "per"
-    ],
-    [
-      "Tubular Bells 2",
-      "per"
-    ],
-    [
-      "Celesta 1",
-      "per"
-    ],
-    [
-      "Temple Blocks 2",
-      "per"
-    ],
-    [
-      "Glockenspiel 1",
-      "per"
-    ],
-    [
-      "Oboe 1",
-      "win"
-    ],
-    [
-      "Violin 9",
-      "str"
-    ],
-    [
-      "Violin 5",
-      "str"
-    ],
-    [
-      "Violin 4",
-      "str"
-    ],
-    [
-      "Violin 3",
-      "str"
-    ],
-    [
-      "Flute 2",
-      "win"
-    ],
-    [
-      "Oboe 1",
-      "win"
-    ],
-    [
-      "Flute 3",
-      "win"
-    ],
-    [
-      "Horns 2",
-      "bra"
-    ],
-    [
-      "Clarinet 1",
-      "win"
-    ],
-    [
-      "Temple Blocks 1",
-      "per"
-    ],
-    [
-      "Harp 1",
-      "pia"
-    ],
-    [
-      "Piano 2",
-      "pia"
-    ],
-    [
-      "Xylophone 3",
-      "per"
-    ],
-    [
-      "Harp 1",
-      "pia"
-    ],
-    [
-      "Violin 1",
-      "str"
-    ],
-    [
-      "Violin 7",
-      "str"
-    ],
-    [
-      "Violin 2",
-      "str"
-    ],
-    [
-      "Flute 3",
-      "win"
-    ],
-    [
-      "Horns 1",
-      "bra"
-    ],
-    [
-      "Flute 2",
-      "win"
-    ],
-    [
-      "Violin 2",
-      "str"
-    ],
-    [
-      "Violin 1",
-      "str"
-    ],
-    [
-      "Clarinet 2",
-      "win"
-    ],
-    [
-      "Marimba 2",
-      "per"
-    ],
-    [
-      "Vibes 2",
-      "per"
-    ],
-    [
-      "Piano 2",
-      "pia"
-    ],
-    [
-      "Vibes 1",
-      "per"
-    ],
-    [
-      "Violin 8",
-      "str"
-    ],
-    [
-      "Violin 1",
-      "str"
-    ],
-    [
-      "Violin 9",
-      "str"
-    ],
-    [
-      "Bassoon 1",
-      "bas"
-    ],
-    [
-      "Piano 1",
-      "pia"
-    ],
-    [
-      "Horns 2",
-      "bra"
-    ],
-    [
-      "Bassoon 2",
-      "bas"
-    ],
-    [
-      "Vibes 1",
-      "per"
-    ],
-    [
-      "Taiko Drums 2",
-      "per"
-    ],
-    [
-      "Log Drums 1",
-      "per"
-    ],
-    [
-      "Cello 1",
-      "bas"
-    ],
-    [
-      "Cello 3",
-      "bas"
-    ],
-    [
-      "Cello 4",
-      "bas"
-    ],
-    [
-      "Piano 1",
-      "pia"
-    ],
-    [
-      "Cello 1",
-      "bas"
-    ],
-    [
-      "String Bass 1",
-      "bas"
-    ],
-    [
-      "Cello 3",
-      "bas"
-    ],
-    [
-      "Violin 7",
-      "str"
-    ],
-    [
-      "Violin 8",
-      "str"
-    ],
-    [
-      "String Bass 1",
-      "bas"
-    ],
-    [
-      "Cello 2",
-      "bas"
-    ],
-    [
-      "String Bass 1",
-      "bas"
-    ]
-  ],
   "groups": {
     "win": {
       "instruments": {
         "high": [
-          "Clarinet 1",
           "Clarinet 2",
           "Flute 1",
-          "Flute 2",
-          "Flute 3",
           "Flute 4",
-          "Flute 5",
-          "Flute 6",
-          "Oboe 1"
+          "Flute 6"
+
         ],
-        "medium": [],
+        "medium": [
+          "Clarinet 1",
+          "Flute 3",
+          "Oboe 1",
+          "Flute 2",
+          "Flute 5"
+        ],
         "low": []
       },
       "maxActive": 3
@@ -337,54 +25,58 @@
     "per": {
       "instruments": {
         "high": [
+          "Marimba 2",
+          "Xylophone 1",
+          "Glockenspiel 2",
           "Celesta 1",
           "Glockenspiel 1",
-          "Glockenspiel 2",
-          "Log Drums 1",
           "Marimba 1",
-          "Marimba 2",
-          "Taiko Drums 1",
-          "Taiko Drums 2",
-          "Temple Blocks 1",
-          "Temple Blocks 2",
-          "Tubular Bells 1",
-          "Tubular Bells 2",
-          "Tubular Bells 3",
-          "Vibes 1",
-          "Vibes 2",
-          "Xylophone 1",
-          "Xylophone 3"
+          "Temple Blocks 2"
         ],
-        "medium": [],
-        "low": []
+        "medium": [
+          "Vibes 2",
+          "Tubular Bells 2",
+          "Taiko Drums 1",
+          "Tubular Bells 1",
+          "Xylophone 3",
+          "Temple Blocks 1",
+          "Vibes 1",
+          "Tubular Bells 3"
+        ],
+        "low": [
+          "Taiko Drums 2",
+          "Log Drums 1"
+        ]
       },
       "maxActive": 6
     },
     "str": {
       "instruments": {
         "high": [
-          "Violin 1",
-          "Violin 2",
-          "Violin 3",
-          "Violin 4",
           "Violin 5",
-          "Violin 6",
-          "Violin 7",
-          "Violin 8",
-          "Violin 9"
+          "Violin 4",
+          "Violin 6"
         ],
-        "medium": [],
-        "low": []
+        "medium": [
+          "Violin 3",
+          "Violin 1",
+          "Violin 9",
+          "Violin 7",
+          "Violin 8"
+        ],
+        "low": [
+          "Violin 2"
+        ]
       },
       "maxActive": 3
     },
     "bra": {
       "instruments": {
-        "high": [
+        "high": [],
+        "medium": [
           "Horns 1",
           "Horns 2"
         ],
-        "medium": [],
         "low": []
       },
       "maxActive": 3
@@ -393,17 +85,21 @@
       "instruments": {
         "high": [
           "Harp 1",
-          "Piano 1",
           "Piano 2"
         ],
         "medium": [],
-        "low": []
+        "low": [
+          "Piano 1"
+        ]
       },
       "maxActive": 3
     },
     "bas": {
       "instruments": {
         "high": [
+        ],
+        "medium": [],
+        "low": [
           "Bassoon 1",
           "Bassoon 2",
           "Cello 1",
@@ -411,9 +107,7 @@
           "Cello 3",
           "Cello 4",
           "String Bass 1"
-        ],
-        "medium": [],
-        "low": []
+        ]
       },
       "maxActive": 3
     }
