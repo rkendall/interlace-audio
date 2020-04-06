@@ -1,14 +1,32 @@
 .sidebar {
   width: 240px;
   height: 100%;
-  margin-left: -25px;
-  overflow: hidden;
+  margin-left: -45px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.rightTab {
+  cursor: pointer;
 }
 
 .header {
   position: fixed;
   height: 100%;
-  right: 0;
+  right: 25px;
+}
+
+.ranges {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-around;
+  right: -25px;
+}
+
+.ranges div {
+  transform: rotate(-90deg)
 }
 
 .top {
@@ -22,13 +40,13 @@ h1 {
   font-size: 1.5rem;
 }
 
-h2 {
-  margin: 5px 0 10px 0;
-  font-size: 1.1rem;
+.byline {
+  margin: 5px 0 0 0;
 }
 
-.byline {
-  margin: 0;
+.instructions {
+  font-size: .9rem;
+  margin-bottom: 10px;
 }
 
 .close {
@@ -36,7 +54,6 @@ h2 {
   justify-content: flex-end;
   align-items: center;
   height: 100%;
-  cursor: pointer;
 }
 
 .close svg {
@@ -114,7 +131,6 @@ p:last-of-type {
 }
 
 .description {
-  height: calc(100vh - 520px);
   overflow-x: hidden;
   overflow-y: auto;
 }

@@ -73,9 +73,18 @@
 }
 
 @keyframes glow {
-	0% {transform: scale(1) rotate(0deg) !important; opacity: 0.7;}
-	50% {transform: scale(1.2); opacity: 1;}
-	100% {transform: scale(1); opacity: 0.7;}
+	0% {
+		transform: scale(1) rotate(0deg) !important;
+		opacity: 0.7;
+	}
+	50% {
+		transform: scale(1.2);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 0.7;
+	}
 }
 
 .glow-enter-active {
@@ -94,11 +103,28 @@
 }
 
 @keyframes pulse {
-	0% {opacity: 0.4; transform: scale(0.8);}
-	5% {opacity: 0.4; transform: scale(0.8);}
-	50% {opacity: 0.6; transform: scale(1); animation-timing-function: ease-in-out;}
-	95% {opacity: 0.4; transform: scale(0.8); animation-timing-function: ease-in-out;}
-	100% {opacity: 0.4; transform: scale(0.8);}
+	0% {
+		opacity: 0.4;
+		transform: scale(0.8);
+	}
+	5% {
+		opacity: 0.4;
+		transform: scale(0.8);
+	}
+	50% {
+		opacity: 0.6;
+		transform: scale(1);
+		animation-timing-function: ease-in-out;
+	}
+	95% {
+		opacity: 0.4;
+		transform: scale(0.8);
+		animation-timing-function: ease-in-out;
+	}
+	100% {
+		opacity: 0.4;
+		transform: scale(0.8);
+	}
 }
 
 .disabled {
@@ -117,8 +143,15 @@
 }
 
 @keyframes pulseFade {
-	0% {opacity: 0.4; transform: scale(0.8);}
-	100% {opacity: 0; transform: scale(0.8); animation-timing-function: ease-out;}
+	0% {
+		opacity: 0.4;
+		transform: scale(0.8);
+	}
+	100% {
+		opacity: 0;
+		transform: scale(0.8);
+		animation-timing-function: ease-out;
+	}
 }
 
 .disabled.pulseFade {
@@ -128,9 +161,18 @@
 }
 
 @keyframes spinBorder {
-	0% {transform: scale(1) rotate(0deg); opacity: 0;}
-	50% {transform: scale(2) rotate(180deg); opacity: 0.7;}
-	100% {transform: scale(4) rotate(360deg); opacity: 0;}
+	0% {
+		transform: scale(1) rotate(0deg);
+		opacity: 0;
+	}
+	50% {
+		transform: scale(2) rotate(180deg);
+		opacity: 0.7;
+	}
+	100% {
+		transform: scale(4) rotate(360deg);
+		opacity: 0;
+	}
 }
 
 .secondaryWrapper {
@@ -149,13 +191,23 @@
 }
 
 @keyframes loop {
-	0% {transform: rotate(0deg)}
-	100% {transform: rotate(-360deg)}
+	0% {
+		transform: rotate(0deg)
+	}
+	100% {
+		transform: rotate(-360deg)
+	}
 }
 
 @keyframes loop1 {
-	0% {opacity: 0.7}
-	100% {opacity: 0.7; transform: rotate(0deg); animation-timing-function: ease-in}
+	0% {
+		opacity: 0.7
+	}
+	100% {
+		opacity: 0.7;
+		transform: rotate(0deg);
+		animation-timing-function: ease-in
+	}
 }
 
 .looping-enter-active {
@@ -211,6 +263,10 @@
 
 .pia .disabled.pulse, .vib .disabled.pulse, .tuned .disabled.pulse {
 	animation-delay: 250ms;
+}
+
+.voice {
+	background: linear-gradient(120deg, #d68e76 0%, #860a60 100%);
 }
 
 .str {
@@ -273,4 +329,37 @@
 .text-enter-done {
 	position: absolute;
 	top: -100vh;
+}
+
+.textHint {
+}
+
+@keyframes textHint {
+	0% {
+		opacity: 0;
+	}
+	25% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.textHint {
+	position: absolute;
+	top: 0;
+	margin-top: calc(50% - 6px);
+	font-size: 12px;
+	opacity: 0;
+	text-align: center;
+	user-select: none;
+}
+
+.textHint.fadeIn {
+	animation: textHint 1000ms ease-in;
+	animation-fill-mode: forwards;
 }

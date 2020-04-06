@@ -11,13 +11,29 @@
     }
   },
   "groups": {
+    "voice": {
+      "instruments": {
+        "high": [
+          "Soprano 1",
+          "Soprano 2",
+          "Soprano 3"
+        ],
+        "medium": [
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
     "plucked": {
       "instruments": {
         "high": [
         ],
         "medium": [
           "Harp 1",
-          "Guitar 1"
+          "Harp 2",
+          "Guitar 1",
+          "Guitar 2",
+          "Guitar 3"
         ],
         "low": []
       },
@@ -43,6 +59,7 @@
       "instruments": {
         "high": [
           "Flute 1",
+          "Flute 2",
           "Flute 3",
           "Flute 4",
           "Flute 5"
@@ -51,7 +68,7 @@
         ],
         "low": []
       },
-      "maxActive": 2
+      "maxActive": 1
     },
     "win2": {
       "instruments": {
@@ -90,7 +107,8 @@
         ],
         "low": [
           "Trombone 1",
-          "Trombone 2"
+          "Trombone 2",
+          "Tuba 1"
         ]
       },
       "maxActive": 1
@@ -98,6 +116,8 @@
     "per": {
       "instruments": {
         "high": [
+          "Glockenspiel 1",
+          "Glockenspiel 2"
         ],
         "medium": [
           "Tambourine 1",
@@ -106,7 +126,7 @@
         "low": [
         ]
       },
-      "maxActive": 2
+      "maxActive": 3
     }
   }
 }

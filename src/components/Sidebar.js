@@ -3,7 +3,7 @@ import {SideNav, Nav} from 'react-sidenav'
 import classNames from 'classnames';
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import ChevronRight from '@material-ui/icons/ChevronRight'
-import { AwesomeButton as Button } from 'react-awesome-button'
+import {AwesomeButton as Button} from 'react-awesome-button'
 import 'react-awesome-button/dist/styles.css'
 import './Sidebar.css'
 
@@ -15,33 +15,45 @@ const menuTheme = {
 export default ({onChange, onFadeSelected, onStopLooping, toggleSidebar, selectedValue, compositionTitles, sidebarOpen}) => {
   return (
     <Fragment>
-      <div className="header">
-        <div className="close" onClick={toggleSidebar}>{sidebarOpen ? <ChevronLeft/> : <ChevronRight/>}</div>
+      <div className="rightTab" onClick={toggleSidebar}>
+        <div className="ranges">
+          <div>High</div>
+          <div>Mid-Range</div>
+          <div>Low</div>
+        </div>
+        <div className="header">
+          <div className="close">{sidebarOpen ? <ChevronLeft/> : <ChevronRight/>}</div>
+        </div>
       </div>
       <div className={classNames('sidebar', {closed: !sidebarOpen})}>
         <div className="top">
           <div>
             <div className="box">
-              <h1>Four Impromptus</h1>
-              <h2>Interactive Music</h2>
-              <div className="byline">By Robert Kendall</div>
+              <h1>Impromptus</h1>
+              <div className="byline">
+                <div>Interactive Music</div>
+                <div>By Robert Kendall</div>
+              </div>
             </div>
             <div className="box menu">
-              <div className="prompt">Select Music</div>
+              <div className="prompt">Select an Impromptu</div>
               <SideNav
                 selectedPath={selectedValue}
                 onItemSelection={onChange}
                 theme={menuTheme}
               >
                 {compositionTitles.map(({name, title}, ind) => (
-                  <Nav className="menuOption" id={name} key={name}><div className="optionText">{`${ind + 1}. ${title}`}</div></Nav>
+                  <Nav className="menuOption" id={name} key={name}>
+                    <div className="optionText">{`${ind + 1}. ${title}`}</div>
+                  </Nav>
                 ))}
               </SideNav>
             </div>
             <div className="box controls">
-                <Button
-                  action={onStopLooping}
-                >Stop Looping
+              <div className="instructions">Click and hold on a square to start/stop looping</div>
+              <Button
+                action={onStopLooping}
+              >Stop All Looping
               </Button>
               <div className="selectFade">
                 <label>
@@ -50,17 +62,14 @@ export default ({onChange, onFadeSelected, onStopLooping, toggleSidebar, selecte
                     type="checkbox"
                     onChange={onFadeSelected}
                   />
-                  <span className="label">Evaporate</span>
+                  <span className="label">Magic Vanishing Act</span>
                 </label>
               </div>
             </div>
             <div className="box description">
-                <p>Click squares to play. Colors denote types of instruments.</p>
-                <p>To play multiple instruments, hold
-                down the mouse button and drag the pointer.</p>
-                <p>Glowing instruments are temporarily disabled (for musical reasons).</p>
-                <p>To loop an instrument, hold down the mouse button.
-                  Click and hold again to stop looping.</p>
+              <p>To play, click colored squares or hold
+                down the mouse button and drag.</p>
+              <p>Glowing squares are temporarily disabled for musical reasons.</p>
             </div>
           </div>
         </div>

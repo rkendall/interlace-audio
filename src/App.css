@@ -8,10 +8,6 @@ body {
 	height: 100vh;
 }
 
-.drawer {
-	max-width: 250px;
-}
-
 .content {
 	display: flex;
 	flex-direction: column;
@@ -26,14 +22,14 @@ body {
 
 .reactSidebar {
 	width: 235px;
-	left: 25px !important;
+	left: 45px !important;
 	box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 4px !important;
 	overflow: visible !important;
 	background: white;
 }
 
 .sidebarContent {
-	margin-left: 25px;
+	margin-left: 45px;
 }
 
 .closed {

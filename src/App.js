@@ -50,7 +50,7 @@ class App extends Component {
       currentCompositionName: this.selectCompositionByTimeOfDay(),
       sidebarOpen: true,
       squareCount: 0,
-      fadeSquares: false,
+      vanishSquares: false,
       stopLooping: false,
     }
   }
@@ -69,7 +69,7 @@ class App extends Component {
       alert('This site currently supports only Chrome and Firefox and does not support mobile devices.')
     }
 
-    const {currentCompositionName, squareCount, fadeSquares, sidebarOpen, stopLooping} = this.state
+    const {currentCompositionName, squareCount, vanishSquares, sidebarOpen, stopLooping} = this.state
 
     return (
       <div className="main">
@@ -97,7 +97,7 @@ class App extends Component {
                   currentCompositionName={currentCompositionName}
                   squareCount={squareCount}
                   rawCompositions={rawCompositions}
-                  fadeSquares={fadeSquares}
+                  vanishSquares={vanishSquares}
                   stopLooping={stopLooping}
                 />
               </ReactResizeDetector>
@@ -124,7 +124,7 @@ class App extends Component {
 
   onFadeSelected = () => {
     this.setState({
-      fadeSquares: !this.state.fadeSquares,
+      vanishSquares: !this.state.vanishSquares,
     })
   }
 
@@ -142,23 +142,24 @@ class App extends Component {
 
   selectCompositionByTimeOfDay = () => {
     const hour = moment().hour()
-    const currentHour = hour === 24 ? 0 : hour
     const timeSlots =
     {
-      audabe: 5,
-      afterCoffe: 9,
+      audade: 5,
+      afterCoffee: 9,
       noon: 12,
       afternoon: 13,
       eveningEmbers: 18,
       night: 21,
       afterMidnight: 0
     }
-    return Object.keys(timeSlots).find((name, ind, arr) => {
+    const compositionName = Object.keys(timeSlots).find((name, ind, arr) => {
       const compTime = timeSlots[name]
       const nextTimeKey = arr[ind + 1] || arr[0]
-      const nextCompTime = timeSlots[nextTimeKey]
-      return compTime >= currentHour && compTime < nextCompTime
-    })
+      const nextCompTime = ind === arr.length - 2 ? 24 : timeSlots[nextTimeKey]
+      return compTime <= hour && hour < nextCompTime
+    }) || Object.keys(timeSlots)[0]
+    console.log('composition name', compositionName)
+    return compositionName
   }
 
   getSquareCount = (width, height) => {
