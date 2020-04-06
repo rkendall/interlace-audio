@@ -21,14 +21,16 @@ body {
 }
 
 .reactSidebar {
-	width: 235px;
+	width: 240px;
 	left: 45px !important;
 	box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 4px !important;
 	overflow: visible !important;
 	background: white;
+	z-index: 100 !important;
 }
 
 .sidebarContent {
+	left: 0 !important;
 	margin-left: 45px;
 }
 
