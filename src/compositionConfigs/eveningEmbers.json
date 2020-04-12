@@ -42,14 +42,14 @@
     "str": {
       "instruments": {
         "high": [
-          "Violin 4",
-          "Violin 5"
+          "Violin 1",
+          "Violin 2"
         ],
         "medium": [
-          "Violin 1",
-          "Violin 2",
-          "Violin 3",
-          "Violin 6"
+          "Violin 10",
+          "Violin 11",
+          "Violin 12",
+          "Violin 13"
         ],
         "low": []
       },

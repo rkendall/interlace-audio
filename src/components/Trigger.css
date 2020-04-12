@@ -233,10 +233,6 @@
 	opacity: 0;
 }
 
-.looping-exit-done {
-	opacity: 0;
-}
-
 .secondary {
 	position: absolute;
 	width: 80px;
@@ -301,7 +297,7 @@
 	background: linear-gradient(120deg, #d7f0f2 0%, #318266 100%);
 }
 
-.rhythm {
+.rhythm, .glass {
 	background: linear-gradient(120deg, #D1F2CB 0%, #5F8223 100%);
 }
 
@@ -331,10 +327,7 @@
 	top: -100vh;
 }
 
-.textHint {
-}
-
-@keyframes textHint {
+@keyframes fadeTextIn {
 	0% {
 		opacity: 0;
 	}
@@ -349,17 +342,74 @@
 	}
 }
 
-.textHint {
-	position: absolute;
-	top: 0;
-	margin-top: calc(50% - 6px);
-	font-size: 12px;
-	opacity: 0;
-	text-align: center;
-	user-select: none;
+@keyframes fadeTextOut {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
 }
 
-.textHint.fadeIn {
-	animation: textHint 1000ms ease-in;
+.textHintContainer, .textHint {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+}
+
+.textHintContainer {
+	opacity: 1;
+}
+
+.textHintContainer-enter,
+.textHintContainer-enter-active,
+.textHintContainer-enter-done {
+	animation: fadeTextOut 500ms ease-in;
 	animation-fill-mode: forwards;
 }
+
+.textHintContainer-exit, .textHintContainer-exit-active {
+	opacity: 1;
+}
+
+.textHintContainer-exit-done {
+	opacity: 1;
+	animation: none;
+}
+
+.textHint {
+	margin-top: calc(50% - 6px);
+	font-size: 12px;
+	text-align: center;
+	user-select: none;
+	opacity: 0;
+}
+
+.textHint-enter {
+	animation: fadeTextIn 1000ms ease-in;
+	animation-fill-mode: forwards;
+	opacity: 0;
+}
+
+.textHint-enter-active {
+	animation: fadeTextIn 1000ms ease-in;
+	animation-fill-mode: forwards;
+}
+
+.textHint-enter-done {
+	animation: fadeTextIn 1000ms ease-in;
+	animation-fill-mode: forwards;
+}
+
+.textHint-exit, .textHint-exit-active {
+	animation: fadeTextIn 1000ms ease-in;
+	animation-fill-mode: forwards;
+	animation-play-state: paused;
+}
+
+.textHint-exit-done {
+	animation: none;
+	opacity: 0;
+}
+

@@ -1,7 +1,7 @@
 {
   "title": "Dance of the Afternoon Shadows",
-  "maxSoundCount": 4,
-  "maxInQueue": 2,
+  "maxSoundCount": 6,
+  "maxBurstCount": 4,
   "superGroups": {
     "mel": {
       "groups": [
@@ -75,15 +75,16 @@
       "instruments": {
         "high": [
           "Cymbals 1",
-          "Taiko Drums 1",
           "Temple Blocks 1",
-          "Tom Toms 2",
-          "Tom Toms 3",
-          "Tympani 1",
           "Xylophone 1"
         ],
         "medium": [],
-        "low": []
+        "low": [
+          "Taiko Drums 1",
+          "Tom Toms 2",
+          "Tom Toms 3",
+          "Tympani 1"
+        ]
       },
       "maxActive": 2
     },

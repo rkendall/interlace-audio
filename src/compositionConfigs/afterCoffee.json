@@ -1,7 +1,7 @@
 {
   "title": "After Coffee",
-  "maxSoundCount": 5,
-  "maxInQueue": 4,
+  "maxSoundCount": 7,
+  "maxBurstCount": 4,
   "groups": {
     "str": {
       "instruments": {
@@ -68,7 +68,7 @@
       },
       "maxActive": 2
     },
-    "per": {
+    "per1": {
       "instruments": {
         "high": [
           "Xylophone 1",
@@ -81,12 +81,34 @@
           "Bells 2"
         ],
         "low": [
-          "Tympani 1",
-          "Tympani 2",
-          "Gong 1"
         ]
       },
       "maxActive": 3
+    },
+    "per2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Tympani 1",
+          "Tympani 2"
+        ]
+      },
+      "maxActive": 1
+    },
+    "per3": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Gong 1"
+        ]
+      },
+      "maxActive": 1
     }
   }
 }

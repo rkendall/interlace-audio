@@ -7,21 +7,25 @@ import SidebarContent from './components/Sidebar';
 import MusicPane from './components/MusicPane'
 import Message from './components/Message'
 import './App.css'
-import aubade from './compositionConfigs/morning.json'
-import afterCoffee from './compositionConfigs/morning2.json'
+import aubade from './compositionConfigs/audbade.json'
+import afterCoffee from './compositionConfigs/afterCoffee.json'
 import noon from './compositionConfigs/noon.json'
 import afternoon from './compositionConfigs/afternoon.json'
 import night from './compositionConfigs/night.json'
 import afterMidnight from './compositionConfigs/afterMidnight.json'
-import eveningEmbers from './compositionConfigs/impromptu4.json'
+import eveningEmbers from './compositionConfigs/eveningEmbers.json'
+import glassDreams from './compositionConfigs/glassDreams.json'
+import midnightBlues from './compositionConfigs/midnightBlues.json';
 
 const compositionData = [
+  {glassDreams},
   {aubade},
   {afterCoffee},
   {noon},
   {afternoon},
   {eveningEmbers},
   {night},
+  {midnightBlues},
   {afterMidnight},
 ]
 let rawCompositionTemp = {}
@@ -144,13 +148,15 @@ class App extends Component {
     const hour = moment().hour()
     const timeSlots =
     {
-      audade: 5,
+      afterMidnight: 1,
+      glassDreams: 2,
+      aubade: 5,
       afterCoffee: 9,
       noon: 12,
       afternoon: 13,
       eveningEmbers: 18,
       night: 21,
-      afterMidnight: 0
+      midnightBlues: 0,
     }
     const compositionName = Object.keys(timeSlots).find((name, ind, arr) => {
       const compTime = timeSlots[name]
@@ -158,7 +164,6 @@ class App extends Component {
       const nextCompTime = ind === arr.length - 2 ? 24 : timeSlots[nextTimeKey]
       return compTime <= hour && hour < nextCompTime
     }) || Object.keys(timeSlots)[0]
-    console.log('composition name', compositionName)
     return compositionName
   }
 

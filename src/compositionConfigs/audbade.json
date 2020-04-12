@@ -1,7 +1,7 @@
 {
   "title": "Aubade",
-  "maxSoundCount": 5,
-  "maxInQueue": 4,
+  "maxSoundCount": 6,
+  "maxBurstCount": 5,
   "groups": {
     "pia": {
       "instruments": {

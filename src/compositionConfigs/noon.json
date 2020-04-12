@@ -1,7 +1,7 @@
 {
   "title": "Middaydream",
-  "maxSoundCount": 10,
-  "maxInQueue": 4,
+  "maxSoundCount": 8,
+  "maxBurstCount": 4,
   "lengths": {
     "mel": 3000,
     "mel2": 3000
@@ -163,7 +163,7 @@
           "Cello 3"
         ]
       },
-      "maxActive": 3
+      "maxActive": 2
     }
   }
 }

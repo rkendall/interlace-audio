@@ -10,7 +10,6 @@ export default class Trigger extends Component {
     this.state = {
       isDisplayed: false,
       isTextAnimating: false,
-      isSquareActive: false,
       isSquareHovered: false,
       isSquareTrigger: false,
       isSecondaryActive: false,
@@ -20,38 +19,35 @@ export default class Trigger extends Component {
       isDisabledAnimating: false,
       isLoopingAnimationActive: false,
       stopLooping: false,
+      suppressTextHint: false,
     }
     this.disabledElement = createRef()
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const {play, disabled, fadeSquares, fadeAllSquares, isLooping} = this.props
-    return play !== nextProps.play ||
+    const {isPlaying, disabled, fadeSquares, fadeAllSquares, isLooping} = this.props
+    return isPlaying !== nextProps.isPlaying ||
       disabled !== nextProps.disabled ||
       fadeSquares !== nextProps.fadeSquares ||
       fadeAllSquares !== nextProps.fadeAllSquares ||
-      isLooping !== nextProps.isLooping || !shallowEqual(this.state, nextState)
-
+      isLooping !== nextProps.isLooping ||
+      !shallowEqual(this.state, nextState)
   }
 
   componentDidUpdate(prevProps, prevState) {
     const {fadeSquares, disabled, fadeAllSquares} = this.props
-    const {isSquareActive, isDisabled, isDisplayed} = this.state
+    const {isDisabled, isDisplayed} = this.state
     const newState = {}
-    if (isSquareActive && !isDisplayed) {
-      newState.isDisplayed = true
-    }
     if (isDisplayed && disabled !== isDisabled) {
       newState.isDisabled = disabled
     }
     if (Object.keys(newState).length) {
       this.setState(newState)
     }
-    if ((fadeSquares || fadeAllSquares) && isSquareActive) {
+    if ((fadeSquares || fadeAllSquares) && isDisplayed) {
       clearTimeout(this.fadeTimer)
       const timeout = 1000
       const newState = {
-        isSquareActive: false,
         isSecondaryActive: false,
         isDisplayed: false,
       }
@@ -72,14 +68,13 @@ export default class Trigger extends Component {
   }
 
   render() {
-    const {play, audioIndex, audioName, group, isLooping, isPlaying} = this.props
-    const {isDisabled, isDisabledAnimating, isSquareActive, isSecondaryActive, isSquareHovered, isSquareTriggered, isGlowActive, isTextAnimating, isLoopingAnimationActive, stopLooping, isDisplayed, hideTextHintIfPlaying} = this.state
+    const {audioIndex, audioName, group, isLooping, isPlaying} = this.props
+    const {isDisabled, isDisabledAnimating, isSecondaryActive, isSquareHovered, isSquareTriggered, isGlowActive, isTextAnimating, isLoopingAnimationActive, stopLooping, isDisplayed, suppressTextHint} = this.state
     const doLooping = isLooping && !stopLooping
     const active = (isPlaying || isTextAnimating) && !isLoopingAnimationActive
     const displayName = audioName.replace(/ \d+\w?$/, '')
     const activateSecondary = isSecondaryActive && !isLoopingAnimationActive
     const groupClassName = group.replace(/\d+$/, '')
-    const hideTextHint = isPlaying && hideTextHintIfPlaying
 
     return (
       <div className={classNames('trigger', {visible: isDisplayed})}>
@@ -101,7 +96,7 @@ export default class Trigger extends Component {
         >
           <div className="squareContainer">
             <CSSTransition
-              in={isSquareActive}
+              in={isDisplayed}
               timeout={300}
               classNames="squareDisplay"
             >
@@ -157,7 +152,21 @@ export default class Trigger extends Component {
             </div>
           </CSSTransition>
         </CSSTransition>
-        <div className={classNames('textHint', {fadeIn: isSquareHovered && !hideTextHint})} key={audioIndex}>{displayName}</div>
+        <CSSTransition
+          in={!isSquareHovered}
+          timeout={{enter: 1000, exit: 500}}
+          classNames="textHintContainer"
+        >
+          <div className="textHintContainer" >
+            <CSSTransition
+              in={isSquareHovered && !suppressTextHint}
+              timeout={{enter: 1000, exit: 500}}
+              classNames="textHint"
+            >
+              {!suppressTextHint ? <div key={audioIndex} className="textHint" >{displayName}</div> : <div />}
+            </CSSTransition>
+          </div>
+        </CSSTransition>
         <div className="sensor"
              onMouseEnter={this.handleInteraction}
              onMouseLeave={this.handleInteraction}
@@ -225,7 +234,7 @@ export default class Trigger extends Component {
 
   handleInteraction = event => {
     const {onTrigger, audioIndex, onSelect, fadeAllSquares, isPlaying} = this.props
-    const {isDisplayed} = this.state
+    const {isDisabled} = this.state
     if (fadeAllSquares) {
       return
     }
@@ -240,23 +249,22 @@ export default class Trigger extends Component {
       onSelect()
       onTrigger(audioIndex)
       this.startLoopCheckTimer(audioIndex)
-      newState.isSecondaryActive = true
-      if (isDisplayed) {
+      if (!isPlaying && !isDisabled) {
+        newState.suppressTextHint = true
+      } else {
         newState.isGlowActive = true
-        newState.isClicked = true
       }
+      newState.isSecondaryActive = true
+      newState.isClicked = true
     }
     if (isHovered) {
       newState.isSquareTriggered = true
-      newState.isSquareActive = true
+      newState.isDisplayed = true
       newState.isSquareHovered = true
     }
-    if (isHovered && !isPlaying) {
-      newState.hideTextHintIfPlaying= true
-    }
     if (isUnHovered) {
+      newState.suppressTextHint = false
       newState.isSquareHovered = false
-      newState.hideTextHintIfPlaying= false
     }
     this.setState(newState)
     if (isUnclicked) {

@@ -1,65 +1,23 @@
 {
-  "title": "After Midnight",
-  "maxSoundCount": 5,
-  "maxBurstCount": 2,
+  "title": "Midnight Blues",
+  "maxSoundCount": 8,
+  "maxBurstCount": 4,
   "superGroups": {
     "mel": {
       "groups": [
-        "guitar",
-        "bra",
+        "guitar1",
         "win"
-      ],
-      "maxActive": 2
-    },
-    "rhythm": {
-      "groups": [
-        "guitar2"
       ],
       "maxActive": 2
     }
   },
   "groups": {
-    "per1": {
+    "win": {
       "instruments": {
         "high": [
-        ],
-        "medium": [
-          "Cymbal 1"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 2
-    },
-      "per2": {
-        "instruments": {
-          "high": [
-          ],
-          "medium": [
-          ],
-          "low": [
-            "Snare Drum 1"
-          ]
-        },
-        "maxActive": 1
-      },
-      "per3": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Congas 1"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "per4": {
-      "instruments": {
-        "high": [
-          "Tambourine 1",
-          "Tambourine 2"
+          "Alto Sax 1",
+          "Alto Sax 2",
+          "Alto Sax 3"
         ],
         "medium": [
         ],
@@ -68,10 +26,16 @@
       },
       "maxActive": 1
     },
-    "per5": {
+    "guitar1": {
       "instruments": {
         "high": [
-          "Cowbell 1"
+          "Electric Guitar 1",
+          "Electric Guitar 2",
+          "Electric Guitar 3",
+          "Electric Guitar 4",
+          "Electric Guitar 5",
+          "Electric Guitar 6",
+          "Electric Guitar 7"
         ],
         "medium": [
         ],
@@ -80,13 +44,26 @@
       },
       "maxActive": 1
     },
-    "drums": {
+    "guitar2": {
       "instruments": {
         "high": [
         ],
         "medium": [
-          "Drum Kit 1",
-          "Drum Kit 2"
+          "Electric Guitar 10",
+          "Electric Guitar 11"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "guitar3": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Electric Guitar 20",
+          "Electric Guitar 21"
         ],
         "low": [
         ]
@@ -96,25 +73,31 @@
     "pia": {
       "instruments": {
         "high": [
-          "Piano 6"
         ],
         "medium": [
-          "Piano 2",
-          "Piano 3",
-          "Piano 4",
-          "Piano 5"
+          "Electric Organ 1"
         ],
         "low": [
         ]
       },
       "maxActive": 1
     },
-    "guitar": {
+    "per1": {
       "instruments": {
         "high": [
-          "Electric Guitar 1",
-          "Electric Guitar 2",
-          "Electric Guitar 3"
+          "High Hat 1"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "per2": {
+      "instruments": {
+        "high": [
+          "Cymbal 1"
         ],
         "medium": [
         ],
@@ -123,57 +106,38 @@
       },
       "maxActive": 2
     },
-    "guitar2": {
+    "per3": {
       "instruments": {
         "high": [
         ],
         "medium": [
-          "Electric Guitar 4"
+          "Drum Kit 1",
+          "Drum Kit 1"
         ],
         "low": [
         ]
       },
-      "maxActive": 2
+      "maxActive": 1
     },
     "bra": {
       "instruments": {
         "high": [
-          "Trumpet 1",
-          "Trumpet 2",
-          "Trumpet 3"
-        ],
-        "medium": [
+          "Trumpets 1",
+          "Trumpets 2"
         ],
         "low": [
+          "Trombone 1"
         ]
       },
       "maxActive": 1
-    },
-    "win": {
-      "instruments": {
-        "high": [
-          "Alto Sax 1",
-          "Alto Sax 2"
-        ],
-        "medium": [
-          "Tenor Sax 1",
-          "Tenor Sax 2"
-        ],
-        "low": [
-          "Baritone Sax 1"
-        ]
-      },
-      "maxActive": 2
     },
     "bas": {
       "instruments": {
         "high": [
         ],
-        "medium": [],
         "low": [
           "String Bass 1",
-          "String Bass 2",
-          "String Bass 3"
+          "String Bass 2"
         ]
       },
       "maxActive": 1
