@@ -16,6 +16,10 @@
 	cursor: pointer;
 }
 
+.isDisabled {
+	cursor: not-allowed;
+}
+
 .sensor {
 	width: 80px;
 	height: 80px;
@@ -289,7 +293,7 @@
 	background: linear-gradient(120deg, #F2EDD2 0%, #dbb517 100%);
 }
 
-.bas {
+.bas, .pizz {
 	background: linear-gradient(120deg, #ffcccc 0%, #864811 100%);
 }
 

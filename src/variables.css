@@ -1,0 +1,11 @@
+:root {
+	--sidebarWidth: 240px;
+	--sidebarTabOffset: 45px;
+	--windowHeight: 100vh;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+	:root {
+		--sidebarWidth: 180px;
+	}
+}

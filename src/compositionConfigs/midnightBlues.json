@@ -1,7 +1,7 @@
 {
   "title": "Midnight Blues",
-  "maxSoundCount": 8,
-  "maxBurstCount": 4,
+  "maxSoundCount": 6,
+  "maxBurstCount": 2,
   "superGroups": {
     "mel": {
       "groups": [
@@ -17,7 +17,10 @@
         "high": [
           "Alto Sax 1",
           "Alto Sax 2",
-          "Alto Sax 3"
+          "Alto Sax 3",
+          "Alto Sax 4",
+          "Alto Sax 5",
+          "Alto Sax 6"
         ],
         "medium": [
         ],
@@ -35,7 +38,16 @@
           "Electric Guitar 4",
           "Electric Guitar 5",
           "Electric Guitar 6",
-          "Electric Guitar 7"
+          "Electric Guitar 7",
+          "Electric Guitar 8",
+          "Electric Guitar 9",
+          "Electric Guitar 10",
+          "Electric Guitar 11",
+          "Electric Guitar 12",
+          "Electric Guitar 13",
+          "Electric Guitar 14",
+          "Electric Guitar 15",
+          "Electric Guitar 16"
         ],
         "medium": [
         ],
@@ -49,21 +61,10 @@
         "high": [
         ],
         "medium": [
-          "Electric Guitar 10",
-          "Electric Guitar 11"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "guitar3": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
           "Electric Guitar 20",
-          "Electric Guitar 21"
+          "Electric Guitar 21",
+          "Electric Guitar 22",
+          "Electric Guitar 23"
         ],
         "low": [
         ]
@@ -126,7 +127,8 @@
           "Trumpets 2"
         ],
         "low": [
-          "Trombone 1"
+          "Trombone 1",
+          "Trombone 2"
         ]
       },
       "maxActive": 1
@@ -137,7 +139,9 @@
         ],
         "low": [
           "String Bass 1",
-          "String Bass 2"
+          "String Bass 2",
+          "String Bass 3",
+          "String Bass 4"
         ]
       },
       "maxActive": 1

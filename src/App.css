@@ -1,11 +1,14 @@
+@import 'variables.css';
+
 body {
+	margin: 0;
 	font-size: 15px;
 	user-select: none;
 }
 
 .main {
 	width: 100vw;
-	height: 100vh;
+	height: var(--windowHeight);
 }
 
 .content {
@@ -18,11 +21,12 @@ body {
 .musicPaneContainer {
 	width: 100%;
 	height: 100%;
+	overflow: hidden;
 }
 
 .reactSidebar {
-	width: 240px;
-	left: 45px !important;
+	width: var(--sidebarWidth);
+	left: var(--sidebarTabOffset) !important;
 	box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 4px !important;
 	overflow: visible !important;
 	background: white;
@@ -31,7 +35,7 @@ body {
 
 .sidebarContent {
 	left: 0 !important;
-	margin-left: 45px;
+	margin-left: var(--sidebarTabOffset);
 }
 
 .closed {

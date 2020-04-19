@@ -149,7 +149,7 @@
       },
       "maxActive": 1
     },
-    "win": {
+    "win1": {
       "instruments": {
         "high": [
           "Alto Sax 1",
@@ -160,10 +160,21 @@
           "Tenor Sax 2"
         ],
         "low": [
-          "Baritone Sax 1"
         ]
       },
       "maxActive": 2
+    },
+    "win2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Baritone Sax 1"
+        ]
+      },
+      "maxActive": 1
     },
     "bas": {
       "instruments": {

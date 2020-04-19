@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 import Sidebar from 'react-sidebar'
 import moment from 'moment'
-import {detect} from 'detect-browser'
 import ReactResizeDetector from 'react-resize-detector'
-import SidebarContent from './components/Sidebar';
+import SidebarContent from './components/Sidebar'
 import MusicPane from './components/MusicPane'
 import Message from './components/Message'
 import './App.css'
@@ -15,14 +14,18 @@ import night from './compositionConfigs/night.json'
 import afterMidnight from './compositionConfigs/afterMidnight.json'
 import eveningEmbers from './compositionConfigs/eveningEmbers.json'
 import glassDreams from './compositionConfigs/glassDreams.json'
-import midnightBlues from './compositionConfigs/midnightBlues.json';
+import midnightBlues from './compositionConfigs/midnightBlues.json'
+import promenade from './compositionConfigs/promenade.json'
+import rushHour from './compositionConfigs/rushHour.json'
 
 const compositionData = [
   {glassDreams},
   {aubade},
   {afterCoffee},
+  {promenade},
   {noon},
   {afternoon},
+  {rushHour},
   {eveningEmbers},
   {night},
   {midnightBlues},
@@ -53,10 +56,15 @@ class App extends Component {
     this.state = {
       currentCompositionName: this.selectCompositionByTimeOfDay(),
       sidebarOpen: true,
+      instructionsOpen: true,
       squareCount: 0,
       vanishSquares: false,
       stopLooping: false,
     }
+  }
+
+  componentDidMount() {
+    window.isTouchDevice = 'ontouchstart' in window
   }
 
   componentDidUpdate() {
@@ -67,54 +75,63 @@ class App extends Component {
   }
 
   render() {
-    const browser = detect()
-    const isBrowsersupported = ['chrome', 'firefox'].includes(browser.name) && (browser.os === 'Mac OS' || /Windows/.test(browser.os))
-    if (!isBrowsersupported) {
-      alert('This site currently supports only Chrome and Firefox and does not support mobile devices.')
-    }
-
-    const {currentCompositionName, squareCount, vanishSquares, sidebarOpen, stopLooping} = this.state
+    const {currentCompositionName, squareCount, vanishSquares, sidebarOpen, instructionsOpen, stopLooping} = this.state
 
     return (
-      <div className="main">
-        <Sidebar
-          sidebar={<SidebarContent
-            toggleSidebar={this.toggleSidebar}
-            compositionTitles={compositionTitles}
-            onChange={this.onCompositionSelected}
-            onFadeSelected={this.onFadeSelected}
-            onStopLooping={this.onStopLooping}
-            selectedValue={currentCompositionName}
-            sidebarOpen={sidebarOpen}
-          />}
-          open={sidebarOpen}
-          docked={sidebarOpen}
-          sidebarClassName="reactSidebar"
-          contentClassName="sidebarContent"
-        >
-          <div className="content">
-            <div ref={this.musicPaneRef} className="musicPaneContainer">
-              <ReactResizeDetector handleWidth handleHeight onResize={this.getSquareCount} refreshMode="debounce"
-                                   refreshRate={500}>
-                <Message/>
-                <MusicPane
-                  currentCompositionName={currentCompositionName}
-                  squareCount={squareCount}
-                  rawCompositions={rawCompositions}
-                  vanishSquares={vanishSquares}
-                  stopLooping={stopLooping}
-                />
-              </ReactResizeDetector>
+        <div className="main">
+          <Sidebar
+            sidebar={<SidebarContent
+              toggleSidebar={this.toggleSidebar}
+              compositionTitles={compositionTitles}
+              onChange={this.onCompositionSelected}
+              onFadeSelected={this.onFadeSelected}
+              onStopLooping={this.onStopLooping}
+              onToggleInstructions={this.onToggleInstructions}
+              instructionsOpen={instructionsOpen}
+              selectedValue={currentCompositionName}
+              sidebarOpen={sidebarOpen}
+            />}
+            open={sidebarOpen}
+            docked={sidebarOpen}
+            sidebarClassName="reactSidebar"
+            contentClassName="sidebarContent"
+          >
+            <div className="content">
+              <div ref={this.musicPaneRef} className="musicPaneContainer">
+                <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} refreshMode="debounce"
+                                     refreshRate={500}>
+                  <Message open={instructionsOpen} onClick={this.onMessageClose}/>
+                  <MusicPane
+                    currentCompositionName={currentCompositionName}
+                    squareCount={squareCount}
+                    rawCompositions={rawCompositions}
+                    vanishSquares={vanishSquares}
+                    stopLooping={stopLooping}
+                  />
+                </ReactResizeDetector>
+              </div>
             </div>
-          </div>
-        </Sidebar>
-      </div>
+          </Sidebar>
+        </div>
     )
   }
 
-  toggleSidebar = () => {
+  onResize = (width, height) => {
+    const root = document.documentElement
+    root.style.setProperty('--windowHeight', `${height}px`);
+    this.getSquareCount(width, height)
+  }
+
+  onMessageClose = () => {
+    this.onToggleInstructions()
+    if (window.innerWidth < 768) {
+      this.toggleSidebar(false)
+    }
+  }
+
+  toggleSidebar = sidebarState => {
     const {sidebarOpen} = this.state
-    this.setState({sidebarOpen: !sidebarOpen});
+    this.setState({sidebarOpen: sidebarState !== undefined ? sidebarState : !sidebarOpen});
   }
 
   onCompositionSelected = ({value, id}) => {
@@ -138,6 +155,14 @@ class App extends Component {
     })
   }
 
+  onToggleInstructions = () => {
+    this.setState(({instructionsOpen}) => {
+      return {
+        instructionsOpen: !instructionsOpen,
+      }
+    })
+  }
+
   resetStopLooping = () => {
     this.setState({
       stopLooping: false,
@@ -152,18 +177,20 @@ class App extends Component {
       glassDreams: 2,
       aubade: 5,
       afterCoffee: 9,
+      promenade: 10,
       noon: 12,
       afternoon: 13,
+      rushHour: 17,
       eveningEmbers: 18,
       night: 21,
       midnightBlues: 0,
     }
     const compositionName = Object.keys(timeSlots).find((name, ind, arr) => {
-      const compTime = timeSlots[name]
-      const nextTimeKey = arr[ind + 1] || arr[0]
-      const nextCompTime = ind === arr.length - 2 ? 24 : timeSlots[nextTimeKey]
-      return compTime <= hour && hour < nextCompTime
-    }) || Object.keys(timeSlots)[0]
+        const compTime = timeSlots[name]
+        const nextTimeKey = arr[ind + 1] || arr[0]
+        const nextCompTime = ind === arr.length - 2 ? 24 : timeSlots[nextTimeKey]
+        return compTime <= hour && hour < nextCompTime
+      }) || Object.keys(timeSlots)[0]
     return compositionName
   }
 

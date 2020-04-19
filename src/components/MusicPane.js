@@ -24,6 +24,7 @@ class MusicPane extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    this.initAudioContext()
     const {squareCount, currentCompositionName, stopLooping} = this.props
     const {initialized} = this.state
     if (!initialized || currentCompositionName !== prevProps.currentCompositionName) {
@@ -44,8 +45,7 @@ class MusicPane extends Component {
   }
 
   render() {
-    const {composition} = this.state
-    const {loading, allowDisabled, fadeAllSquares} = this.state
+    const {composition, loading, allowDisabled, fadeAllSquares} = this.state
     const {squareCount, vanishSquares} = this.props
     return !loading && composition && squareCount ?
       (<Fragment>
@@ -64,7 +64,8 @@ class MusicPane extends Component {
                   audioName,
                   group,
                   key,
-                  disabled: allowDisabled && !this.isAudioPlayable(audioIndex),
+                  disabled: !this.isAudioPlayable(audioIndex),
+                  allowDisabled,
                   isPlaying: this.isItemPlaying(audioIndex),
                   isLooping: this.isItemLooping(audioIndex),
                   fadeSquares: vanishSquares,
@@ -95,10 +96,19 @@ class MusicPane extends Component {
 
   loopStartTimers = {}
 
+  allowDisabledTimer = null
+
   burstBufferCount = 0
 
   suppressContextMenu = event => {
     event.preventDefault()
+  }
+
+  // Necessary for mobile
+  initAudioContext = () => {
+    if (Howler.ctx && Howler.ctx.state === 'suspended') {
+      Howler.ctx.resume()
+    }
   }
 
   formatAudioItems = ({group, audioNames}) => audioNames.map(audioName => ({
@@ -283,6 +293,7 @@ class MusicPane extends Component {
   }
 
   initializeComposition = () => {
+    // this.initAudioContext()
     clearTimeout(this.initTimer)
     const {rawCompositions, currentCompositionName} = this.props
     const compositionData = rawCompositions[currentCompositionName]
@@ -306,10 +317,15 @@ class MusicPane extends Component {
     Howler.unload()
   }
 
-  onTrigger = audioIndex => {
-    if (!this.isItemLooping(audioIndex)) {
+  handleTriggeredAudio = audioIndex => {
+    if (!this.isBurstBufferFull() && this.isAudioPlayable(audioIndex) && !this.isItemPlaying(audioIndex) && !this.isItemLooping(audioIndex)) {
       this.addAudioToQueue(audioIndex)
     }
+  }
+
+
+  onTrigger = audioIndex => {
+    this.handleTriggeredAudio(audioIndex)
   }
 
   initializeItemsPlaying = () => {
@@ -364,11 +380,9 @@ class MusicPane extends Component {
   addAudioToQueue = audioIndex => {
     const {composition} = this.state
     const audioItem = composition[audioIndex]
-    if ((!this.isBurstBufferFull() && this.isAudioPlayable(audioIndex) && !this.isItemPlaying(audioIndex)) || this.isItemLooping(audioIndex)) {
-      this.audioQueue.push(audioItem)
-      if (!this.isItemLooping(audioIndex)) {
-        this.setItemAsStarted(audioIndex)
-      }
+    this.audioQueue.push(audioItem)
+    if (!this.isItemLooping(audioIndex)) {
+      this.setItemAsStarted(audioIndex)
     }
   }
 
@@ -397,7 +411,7 @@ class MusicPane extends Component {
           const isGroupPartOfSuperGroup = superGroups[name] === superGroupName
           const slotsToAddFromSubGroup = isGroupPartOfSuperGroup ? availableSubCount : 0
           slots += slotsToAddFromSubGroup
-          return  slots
+          return slots
         }, 0)
         return Math.min(availableSlotsForSubgroups, availableSlotsInSuperGroup)
       }
@@ -471,7 +485,7 @@ class MusicPane extends Component {
 
   runAudioEndTimer = ({audioIndex, group, endTime, actualLength}) => {
     this.endTimers[audioIndex] = setTimeout(() => {
-      if (Date.now() >= endTime - 800) {
+      if (Date.now() >= endTime - 950) {
         this.onAudioEnd({audioIndex, group, actualLength})
       } else {
         this.runAudioEndTimer({audioIndex, group, endTime, actualLength})
@@ -529,21 +543,34 @@ class MusicPane extends Component {
     })
   }
 
+  startAllowDisabledTimer = () => {
+    this.allowDisabledTimer = setTimeout(() => {
+      this.setState({
+        allowDisabled: true,
+      })
+      // Don't allowDisabled until secondary animation is finished
+    }, 500)
+  }
+
   // Prevent animation from being toggled too many times
   // by mouse drag
   resetAllowDisabled = debounce(() => {
-    this.setState({
-      allowDisabled: true,
-    })
+    clearTimeout(this.allowDisabledTimer)
+    this.startAllowDisabledTimer()
   }, 300, {leading: false, trailing: true})
 
-  onSelect = () => {
-    const {allowDisabled} = this.state
-    if (allowDisabled) {
-      this.setState({
-        allowDisabled: false,
-      })
+  onSelect = isDragged => {
+    if (!isDragged) {
+      return
     }
+    this.setState(({allowDisabled}) => {
+      if (allowDisabled) {
+        return {
+          allowDisabled: false,
+        }
+      }
+      return null
+    })
     this.resetAllowDisabled()
   }
 

@@ -1,10 +1,10 @@
-import React, {Component, createRef} from 'react'
+import React, {PureComponent, createRef} from 'react'
 import {Transition, CSSTransition} from 'react-transition-group'
+import TinyGesture from 'tinygesture'
 import classNames from 'classnames'
-import shallowEqual from 'shallowequal'
 import './Trigger.css'
 
-export default class Trigger extends Component {
+export default class Trigger extends PureComponent {
   constructor() {
     super()
     this.state = {
@@ -15,36 +15,47 @@ export default class Trigger extends Component {
       isSecondaryActive: false,
       isSecondaryDone: false,
       isGlowActive: false,
-      isDisabled: false,
+      showDisabled: false,
       isDisabledAnimating: false,
       isLoopingAnimationActive: false,
       stopLooping: false,
       suppressTextHint: false,
+      allowCursorDisabled: false,
+      isCursorDisabled: false,
     }
     this.disabledElement = createRef()
+    this.sensor = createRef()
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const {isPlaying, disabled, fadeSquares, fadeAllSquares, isLooping} = this.props
-    return isPlaying !== nextProps.isPlaying ||
-      disabled !== nextProps.disabled ||
-      fadeSquares !== nextProps.fadeSquares ||
-      fadeAllSquares !== nextProps.fadeAllSquares ||
-      isLooping !== nextProps.isLooping ||
-      !shallowEqual(this.state, nextState)
+  componentDidMount() {
+    if (window.isTouchDevice) {
+      this.gesture = new TinyGesture(this.sensor.current)
+      this.gesture.on('longpress', event => {
+        this.handleInteraction({type: 'longpress'})
+      })
+      this.gesture.on('doubletap', event => {
+        this.handleInteraction({type: 'doubletap'})
+      })
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {fadeSquares, disabled, fadeAllSquares} = this.props
-    const {isDisabled, isDisplayed} = this.state
-    const newState = {}
-    if (isDisplayed && disabled !== isDisabled) {
-      newState.isDisabled = disabled
+    const {fadeSquares, disabled, allowDisabled, isPlaying, fadeAllSquares, isLooping} = this.props
+    const {isDisplayed, allowCursorDisabled} = this.state
+    if (!isDisplayed) {
+      return
     }
-    if (Object.keys(newState).length) {
-      this.setState(newState)
-    }
-    if ((fadeSquares || fadeAllSquares) && isDisplayed) {
+    this.setState(({showDisabled, isDisplayed}) => {
+      if (!isDisplayed) {
+        return null
+      }
+      const newShowDisabledState = disabled && allowDisabled
+      return {
+        showDisabled: newShowDisabledState,
+        isCursorDisabled: allowCursorDisabled && (disabled || isPlaying) && !isLooping,
+      }
+    })
+    if (fadeSquares || fadeAllSquares) {
       clearTimeout(this.fadeTimer)
       const timeout = 1000
       const newState = {
@@ -62,22 +73,25 @@ export default class Trigger extends Component {
 
   componentWillUnmount() {
     clearTimeout(this.fadeTimer)
-    clearTimeout(this.loopCheckTimer)
-    clearTimeout(this.fadeAllTimer)
+    clearTimeout(this.longPressTimer)
+    clearTimeout(this.disableCursorTimer)
     this.disabledElement.current.removeEventListener('animationiteration', this.disabledAnimationDone, false)
+    if (this.gesture) {
+      this.gesture.destroy()
+    }
   }
 
   render() {
-    const {audioIndex, audioName, group, isLooping, isPlaying} = this.props
-    const {isDisabled, isDisabledAnimating, isSecondaryActive, isSquareHovered, isSquareTriggered, isGlowActive, isTextAnimating, isLoopingAnimationActive, stopLooping, isDisplayed, suppressTextHint} = this.state
+    const {audioIndex, audioName, group, isLooping, isPlaying, disabled} = this.props
+    const {showDisabled, isDisabledAnimating, isSecondaryActive, isSquareHovered, isSquareTriggered, isGlowActive, isTextAnimating, isLoopingAnimationActive, stopLooping, isDisplayed, suppressTextHint, isCursorDisabled} = this.state
     const doLooping = isLooping && !stopLooping
     const active = (isPlaying || isTextAnimating) && !isLoopingAnimationActive
     const displayName = audioName.replace(/ \d+\w?$/, '')
     const activateSecondary = isSecondaryActive && !isLoopingAnimationActive
     const groupClassName = group.replace(/\d+$/, '')
-
+    const disabledActive = showDisabled || isDisabledAnimating
     return (
-      <div className={classNames('trigger', {visible: isDisplayed})}>
+      <div className={classNames('trigger', {visible: isDisplayed}, {isDisabled: isCursorDisabled})}>
         <CSSTransition
           in={active}
           timeout={3000}
@@ -109,7 +123,7 @@ export default class Trigger extends Component {
                 <div className={classNames('square', groupClassName) }>
                   <div className="disabledContainer">
                     <Transition
-                      in={isDisabled || isDisabledAnimating}
+                      in={disabledActive}
                       exit={false}
                       onEnter={this.disabledAnimationStarted}
                       addEndListener={node => {
@@ -118,7 +132,7 @@ export default class Trigger extends Component {
                     >
                       {() => {
                         let className = ''
-                        if (isDisabled || isDisabledAnimating) {
+                        if (disabledActive) {
                           className = 'pulse'
                         } else {
                           className = 'pulseFade'
@@ -157,21 +171,25 @@ export default class Trigger extends Component {
           timeout={{enter: 1000, exit: 500}}
           classNames="textHintContainer"
         >
-          <div className="textHintContainer" >
+          <div className="textHintContainer">
             <CSSTransition
               in={isSquareHovered && !suppressTextHint}
               timeout={{enter: 1000, exit: 500}}
               classNames="textHint"
             >
-              {!suppressTextHint ? <div key={audioIndex} className="textHint" >{displayName}</div> : <div />}
+              {!suppressTextHint ? <div key={audioIndex} className="textHint">{displayName}</div> : <div />}
             </CSSTransition>
           </div>
         </CSSTransition>
         <div className="sensor"
+             ref={this.sensor}
              onMouseEnter={this.handleInteraction}
              onMouseLeave={this.handleInteraction}
              onMouseDown={this.handleInteraction}
              onMouseUp={this.handleInteraction}
+             onDoubleClick={this.handleInteraction}
+             onTouchStart={this.handleInteraction}
+             onTouchEnd={this.handleInteraction}
         />
       </div>
     )
@@ -179,7 +197,9 @@ export default class Trigger extends Component {
 
   fadeTimer = null
 
-  loopCheckTimer = null
+  longPressTimer = null
+
+  gesture = null
 
   onTextAnimationStarted = ()=> {
     this.setState({
@@ -224,64 +244,84 @@ export default class Trigger extends Component {
   }
 
   disabledAnimationDone = () => {
-    const {isDisabled, isDisabledAnimating} = this.state
-    if (!isDisabled && isDisabledAnimating) {
-      this.setState({
-        isDisabledAnimating: false,
-      })
-    }
+    this.setState(({showDisabled, isDisabledAnimating}) => {
+      if (!showDisabled && isDisabledAnimating) {
+        return {
+          isDisabledAnimating: false,
+        }
+      }
+    })
   }
 
   handleInteraction = event => {
-    const {onTrigger, audioIndex, onSelect, fadeAllSquares, isPlaying} = this.props
-    const {isDisabled} = this.state
+    const {onTrigger, audioIndex, onSelect, fadeAllSquares, isPlaying, disabled} = this.props
     if (fadeAllSquares) {
       return
     }
-    const {type, buttons} = event
-    const isClicked = type === 'mousedown'
+    const {type: receivedType, buttons} = event
+    // If on a touch device, filter out mouse events
+    const type = this.gesture && /mouse|click/.test(receivedType) ? null : receivedType
+
+    const isClicked = type === 'mousedown' || type === 'touchstart'
     const isDragged = (type === 'mouseenter' && buttons !== 0)
-    const isHovered = type === 'mouseenter'
-    const isUnHovered = type === 'mouseleave'
-    const isUnclicked = type === 'mouseup' || type === 'mouseleave'
-    const newState = {}
-    if (isClicked || isDragged) {
-      onSelect()
-      onTrigger(audioIndex)
-      this.startLoopCheckTimer(audioIndex)
-      if (!isPlaying && !isDisabled) {
-        newState.suppressTextHint = true
-      } else {
-        newState.isGlowActive = true
+    const isHovered = type === 'mouseenter' || type === 'touchstart'
+    const isUnHovered = type === 'mouseleave' || type === 'touchend'
+    const isUnclicked = type === 'mouseup' || type === 'mouseleave' || type === 'touchend'
+    const isDoubleClicked = type === 'dblclick' || type === 'doubletap'
+    const isLongPressed = type === 'longclick' || type === 'longpress'
+    console.log('type', type, this.props.audioName)
+    this.setState(({showDisabled}) => {
+      const newState = {}
+      if (isClicked || isDragged) {
+        onSelect(isDragged)
+        onTrigger(audioIndex)
+        if (!window.isTouchDevice) {
+          this.startLongPressTimer()
+        }
+        if (!isPlaying && !showDisabled) {
+          newState.suppressTextHint = true
+        } else {
+          newState.isGlowActive = true
+        }
+        newState.isSecondaryActive = true
+        newState.isClicked = true
       }
-      newState.isSecondaryActive = true
-      newState.isClicked = true
-    }
-    if (isHovered) {
-      newState.isSquareTriggered = true
-      newState.isDisplayed = true
-      newState.isSquareHovered = true
-    }
-    if (isUnHovered) {
-      newState.suppressTextHint = false
-      newState.isSquareHovered = false
-    }
-    this.setState(newState)
+      const shouldDisableCursor = disabled || isPlaying
+      if (isDragged || (!shouldDisableCursor && isClicked)) {
+        newState.allowCursorDisabled = false
+      }
+      if (isHovered) {
+        newState.isSquareTriggered = true
+        newState.isDisplayed = true
+        newState.isSquareHovered = true
+      }
+      if (isUnHovered) {
+        newState.suppressTextHint = false
+        newState.isSquareHovered = false
+      }
+      if (isLongPressed || isDoubleClicked) {
+        this.onLoopToggle(audioIndex)
+      }
+      return newState
+    })
     if (isUnclicked) {
-      this.endLoopCheckTimer()
+      this.disableCursorTimer = setTimeout(() => {
+        this.setState({allowCursorDisabled: true})
+      }, 200)
+      this.endLongPressTimer()
     }
   }
 
-  startLoopCheckTimer = audioIndex => {
+  startLongPressTimer = () => {
     const mouseDownDelay = 1000
-    clearTimeout(this.loopCheckTimer)
-    this.loopCheckTimer = setTimeout(() => {
-      this.onLoopToggle(audioIndex)
+    clearTimeout(this.longPressTimer)
+    this.longPressTimer = setTimeout(() => {
+      this.handleInteraction({type: 'longclick'})
     }, mouseDownDelay)
   }
 
-  endLoopCheckTimer = () => {
-    clearTimeout(this.loopCheckTimer)
+  endLongPressTimer = () => {
+    clearTimeout(this.longPressTimer)
   }
 
   onClick = event => {
