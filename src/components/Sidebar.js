@@ -72,7 +72,7 @@ export default ({onChange, onFadeSelected, onStopLooping, onToggleInstructions, 
               <span className="label">Magic Vanishing Act</span>
             </label>
           </div>
-          <button className="button" onClick={onToggleInstructions}>{instructionsOpen ? 'Hide' : 'View'} Instructions</button>
+          <button className="button" onClick={onToggleInstructions}>{instructionsOpen ? 'Hide' : 'View'} Help</button>
         </div>
       </div>
     </Fragment>

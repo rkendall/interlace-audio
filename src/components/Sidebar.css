@@ -40,6 +40,7 @@
   width: 26px;
   height: 32%;
   background: #eeeeee;
+  box-shadow: lightgray 2px 2px 6px 0;
 }
 
 .rangeLabel {
@@ -86,7 +87,8 @@ p:last-of-type {
   margin: 10px;
   padding: 10px 5px;
   border: solid lightgray 1px;
-  box-shadow: lightgray 2px 2px 8px 0px;
+  background: white;
+  box-shadow: lightgray 1px 2px 6px 0;
 }
 
 .box:last-of-type {

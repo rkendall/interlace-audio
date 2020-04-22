@@ -269,12 +269,10 @@ export default class Trigger extends PureComponent {
     const isUnclicked = type === 'mouseup' || type === 'mouseleave' || type === 'touchend'
     const isDoubleClicked = type === 'dblclick' || type === 'doubletap'
     const isLongPressed = type === 'longclick' || type === 'longpress'
-    console.log('type', type, this.props.audioName)
     this.setState(({showDisabled}) => {
       const newState = {}
       if (isClicked || isDragged) {
-        onSelect(isDragged)
-        onTrigger(audioIndex)
+        onTrigger({audioIndex, isDragged})
         if (!window.isTouchDevice) {
           this.startLongPressTimer()
         }
