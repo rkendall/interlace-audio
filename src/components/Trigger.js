@@ -33,9 +33,6 @@ export default class Trigger extends PureComponent {
       this.gesture.on('longpress', event => {
         this.handleInteraction({type: 'longpress'})
       })
-      this.gesture.on('doubletap', event => {
-        this.handleInteraction({type: 'doubletap'})
-      })
     }
   }
 
@@ -82,7 +79,7 @@ export default class Trigger extends PureComponent {
   }
 
   render() {
-    const {audioIndex, audioName, group, isLooping, isPlaying, disabled} = this.props
+    const {audioIndex, audioName, group, isLooping, isPlaying} = this.props
     const {showDisabled, isDisabledAnimating, isSecondaryActive, isSquareHovered, isSquareTriggered, isGlowActive, isTextAnimating, isLoopingAnimationActive, stopLooping, isDisplayed, suppressTextHint, isCursorDisabled} = this.state
     const doLooping = isLooping && !stopLooping
     const active = (isPlaying || isTextAnimating) && !isLoopingAnimationActive
@@ -187,7 +184,6 @@ export default class Trigger extends PureComponent {
              onMouseLeave={this.handleInteraction}
              onMouseDown={this.handleInteraction}
              onMouseUp={this.handleInteraction}
-             onDoubleClick={this.handleInteraction}
              onTouchStart={this.handleInteraction}
              onTouchEnd={this.handleInteraction}
         />
@@ -254,7 +250,7 @@ export default class Trigger extends PureComponent {
   }
 
   handleInteraction = event => {
-    const {onTrigger, audioIndex, onSelect, fadeAllSquares, isPlaying, disabled} = this.props
+    const {onTrigger, audioIndex, fadeAllSquares, isPlaying, disabled, isLooping} = this.props
     if (fadeAllSquares) {
       return
     }
@@ -267,15 +263,10 @@ export default class Trigger extends PureComponent {
     const isHovered = type === 'mouseenter' || type === 'touchstart'
     const isUnHovered = type === 'mouseleave' || type === 'touchend'
     const isUnclicked = type === 'mouseup' || type === 'mouseleave' || type === 'touchend'
-    const isDoubleClicked = type === 'dblclick' || type === 'doubletap'
-    const isLongPressed = type === 'longclick' || type === 'longpress'
     this.setState(({showDisabled}) => {
       const newState = {}
       if (isClicked || isDragged) {
         onTrigger({audioIndex, isDragged})
-        if (!window.isTouchDevice) {
-          this.startLongPressTimer()
-        }
         if (!isPlaying && !showDisabled) {
           newState.suppressTextHint = true
         } else {
@@ -284,7 +275,7 @@ export default class Trigger extends PureComponent {
         newState.isSecondaryActive = true
         newState.isClicked = true
       }
-      const shouldDisableCursor = disabled || isPlaying
+      const shouldDisableCursor = disabled || (isPlaying && ! isLooping)
       if (isDragged || (!shouldDisableCursor && isClicked)) {
         newState.allowCursorDisabled = false
       }
@@ -297,33 +288,25 @@ export default class Trigger extends PureComponent {
         newState.suppressTextHint = false
         newState.isSquareHovered = false
       }
-      if (isLongPressed || isDoubleClicked) {
-        this.onLoopToggle(audioIndex)
-      }
       return newState
     })
+    if (isClicked) {
+      this.onLoopToggle(audioIndex)
+    }
     if (isUnclicked) {
       this.disableCursorTimer = setTimeout(() => {
         this.setState({allowCursorDisabled: true})
       }, 200)
-      this.endLongPressTimer()
+      this.onUnclick()
     }
-  }
-
-  startLongPressTimer = () => {
-    const mouseDownDelay = 1000
-    clearTimeout(this.longPressTimer)
-    this.longPressTimer = setTimeout(() => {
-      this.handleInteraction({type: 'longclick'})
-    }, mouseDownDelay)
-  }
-
-  endLongPressTimer = () => {
-    clearTimeout(this.longPressTimer)
   }
 
   onClick = event => {
     this.handleInteraction(event)
+  }
+
+  onUnclick = audioIndex => {
+    this.props.onUnclick(audioIndex)
   }
 
   onLoopToggle = audioIndex => {

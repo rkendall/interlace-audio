@@ -1,0 +1,195 @@
+{
+  "title": "Treadmill Toccata",
+  "maxSoundCount": 5,
+  "superGroups": {
+    "bass": {
+      "groups": [
+        "str2",
+        "pia3"
+      ],
+      "maxActive": 1
+    }
+  },
+  "groups": {
+    "str1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Violin 1",
+          "Violin 2",
+          "Violin 3"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "str2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Cello 1",
+          "Cello 2",
+          "Double Bass 1"
+        ]
+      },
+      "maxActive": 1
+    },
+    "win1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Oboe 1",
+          "Oboe 2"
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "win2": {
+      "instruments": {
+        "high": [
+          "Flute 1",
+          "Flute 2"
+        ],
+        "medium": [
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "win3": {
+      "instruments": {
+        "high": [
+          "Flute 5",
+          "Flute 6"
+        ],
+        "medium": [
+          "Flute 3",
+          "Flute 4"
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "pia1": {
+      "instruments": {
+        "high": [
+          "Piano 6"
+        ],
+        "medium": [
+        ],
+        "low": []
+      },
+      "maxActive": 2
+    },
+    "pia2": {
+      "instruments": {
+        "high": [
+          "Piano 7"
+        ],
+        "medium": [
+          "Piano 1",
+          "Piano 2",
+          "Piano 3",
+          "Piano 8",
+          "Piano 9"
+        ],
+        "low": []
+      },
+      "maxActive": 2
+    },
+    "pia3": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Piano 4",
+          "Piano 5"
+        ]
+      },
+      "maxActive": 1
+    },
+    "per1": {
+      "instruments": {
+        "high": [
+          "Marimba 1"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "per2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Marimba 2"
+        ]
+      },
+      "maxActive": 1
+    },
+    "per3": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Marimba 3",
+          "Marimba 4"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "per4": {
+      "instruments": {
+        "high": [
+          "Wood Blocks 1",
+          "Wood Blocks 2"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "per5": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Taiko Drums 1"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "per6": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Taiko Drums 2"
+        ]
+      },
+      "maxActive": 1
+    }
+  }
+}

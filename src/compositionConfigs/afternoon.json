@@ -20,13 +20,6 @@
       "maxActive": 1
     }
   },
-  "lengths": {
-    "pia": 3000,
-    "vib": 2000,
-    "win": 2000,
-    "bra": 2000,
-    "str2": 2000
-  },
   "groups": {
     "str": {
       "instruments": {
@@ -68,10 +61,9 @@
           "Viola 2"
         ]
       },
-      "maxActive": 1,
-      "length": 2000
+      "maxActive": 1
     },
-    "per": {
+    "per1": {
       "instruments": {
         "high": [
           "Cymbals 1",
@@ -81,9 +73,19 @@
         "medium": [],
         "low": [
           "Taiko Drums 1",
-          "Tom Toms 2",
-          "Tom Toms 3",
           "Tympani 1"
+        ]
+      },
+      "maxActive": 2
+    },
+    "per2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [],
+        "low": [
+          "Tom Toms 2",
+          "Tom Toms 3"
         ]
       },
       "maxActive": 2

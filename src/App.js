@@ -5,6 +5,7 @@ import ReactResizeDetector from 'react-resize-detector'
 import SidebarContent from './components/Sidebar'
 import MusicPane from './components/MusicPane'
 import Message from './components/Message'
+import ErrorBoundary from './components/ErrorBoundary'
 import './App.css'
 import aubade from './compositionConfigs/audbade.json'
 import afterCoffee from './compositionConfigs/afterCoffee.json'
@@ -17,11 +18,13 @@ import glassDreams from './compositionConfigs/glassDreams.json'
 import midnightBlues from './compositionConfigs/midnightBlues.json'
 import promenade from './compositionConfigs/promenade.json'
 import rushHour from './compositionConfigs/rushHour.json'
+import treadmillToccata from './compositionConfigs/treadmillToccata.json'
 
 const compositionData = [
   {glassDreams},
   {aubade},
   {afterCoffee},
+  {treadmillToccata},
   {promenade},
   {noon},
   {afternoon},
@@ -78,41 +81,44 @@ class App extends Component {
     const {currentCompositionName, squareCount, vanishSquares, sidebarOpen, instructionsOpen, stopLooping} = this.state
 
     return (
-        <div className="main">
-          <Sidebar
-            sidebar={<SidebarContent
-              toggleSidebar={this.toggleSidebar}
-              compositionTitles={compositionTitles}
-              onChange={this.onCompositionSelected}
-              onFadeSelected={this.onFadeSelected}
-              onStopLooping={this.onStopLooping}
-              onToggleInstructions={this.onToggleInstructions}
-              instructionsOpen={instructionsOpen}
-              selectedValue={currentCompositionName}
-              sidebarOpen={sidebarOpen}
-            />}
-            open={sidebarOpen}
-            docked={sidebarOpen}
-            sidebarClassName="reactSidebar"
-            contentClassName="sidebarContent"
-          >
-            <div className="content">
-              <div ref={this.musicPaneRef} className="musicPaneContainer">
-                <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} refreshMode="debounce"
-                                     refreshRate={500}>
-                  <Message open={instructionsOpen} onClick={this.onMessageClose}/>
+      <div className="main">
+        <Sidebar
+          sidebar={<SidebarContent
+            toggleSidebar={this.toggleSidebar}
+            compositionTitles={compositionTitles}
+            onChange={this.onCompositionSelected}
+            onFadeSelected={this.onFadeSelected}
+            onStopLooping={this.onStopLooping}
+            onToggleInstructions={this.onToggleInstructions}
+            instructionsOpen={instructionsOpen}
+            selectedValue={currentCompositionName}
+            sidebarOpen={sidebarOpen}
+          />}
+          open={sidebarOpen}
+          docked={sidebarOpen}
+          sidebarClassName="reactSidebar"
+          contentClassName="sidebarContent"
+        >
+          <div className="content">
+            <div ref={this.musicPaneRef} className="musicPaneContainer">
+              <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} refreshMode="debounce"
+                                   refreshRate={500}>
+                <Message open={instructionsOpen} onClick={this.onMessageClose}/>
+                <ErrorBoundary>
                   <MusicPane
                     currentCompositionName={currentCompositionName}
                     squareCount={squareCount}
                     rawCompositions={rawCompositions}
                     vanishSquares={vanishSquares}
                     stopLooping={stopLooping}
+                    onPlayStarted={this.onPlayStarted}
                   />
-                </ReactResizeDetector>
-              </div>
+                </ErrorBoundary>
+              </ReactResizeDetector>
             </div>
-          </Sidebar>
-        </div>
+          </div>
+        </Sidebar>
+      </div>
     )
   }
 
@@ -122,15 +128,22 @@ class App extends Component {
     this.getSquareCount(width, height)
   }
 
-  onMessageClose = () => {
-    this.onToggleInstructions()
+  onPlayStarted = () => {
     if (window.innerWidth < 768) {
       this.toggleSidebar(false)
     }
   }
 
+  onMessageClose = () => {
+    this.onCloseInstructions()
+    this.onPlayStarted()
+  }
+
   toggleSidebar = sidebarState => {
     const {sidebarOpen} = this.state
+    if (sidebarOpen === sidebarState) {
+      return
+    }
     this.setState({sidebarOpen: sidebarState !== undefined ? sidebarState : !sidebarOpen});
   }
 
@@ -155,6 +168,10 @@ class App extends Component {
     })
   }
 
+  onCloseInstructions = () => {
+    this.setState({instructionsOpen: false})
+  }
+
   onToggleInstructions = () => {
     this.setState(({instructionsOpen}) => {
       return {
@@ -176,7 +193,8 @@ class App extends Component {
       afterMidnight: 1,
       glassDreams: 2,
       aubade: 5,
-      afterCoffee: 9,
+      afterCoffee: 7,
+      treadmillToccata: 8,
       promenade: 10,
       noon: 12,
       afternoon: 13,

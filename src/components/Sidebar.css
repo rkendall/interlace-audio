@@ -9,6 +9,7 @@
   overflow-y: hidden;
   overflow-x: hidden;
   font-size: .75rem;
+  background: white;
 }
 
 .rightTab {
@@ -39,8 +40,9 @@
   align-items: center;
   width: 26px;
   height: 32%;
-  background: #eeeeee;
-  box-shadow: lightgray 2px 2px 6px 0;
+  /*background: #eeeeee;*/
+  background: #ffe0b0;
+  box-shadow: lightgray 1px 2px 4px 0;
 }
 
 .rangeLabel {
@@ -48,15 +50,14 @@
   white-space: nowrap;
 }
 
-h1 {
-  margin: 0;
-  padding: 0;
+h1.box.heading {
   font-size: 1.5rem;
 }
 
 .byline {
   margin: 5px 0 0 0;
   font-size: .9rem;
+  text-align: center;
 }
 
 .instructions {
@@ -88,31 +89,32 @@ p:last-of-type {
   padding: 10px 5px;
   border: solid lightgray 1px;
   background: white;
-  box-shadow: lightgray 1px 2px 6px 0;
+  box-shadow: lightgrey 1px 2px 4px 0px;
 }
 
 .box:last-of-type {
   margin-bottom: 10px;
 }
 
+
+.box.heading {
+  margin-bottom: -10px;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 0;
+  font-size: .9rem;
+  background: #ffe0b0;
+}
+
 .menu {
   display: flex;
   flex-direction: column;
   flex-shrink: 3;
-  overflow: auto;
-  /*height: calc(var(--windowHeight) - 350px);*/
-}
-
-.menu .prompt {
-  padding-bottom: 10px;
-  text-align: center;
-  border-bottom: solid lightgray 1px;
-  font-size: .9rem;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .menuOptions {
-
-  max-height: 380px;
   padding: 10px 0 0 0;
 }
 
@@ -130,6 +132,7 @@ p:last-of-type {
 .controls {
   height: 140px;
   flex-shrink: 1;
+
 }
 
 .controls button {

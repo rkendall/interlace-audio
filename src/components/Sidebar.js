@@ -33,15 +33,15 @@ export default ({onChange, onFadeSelected, onStopLooping, onToggleInstructions, 
         </div>
       </div>
       <div className={classNames('sidebar', {closed: !sidebarOpen})}>
-        <div className="box heading">
-          <h1>Impromptus</h1>
+        <h1 className="box heading">Impromptus</h1>
+        <div className="box">
           <div className="byline">
             <div>Interactive Music</div>
             <div>By <a href="http://robertkendall.com" target="_blank">Robert Kendall</a></div>
           </div>
         </div>
+        <div className="box heading">Select an Impromptu</div>
         <div className="box menu">
-          <div className="prompt">Select an Impromptu</div>
           <div className="menuOptions">
             <SideNav
               selectedPath={selectedValue}
