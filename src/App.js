@@ -19,6 +19,8 @@ import midnightBlues from './compositionConfigs/midnightBlues.json'
 import promenade from './compositionConfigs/promenade.json'
 import rushHour from './compositionConfigs/rushHour.json'
 import treadmillToccata from './compositionConfigs/treadmillToccata.json'
+import siesta from './compositionConfigs/siesta.json'
+import fiesta from './compositionConfigs/fiesta.json'
 
 const compositionData = [
   {glassDreams},
@@ -28,12 +30,33 @@ const compositionData = [
   {promenade},
   {noon},
   {afternoon},
+  {siesta},
+  {fiesta},
   {rushHour},
   {eveningEmbers},
   {night},
   {midnightBlues},
   {afterMidnight},
 ]
+
+const timeSlots =
+{
+  afterMidnight: 1,
+  glassDreams: 2,
+  aubade: 5,
+  afterCoffee: 7,
+  treadmillToccata: 8,
+  promenade: 10,
+  noon: 12,
+  afternoon: 13,
+  siesta: 14,
+  fiesta: 15,
+  rushHour: 17,
+  eveningEmbers: 18,
+  night: 21,
+  midnightBlues: 0,
+}
+
 let rawCompositionTemp = {}
 compositionData.forEach(async data => {
   rawCompositionTemp = {
@@ -63,6 +86,7 @@ class App extends Component {
       squareCount: 0,
       vanishSquares: false,
       stopLooping: false,
+      height: null,
     }
   }
 
@@ -78,21 +102,24 @@ class App extends Component {
   }
 
   render() {
-    const {currentCompositionName, squareCount, vanishSquares, sidebarOpen, instructionsOpen, stopLooping} = this.state
+    const {currentCompositionName, squareCount, vanishSquares, sidebarOpen, instructionsOpen, stopLooping, height} = this.state
 
     return (
       <div className="main">
+        <Message open={instructionsOpen} onClick={this.onMessageClose}/>
         <Sidebar
           sidebar={<SidebarContent
             toggleSidebar={this.toggleSidebar}
             compositionTitles={compositionTitles}
+            timeSlots={timeSlots}
             onChange={this.onCompositionSelected}
             onFadeSelected={this.onFadeSelected}
             onStopLooping={this.onStopLooping}
             onToggleInstructions={this.onToggleInstructions}
             instructionsOpen={instructionsOpen}
-            selectedValue={currentCompositionName}
+            initialSelectedValue={currentCompositionName}
             sidebarOpen={sidebarOpen}
+            height={height}
           />}
           open={sidebarOpen}
           docked={sidebarOpen}
@@ -103,7 +130,6 @@ class App extends Component {
             <div ref={this.musicPaneRef} className="musicPaneContainer">
               <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} refreshMode="debounce"
                                    refreshRate={500}>
-                <Message open={instructionsOpen} onClick={this.onMessageClose}/>
                 <ErrorBoundary>
                   <MusicPane
                     currentCompositionName={currentCompositionName}
@@ -118,19 +144,24 @@ class App extends Component {
             </div>
           </div>
         </Sidebar>
-      </div>
+           </div>
     )
   }
+
+  toggleTimer = null
 
   onResize = (width, height) => {
     const root = document.documentElement
     root.style.setProperty('--windowHeight', `${height}px`);
     this.getSquareCount(width, height)
+    this.setState({height})
   }
 
   onPlayStarted = () => {
     if (window.innerWidth < 768) {
-      this.toggleSidebar(false)
+      this.toggleTimer = setTimeout(() => {
+        this.toggleSidebar(false)
+      }, 1000)
     }
   }
 
@@ -144,12 +175,14 @@ class App extends Component {
     if (sidebarOpen === sidebarState) {
       return
     }
+    clearTimeout(this.toggleTimer)
     this.setState({sidebarOpen: sidebarState !== undefined ? sidebarState : !sidebarOpen});
   }
 
   onCompositionSelected = ({value, id}) => {
     const selectedCompositionName = value || id
     if (selectedCompositionName && selectedCompositionName !== this.state.currentCompositionName) {
+      this.onCloseInstructions()
       this.setState({
         currentCompositionName: selectedCompositionName,
       })
@@ -188,21 +221,6 @@ class App extends Component {
 
   selectCompositionByTimeOfDay = () => {
     const hour = moment().hour()
-    const timeSlots =
-    {
-      afterMidnight: 1,
-      glassDreams: 2,
-      aubade: 5,
-      afterCoffee: 7,
-      treadmillToccata: 8,
-      promenade: 10,
-      noon: 12,
-      afternoon: 13,
-      rushHour: 17,
-      eveningEmbers: 18,
-      night: 21,
-      midnightBlues: 0,
-    }
     const compositionName = Object.keys(timeSlots).find((name, ind, arr) => {
         const compTime = timeSlots[name]
         const nextTimeKey = arr[ind + 1] || arr[0]

@@ -13,11 +13,11 @@
 	position: relative;
 	width: 80px;
 	height: 80px;
-	cursor: url(/images/notes.cur), pointer;
+	cursor: url(../images/notes.cur), pointer;
 }
 
 .isDisabled {
-	cursor: url(/images/not-allowed.cur), not-allowed;
+	cursor: url(../images/not-allowed.cur), not-allowed;
 }
 
 .sensor {

@@ -2,7 +2,7 @@
   "title": "Nocturne",
   "maxSoundCount": 10,
   "groups": {
-    "win": {
+    "win1": {
       "instruments": {
         "high": [
           "Clarinet 2",
@@ -22,7 +22,19 @@
       },
       "maxActive": 3
     },
-    "per": {
+    "win2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [],
+        "low": [
+          "Bassoon 1",
+          "Bassoon 2"
+        ]
+      },
+      "maxActive": 1
+    },
+    "per1": {
       "instruments": {
         "high": [
           "Marimba 2",
@@ -44,13 +56,24 @@
           "Tubular Bells 3"
         ],
         "low": [
-          "Taiko Drums 2",
-          "Log Drums 1"
         ]
       },
       "maxActive": 6
     },
-    "str": {
+    "per2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Taiko Drums 2",
+          "Log Drums 1"
+        ]
+      },
+      "maxActive": 1
+    },
+    "str1": {
       "instruments": {
         "high": [
           "Violin 5",
@@ -69,6 +92,31 @@
         ]
       },
       "maxActive": 3
+    },
+    "str2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [],
+        "low": [
+          "Cello 1",
+          "Cello 2",
+          "Cello 3",
+          "Cello 4"
+        ]
+      },
+      "maxActive": 2
+    },
+    "pizz": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [],
+        "low": [
+          "String Bass 1"
+        ]
+      },
+      "maxActive": 1
     },
     "bra": {
       "instruments": {
@@ -90,23 +138,6 @@
         "medium": [],
         "low": [
           "Piano 1"
-        ]
-      },
-      "maxActive": 3
-    },
-    "bas": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [],
-        "low": [
-          "Bassoon 1",
-          "Bassoon 2",
-          "Cello 1",
-          "Cello 2",
-          "Cello 3",
-          "Cello 4",
-          "String Bass 1"
         ]
       },
       "maxActive": 3

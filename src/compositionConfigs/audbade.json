@@ -49,7 +49,7 @@
       },
       "maxActive": 3
     },
-    "str": {
+    "str1": {
       "instruments": {
         "high": [
           "Violin 2",
@@ -63,6 +63,17 @@
         "low": []
       },
       "maxActive": 3
+    },
+    "str2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [],
+        "low": [
+          "Cello 1"
+        ]
+      },
+      "maxActive": 1
     },
     "win": {
       "instruments": {
@@ -91,18 +102,17 @@
       },
       "maxActive": 3
     },
-    "bas": {
+    "pizz": {
       "instruments": {
         "high": [
         ],
         "medium": [],
         "low": [
-          "Cello 1",
           "String Bass 1",
           "String Bass 2"
         ]
       },
-      "maxActive": 3
+      "maxActive": 1
     }
   }
 }

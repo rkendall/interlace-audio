@@ -17,18 +17,26 @@ export default class Message extends Component {
       >
         <div className="messageContainer" onClick={onClick}>
           <div className="message">
-            <p>Move your mouse over this area to add colored squares,</p>
-            <p>then click on them to play, or hold down the mouse button and drag.</p>
-            <p>Click and hold to loop the instrument.</p>
-            <p>Glowing squares are temporarily disabled for musical reasons.</p>
-            <p>From the menu on the left you can select music representing different times of day.</p>
+            <h1>Welcome to Impromptu Music Making</h1>
+            <p>You are now a musical improviser with a wealth of sonic
+            colors and textures at your fingertips.</p>
+            <p className="green">Move your mouse to assemble your virtual instruments,
+              then follow your musical imagination.</p>
+            <p className="blue">Click the colored squares to play, or hold down the mouse button and drag.
+            Click and hold to loop the instrument.
+            Glowing squares are taking a break for musical reasons.</p>
+            <p className="red">Select a new piece from the menu on the left. There's one representing each time of day.</p>
             <div className="prompt">Click to begin.</div>
           </div>
           <div className="mobileMessage">
-            <p>Tap this area to add and play instruments.</p>
-            <p>Press and hold to loop the instrument.</p>
-            <p>Glowing squares are temporarily disabled for musical reasons.</p>
-            <p>From the menu on the left you can select music representing different times of day.</p>
+            <h1>Welcome to Impromptu Music Making</h1>
+            <p>You are now a musical improviser with a wealth of sonic
+              colors and textures at your fingertips.</p>
+            <p className="green">Tap to add and play your virtual instruments,
+              and follow your musical imagination. (If you're using a phone, turn your ringer on.)</p>
+            <p className="blue">Hold down a colored square to loop the instrument.
+              Glowing squares are taking a break for musical reasons.</p>
+            <p className="red">Select a new piece from the menu on the left. There's one representing each time of day.</p>
             <div className="prompt">Tap to begin.</div>
           </div>
 

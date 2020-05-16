@@ -5,7 +5,7 @@
   "superGroups": {
     "mel": {
       "groups": [
-        "str",
+        "str1",
         "str2",
         "win",
         "bra"
@@ -21,7 +21,19 @@
     }
   },
   "groups": {
-    "str": {
+    "pizz1": {
+      "instruments": {
+        "high": [
+          "Violin 9"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "str1": {
       "instruments": {
         "high": [
           "Violin 3",
@@ -48,7 +60,6 @@
     "str2": {
       "instruments": {
         "high": [
-          "Violin 9",
           "Violin 10"
         ],
         "medium": [
@@ -59,6 +70,33 @@
         "low": [
           "Viola 1",
           "Viola 2"
+        ]
+      },
+      "maxActive": 1
+    },
+    "str3": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [],
+        "low": [
+          "Cello 1",
+          "Cello 2",
+          "Cello 3",
+          "Double Bass 1"
+        ]
+      },
+      "maxActive": 1
+    },
+    "pizz2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [],
+        "low": [
+          "String Bass 1",
+          "String Bass 2",
+          "String Bass 3"
         ]
       },
       "maxActive": 1
@@ -88,7 +126,7 @@
           "Tom Toms 3"
         ]
       },
-      "maxActive": 2
+      "maxActive": 1
     },
     "win": {
       "instruments": {
@@ -165,23 +203,6 @@
       },
       "maxActive": 2,
       "length": 2000
-    },
-    "bas": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [],
-        "low": [
-          "Cello 1",
-          "Cello 2",
-          "Cello 3",
-          "Double Bass 1",
-          "String Bass 1",
-          "String Bass 2",
-          "String Bass 3"
-        ]
-      },
-      "maxActive": 1
     }
   }
 }

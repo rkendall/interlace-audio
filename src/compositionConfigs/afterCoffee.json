@@ -3,7 +3,7 @@
   "maxSoundCount": 7,
   "maxBurstCount": 4,
   "groups": {
-    "str": {
+    "str1": {
       "instruments": {
         "high": [
           "Violins 3",
@@ -21,7 +21,7 @@
       },
       "maxActive": 3
     },
-    "bas": {
+    "str2": {
       "instruments": {
         "low": [
           "Cellos 1",

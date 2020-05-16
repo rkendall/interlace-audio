@@ -4,25 +4,63 @@
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	z-index: 50;
 	opacity: 0;
-	background: white;
 	transition: opacity 500ms ease-out;
 	cursor: pointer;
+	z-index: 50;
+	overflow: hidden;
 }
 
 .message, .mobileMessage {
+	height: 100%;
 	position: absolute;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	width: calc(100% - var(--sidebarWidth) - var(--sidebarTabOffset));
-	height: 60%;
-	right: 0;
-	margin: 50px 20px 0 20px;
+	text-align: center;
+	background: white;
+}
+
+.message {
+	left: calc(var(--sidebarWidth) + var(--sidebarTabOffset));
 	font-size: 1.1rem;
-	color: gray;
+}
+
+.mobileMessage {
+	display: none;
+	font-size: 1rem;
+	right: 0;
+	left: 0;
+	width: 100%;
+	margin: 0;
+}
+
+.messageContainer h1 {
+	font-size: 1.8rem;
+	color: #626262;
+}
+
+.message p {
+	margin: 20px;
+	padding: 0 30%;
+}
+
+.mobileMessage p {
+	margin: 20px;
+}
+
+.messageContainer .prompt {
+	margin-top: 40px;
+	font-size: 1.3rem
+}
+
+.green {
+	color: #2f9e4a;
+}
+
+.blue {
+	color: #0000af;
+}
+
+.red {
+	color: var(--buttonColor);
 }
 
 .messageContainer-enter {
@@ -51,21 +89,14 @@
 	display: none;
 }
 
-.messageContainer .prompt {
-	margin-top: 60px;
-	font-size: 1rem
-}
-
-.mobileMessage {
-	display: none;
-	font-size: .9rem;
-}
-
 @media screen and (min-width: 320px) and (max-width: 767px) {
 	.message {
 		display: none;
 	}
 	.mobileMessage{
 		display: block;
+	}
+	.messageContainer {
+		z-index: 200;
 	}
 }

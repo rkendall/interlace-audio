@@ -24,7 +24,7 @@
     }
   },
   "groups": {
-    "str": {
+    "str1": {
       "instruments": {
         "high": [
           "Violin 7",
@@ -152,7 +152,7 @@
       },
       "maxActive": 2
     },
-    "bas": {
+    "str2": {
       "instruments": {
         "high": [
         ],

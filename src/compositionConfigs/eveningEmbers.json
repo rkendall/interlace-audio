@@ -24,13 +24,23 @@
       },
       "maxActive": 1
     },
-    "plucked": {
+    "plucked1": {
       "instruments": {
         "high": [
         ],
         "medium": [
           "Harp 1",
-          "Harp 2",
+          "Harp 2"
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "plucked2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
           "Guitar 1",
           "Guitar 2",
           "Guitar 3"
@@ -85,7 +95,7 @@
       },
       "maxActive": 2
     },
-    "bas": {
+    "win3": {
       "instruments": {
         "high": [
         ],
