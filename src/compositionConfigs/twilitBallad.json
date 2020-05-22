@@ -1,34 +1,83 @@
 {
-  "title": "Siesta",
-  "maxSoundCount": 5,
+  "title": "Twilit Ballad",
+  "maxSoundCount": 6,
   "maxBurstCount": 2,
   "superGroups": {
-    "strings": {
+    "accompaniment": {
       "groups": [
-        "str1",
-        "str2",
-        "str3",
-        "str4"
+        "guitar1",
+        "pia2"
       ],
-      "maxActive": 2
+      "maxActive": 1
+    },
+    "bass": {
+      "groups": [
+        "str2",
+        "pizz1"
+      ],
+      "maxActive": 1
     }
   },
   "groups": {
-    "voice": {
+    "win1": {
       "instruments": {
         "high": [
-          "Soprano 1",
-          "Soprano 2",
-          "Soprano 3"
+          "Flute 1",
+          "Flute 2",
+          "Flute 3",
+          "Flute 4",
+          "Alto Sax 7",
+          "Alto Sax 8"
         ],
         "medium": [
+          "Alto Sax 1",
+          "Alto Sax 2",
+          "Alto Sax 3",
+          "Alto Sax 4",
+          "Alto Sax 5",
+          "Alto Sax 6"
         ],
-        "low": [
-        ]
+        "low": []
       },
       "maxActive": 1
     },
-    "guitar": {
+    "win2": {
+      "instruments": {
+        "high": [
+          "Flute 5",
+          "Flute 6"
+        ],
+        "medium": [
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "win3": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Clarinet 1",
+          "Clarinet 2"
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "bra1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Horn 1",
+          "Horn 2"
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "guitar1": {
       "instruments": {
         "high": [
         ],
@@ -39,47 +88,46 @@
           "Guitar 4",
           "Guitar 5"
         ],
-        "low": [
-        ]
+        "low": []
       },
       "maxActive": 1
     },
-    "per1": {
+    "pia1": {
       "instruments": {
         "high": [
+          "Piano 3"
         ],
         "medium": [
-          "Tambourine 1"
+          "Piano 1"
         ],
-        "low": [
-        ]
+        "low": []
       },
       "maxActive": 1
     },
-    "per2": {
+    "pia2": {
       "instruments": {
         "high": [
+          "Piano 5"
         ],
         "medium": [
-          "Maracas 1"
+          "Piano 2",
+          "Piano 4"
         ],
-        "low": [
-        ]
+        "low": []
       },
       "maxActive": 1
     },
     "str1": {
       "instruments": {
         "high": [
-        ],
-        "medium": [
-          "Violin 1",
-          "Violin 2",
           "Violin 3",
           "Violin 4"
         ],
-        "low": [
-        ]
+        "medium": [
+          "Violin 1",
+          "Violin 2"
+        ],
+        "low": []
       },
       "maxActive": 1
     },
@@ -88,36 +136,12 @@
         "high": [
         ],
         "medium": [
-          "Violin 5"
         ],
         "low": [
-          "Violin 6"
-        ]
-      },
-      "maxActive": 1
-    },
-    "str3": {
-      "instruments": {
-        "high": [
-          "Violin 7",
-          "Violin 8"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "str4": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Viola 1",
-          "Viola 2"
+          "Cello 1",
+          "Cello 2",
+          "Cello 3",
+          "Cello 4"
         ]
       },
       "maxActive": 1
@@ -135,41 +159,13 @@
       },
       "maxActive": 1
     },
-    "win1": {
+    "drums": {
       "instruments": {
         "high": [
-          "Clarinet 1",
-          "Clarinet 2"
         ],
         "medium": [
-          "Clarinet 3"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "win2": {
-      "instruments": {
-        "high": [
-          "Flute 1",
-          "Flute 2"
-        ],
-        "medium": [
-          "Flute 3"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "pia1": {
-      "instruments": {
-        "high": [
-          "Piano 2"
-        ],
-        "medium": [
-          "Piano 1"
+          "Drum Kit 1",
+          "Drum Kit 2"
         ],
         "low": [
         ]

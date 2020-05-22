@@ -68,12 +68,12 @@ class MusicPane extends Component {
       composition: null,
       allowDisabled: true,
       fadeAllSquares: false,
-      itemsPlaying: new Set(),
-      activeAudioCounts: {},
       // Prevents too many sounds from being started at once
       maxBurstCount: null,
       itemsLooping: new Map(),
       paused: false,
+      // forces rerender when items are started or stopped
+      itemsPlayingCount: 0,
     }
     this.audioItems = {}
     this.audioQueue = []
@@ -89,6 +89,10 @@ class MusicPane extends Component {
     this.allowCompositionChangeTimeout = 0
     this.startItemLooping = null
     this.stopItemLooping = null
+    this.itemsPlaying = new Set()
+    this.superGroups = {}
+    this.activeAudioCounts = {}
+
   }
 
   componentDidUpdate(prevProps) {
@@ -240,27 +244,15 @@ class MusicPane extends Component {
   }
 
   setItemAsStarted = audioIndex => {
-    this.setState(({itemsPlaying, superGroups}) => {
-      itemsPlaying.add(audioIndex)
-      const activeAudioCounts = this.getActiveAudioCounts({itemsPlaying, superGroups})
-      return {
-        itemsPlaying: new Set([...itemsPlaying]),
-        activeAudioCounts,
-      }
-    })
+      this.itemsPlaying.add(audioIndex)
+      this.setActiveAudioCounts()
   }
 
   playQueue = new PlayQueue({onAdd: this.setItemAsStarted, onFire: this.playAudio})
 
   setItemAsStopped = audioIndex => {
-    this.setState(({itemsPlaying, superGroups}) => {
-      itemsPlaying.delete(audioIndex)
-      const activeAudioCounts = this.getActiveAudioCounts({itemsPlaying, superGroups})
-      return {
-        itemsPlaying: new Set([...itemsPlaying]),
-        activeAudioCounts
-      }
-    })
+      this.itemsPlaying.delete(audioIndex)
+      this.setActiveAudioCounts()
   }
 
   endQueue = new EndQueue({onFire: audioItem => {
@@ -481,30 +473,28 @@ class MusicPane extends Component {
   }
 
   initializeStatus =
-    ({groups, maxSoundCount, maxBurstCount, superGroups = {}, lengths, endOffset = 3000}) => {
+    ({groups, maxSoundCount, maxBurstCount, superGroups = {}, endOffset = 3000}) => {
       const groupLimits = this.getGroupLimits(groups, superGroups)
       this.audioQueue = []
       this.initializeItemsPlaying()
       const superGroupCollection = {}
-      const activeAudioCounts = {}
+      this.activeAudioCounts = {}
       Object.entries(superGroups).forEach(([superGroupName, superGroup]) => {
-        activeAudioCounts[superGroupName] = 0
+        this.activeAudioCounts[superGroupName] = 0
         superGroup.groups.forEach(groupName => {
           superGroupCollection[groupName] = superGroupName
         })
       })
       Object.keys(groupLimits).forEach(group => {
-        activeAudioCounts[group] = 0
+        this.activeAudioCounts[group] = 0
       })
       this.loopingQueue.clear()
+      this.superGroups = superGroupCollection
       this.setState({
         maxSoundCount,
         maxBurstCount: maxBurstCount || maxSoundCount,
         groupLimits,
-        superGroups: superGroupCollection,
-        lengths,
         endOffset,
-        activeAudioCounts,
       })
     }
 
@@ -566,7 +556,8 @@ class MusicPane extends Component {
           // To prevent hanging on error
           if (!this.playQueue.length && !this.isPlayerActive()) {
             this.initializeItemsPlaying()
-            this.setState({activeAudioCounts: {}})
+            this.activeAudioCounts = {}
+            this.incrementAudioCount()
           }
           if (this.getItemPlayingCount() === 0) {
             count += 1
@@ -586,20 +577,27 @@ class MusicPane extends Component {
   }
 
   initializeItemsPlaying = () => {
-    this.setState({itemsPlaying: new Set()})
+    this.itemsPlaying = new Set()
   }
 
-  getActiveAudioCounts = ({itemsPlaying, superGroups}) => {
-    const activeAudioCounts = {}
-    itemsPlaying.forEach(audioIndex => {
+  // To force rerender
+  incrementAudioCount = () => {
+    this.setState(({itemsPlayingCount}) => {
+      return {itemsPlayingCount: itemsPlayingCount += 1}
+    })
+  }
+
+  setActiveAudioCounts = () => {
+    this.activeAudioCounts = {}
+    this.itemsPlaying.forEach(audioIndex => {
       const group = this.getGroupForAudioIndex(audioIndex)
-      const superGroup = superGroups[group]
-      activeAudioCounts[group] = activeAudioCounts[group] ? activeAudioCounts[group] += 1 : 1
+      const superGroup = this.superGroups[group]
+      this.activeAudioCounts[group] = this.activeAudioCounts[group] ? this.activeAudioCounts[group] += 1 : 1
       if (superGroup) {
-        activeAudioCounts[superGroup] = activeAudioCounts[superGroup] ? activeAudioCounts[superGroup] += 1 : 1
+        this.activeAudioCounts[superGroup] = this.activeAudioCounts[superGroup] ? this.activeAudioCounts[superGroup] += 1 : 1
       }
     })
-    return activeAudioCounts
+    this.incrementAudioCount()
   }
 
   isPlayerActive = () => {
@@ -609,9 +607,9 @@ class MusicPane extends Component {
     return Object.values(this.audioItems).some(({audio}) => audio.playing())
   }
 
-  isItemPlaying = audioIndex => this.state.itemsPlaying.has(audioIndex)
+  isItemPlaying = audioIndex => this.itemsPlaying.has(audioIndex)
 
-  getItemPlayingCount = () => this.state.itemsPlaying.size
+  getItemPlayingCount = () => this.itemsPlaying.size
 
   isAudioPlayable = audioIndex => {
     const group = this.getGroupForAudioIndex(audioIndex)
@@ -627,20 +625,20 @@ class MusicPane extends Component {
     if (this.isMaxActiveAudio()) {
       return 0
     }
-    const {superGroups, activeAudioCounts, groupLimits} = this.state
+    const {groupLimits} = this.state
     const availableSlotsForGroups = Object.entries(groupLimits).reduce((slots, [groupName, limit]) => {
       return {
         ...slots,
-        [groupName]: limit - (activeAudioCounts[groupName] || 0)
+        [groupName]: limit - (this.activeAudioCounts[groupName] || 0)
       }
     }, {})
     const availableSlotCount = Object.entries(availableSlotsForGroups).reduce((count, [groupName, availableSlotsInSuperGroup]) => {
-      if (!superGroups[groupName]) {
+      if (!this.superGroups[groupName]) {
         return count + availableSlotsInSuperGroup
       } else {
         const superGroupName = groupName
         const availableSlotsForSubgroups = Object.entries(availableSlotsForGroups).reduce((slots, [name, availableSubCount]) => {
-          const isGroupPartOfSuperGroup = superGroups[name] === superGroupName
+          const isGroupPartOfSuperGroup = this.superGroups[name] === superGroupName
           const slotsToAddFromSubGroup = isGroupPartOfSuperGroup ? availableSubCount : 0
           slots += slotsToAddFromSubGroup
           return slots
@@ -653,11 +651,11 @@ class MusicPane extends Component {
   }
 
   isGroupFull = group => {
-    if (this.state.activeAudioCounts[group] === this.state.groupLimits[group]) {
+    if (this.activeAudioCounts[group] === this.state.groupLimits[group]) {
       return true
     }
-    const superGroup = this.state.superGroups[group]
-    return superGroup ? this.state.activeAudioCounts[superGroup] === this.state.groupLimits[superGroup] : false
+    const superGroup = this.superGroups[group]
+    return superGroup ? this.activeAudioCounts[superGroup] === this.state.groupLimits[superGroup] : false
   }
 
   isMaxActiveAudio = () => {

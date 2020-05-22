@@ -21,30 +21,15 @@ class SideBar extends Component {
 
   componentDidMount() {
     const {selectedInd} = this.state
-    const {compositionTitles} = this.props
-    scroller.scrollTo(compositionTitles[selectedInd].name, {
-      containerId: 'menu',
-      smooth: false,
-    })
+    this.scrollToSelection({selectedInd})
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const {selectedInd} = this.state
+  componentDidUpdate(prevProps) {
     const {height} = this.props
-    const {onChange} = this.props
-    if (selectedInd === prevState.selectedInd && height === prevProps.height) {
-      return
+    if (height !== prevProps.height) {
+      const {selectedInd} = this.state
+      this.scrollToSelection({selectedInd})
     }
-    const {compositionTitles} = this.props
-    const name = compositionTitles[selectedInd].name
-    scroller.scrollTo(name, {
-      containerId: 'menu',
-      smooth: 'easeInQuad',
-      duration: 300,
-      delay: 0,
-      offset: -20,
-    })
-    onChange({id: name})
   }
 
   render() {
@@ -75,11 +60,11 @@ class SideBar extends Component {
           <div className="box">
             <div className="byline">
               <div>Interactive Music</div>
-              <div>By <a href="http://robertkendall.com" target="_blank">Robert Kendall</a></div>
+              <div>By <a href="http://robertkendall.com" target="_blank" rel="noopener noreferrer">Robert Kendall</a></div>
             </div>
           </div>
           <div className="box heading">Select an Impromptu</div>
-          <button className="up arrow box" onClick={this.selectPrevious}><KeyboardArrowUp /></button>
+          <button className="up arrow box" onClick={this.selectNextOrPrevious.bind(null, 'previous')}><KeyboardArrowUp /></button>
           <div id="menu" className="box menu" ref={this.menu}>
               {compositionTitles.map(({name, title}, ind) => (
                 <div className={classNames('menuOption', {selected: ind === selectedInd})} onMouseDown={this.onChange.bind(null, ind)} key={name}>
@@ -89,7 +74,7 @@ class SideBar extends Component {
                 </div>
               ))}
           </div>
-          <button className="down arrow box" onClick={this.selectNext}><KeyboardArrowDown /></button>
+          <button className="down arrow box" onClick={this.selectNextOrPrevious.bind(null, 'next')}><KeyboardArrowDown /></button>
           <div className="box controls">
             <div className="instructions">Click and hold on a square to start/stop looping</div>
             <Button
@@ -113,6 +98,20 @@ class SideBar extends Component {
     )
   }
 
+  scrollToSelection({selectedInd, animate = false}) {
+    const options = animate ? {
+      containerId: 'menu',
+      smooth: 'easeInQuad',
+      duration: 300,
+      delay: 0,
+      offset: -20,
+    } : {smooth: false}
+    options.containerId = 'menu'
+    const {compositionTitles} = this.props
+    const name = compositionTitles[selectedInd].name
+    scroller.scrollTo(name, options)
+  }
+
   getTimeForComposition = name => {
     const {timeSlots} = this.props
     const timeSlot = timeSlots[name]
@@ -126,20 +125,29 @@ class SideBar extends Component {
   }
 
   onChange = ind => {
+    const {onChange, compositionTitles} = this.props
     this.setState(({selectedInd}) => {
       return ind !== selectedInd ? {selectedInd: ind} : null
     })
+    const name = compositionTitles[ind].name
+    onChange({id: name})
   }
 
-  selectPrevious = () => {
-    const {selectedInd} = this.state
-    this.onChange(Math.max(selectedInd - 1, 0))
-  }
-
-  selectNext = () => {
+  selectNextOrPrevious = type => {
+    const {selectedInd: currentInd} = this.state
     const {compositionTitles} = this.props
-    const {selectedInd} = this.state
-    this.onChange(Math.min(selectedInd + 1, compositionTitles.length - 1))
+    const lastInd = compositionTitles.length - 1
+    const getPrevious = () => {
+      const newInd = currentInd - 1
+      return newInd >= 0 ? newInd : lastInd
+    }
+    const getNext = () => {
+      const newInd = currentInd + 1
+      return newInd <= lastInd ? newInd : 0
+    }
+    const selectedInd = type === 'previous' ? getPrevious() : getNext()
+    this.scrollToSelection({selectedInd, animate: true})
+    this.onChange(selectedInd)
   }
 
 }

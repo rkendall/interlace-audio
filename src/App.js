@@ -13,14 +13,15 @@ import noon from './compositionConfigs/noon.json'
 import afternoon from './compositionConfigs/afternoon.json'
 import night from './compositionConfigs/night.json'
 import afterMidnight from './compositionConfigs/afterMidnight.json'
-import eveningEmbers from './compositionConfigs/eveningEmbers.json'
 import glassDreams from './compositionConfigs/glassDreams.json'
-import midnightBlues from './compositionConfigs/midnightBlues.json'
 import promenade from './compositionConfigs/promenade.json'
 import rushHour from './compositionConfigs/rushHour.json'
 import treadmillToccata from './compositionConfigs/treadmillToccata.json'
 import siesta from './compositionConfigs/siesta.json'
 import fiesta from './compositionConfigs/fiesta.json'
+import eveningEmbers from './compositionConfigs/eveningEmbers.json'
+import twilitBallad from './compositionConfigs/twilitBallad.json'
+import midnightBlues from './compositionConfigs/midnightBlues.json'
 
 const compositionData = [
   {glassDreams},
@@ -34,6 +35,7 @@ const compositionData = [
   {fiesta},
   {rushHour},
   {eveningEmbers},
+  {twilitBallad},
   {night},
   {midnightBlues},
   {afterMidnight},
@@ -43,7 +45,7 @@ const timeSlots =
 {
   afterMidnight: 1,
   glassDreams: 2,
-  aubade: 5,
+  aubade: 6,
   afterCoffee: 7,
   treadmillToccata: 8,
   promenade: 10,
@@ -53,6 +55,7 @@ const timeSlots =
   fiesta: 15,
   rushHour: 17,
   eveningEmbers: 18,
+  twilitBallad: 20,
   night: 21,
   midnightBlues: 0,
 }

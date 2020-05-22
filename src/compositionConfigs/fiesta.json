@@ -183,9 +183,7 @@
         ],
         "low": [
           "String Bass 1",
-          "String Bass 2",
-          "Cello 1",
-          "Cello 2"
+          "String Bass 2"
         ]
       },
       "maxActive": 1
