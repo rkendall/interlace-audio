@@ -65,7 +65,6 @@ class MusicPane extends Component {
       initialized: false,
       loading: true,
       squareCount: null,
-      composition: null,
       allowDisabled: true,
       fadeAllSquares: false,
       // Prevents too many sounds from being started at once
@@ -75,7 +74,7 @@ class MusicPane extends Component {
       // forces rerender when items are started or stopped
       itemsPlayingCount: 0,
     }
-    this.audioItems = {}
+    this.composition = []
     this.audioQueue = []
     this.audioToStop = new Map()
     this.playTimer = null
@@ -117,16 +116,16 @@ class MusicPane extends Component {
   }
 
   render() {
-    const {composition, loading, allowDisabled, fadeAllSquares, itemsLooping} = this.state
+    const {loading, allowDisabled, fadeAllSquares, itemsLooping, itemsPlayingCount} = this.state
     const {squareCount, vanishSquares, onPlayStarted} = this.props
-    return !loading && composition && squareCount ?
+    return !loading && this.composition.length && squareCount ?
       (<Fragment>
           <div className="paneWrapper" onMouseOver={this.handleInactivity} onTouchStart={onPlayStarted}>
             <div
               className="pane"
               onContextMenu={this.suppressContextMenu}
             >
-              {composition.map(audioItem => {
+              {this.composition.map(audioItem => {
                 const {audioName, group, audioIndex} = audioItem
                 const key = `${audioName}-${audioIndex}`
                 const triggerProps = {
@@ -239,7 +238,7 @@ class MusicPane extends Component {
   }
 
   playAudio = audioIndex => {
-    const sound = this.getAudioByIndex(audioIndex).audio
+    const sound = this.composition[audioIndex].audio
     sound.play()
   }
 
@@ -251,6 +250,7 @@ class MusicPane extends Component {
   playQueue = new PlayQueue({onAdd: this.setItemAsStarted, onFire: this.playAudio})
 
   setItemAsStopped = audioIndex => {
+    console.log('set item as stopped', audioIndex)
       this.itemsPlaying.delete(audioIndex)
       this.setActiveAudioCounts()
   }
@@ -301,8 +301,8 @@ class MusicPane extends Component {
   }
 
   loadAllAudio = () => {
-    const audioPromises = this.audioItemsUniqueArray.map(({audioName}) => {
-      return this.createAudioItem(audioName)
+    const audioPromises = this.composition.map((item, ind) => {
+      return this.createAudioItem(ind)
     })
     return audioPromises
   }
@@ -341,17 +341,15 @@ class MusicPane extends Component {
     return duplicatedAudioItems.slice(0, squareCount)
   }
 
-  createAudioItem = audioName => {
+  createAudioItem = audioInd => {
     const {currentCompositionName} = this.props
     const loadPromise = new Promise((resolve) => {
-      resolve()
-    })
-    if (!this.audioItems[audioName]) {
+      const audioName = this.composition[audioInd].audioName
       const src = `audio/${currentCompositionName}/${audioName}.mp3`
       const audio = new Howl({
         src,
         volume: 1,
-        onload: () => loadPromise,
+        onload: resolve,
         onloaderror: (id, error) => {
           console.error(`Error loading ${src} -- ${error}`)
         },
@@ -359,26 +357,21 @@ class MusicPane extends Component {
           console.error(`Error playing ${src} -- ${error}`)
         },
       })
-      this.audioItems[audioName] = {
-        audio
-      }
-    }
+      this.composition[audioInd].audio = audio
+    })
     return loadPromise
   }
 
   initializeTriggers = () => {
     const {squareCount} = this.props
     const sizedItemsArray = this.getSizedAudioItemsArray(squareCount)
-    const composition = sizedItemsArray.map((item, ind) => {
+    this.composition = sizedItemsArray.map((item, ind) => {
       return {
         ...item,
         audioIndex: ind,
       }
     })
-    Howler.pool = composition.length
-    this.setState({
-      composition,
-    })
+    Howler.pool = this.composition.length
   }
 
   clearTimers = () => {
@@ -390,7 +383,7 @@ class MusicPane extends Component {
   }
 
   fadeAllAudio = () => {
-    Object.entries(this.audioItems).forEach(([name, {audio}]) => {
+    this.composition.forEach(({audio}) => {
       if (audio.playing()) {
         audio.once('fade', () => {
           audio.once('fade', () => {
@@ -452,8 +445,8 @@ class MusicPane extends Component {
     const compositionData = rawCompositions[currentCompositionName]
     this.audioItemsByRange = this.getAudioItemsByRange(compositionData.groups)
     this.audioItemsUniqueArray = this.flattenAudioItems(this.audioItemsByRange)
-    this.setState({composition: null, fadeAllSquares: false}, () => {
-      this.audioItems = {}
+    this.setState({fadeAllSquares: false}, () => {
+      this.composition = []
       this.clearAudio()
       this.playQueue.clear()
       this.endQueue.clear()
@@ -505,7 +498,7 @@ class MusicPane extends Component {
   }
 
   addAudioDurations = () => {
-    Object.values(this.audioItems).forEach(audioItem => {
+    this.composition.forEach(audioItem => {
       const {audio} = audioItem
       audio.on('load', () => {
         audioItem.duration = this.getDuration(audio.duration())
@@ -597,14 +590,12 @@ class MusicPane extends Component {
         this.activeAudioCounts[superGroup] = this.activeAudioCounts[superGroup] ? this.activeAudioCounts[superGroup] += 1 : 1
       }
     })
+    console.log('items playing', this.itemsPlaying)
     this.incrementAudioCount()
   }
 
   isPlayerActive = () => {
-    if (!this.audioItems) {
-      return false
-    }
-    return Object.values(this.audioItems).some(({audio}) => audio.playing())
+    return this.composition.some(({audio}) => audio.playing())
   }
 
   isItemPlaying = audioIndex => this.itemsPlaying.has(audioIndex)
@@ -612,13 +603,14 @@ class MusicPane extends Component {
   getItemPlayingCount = () => this.itemsPlaying.size
 
   isAudioPlayable = audioIndex => {
+    console.log('playing count', this.getItemPlayingCount())
+    console.log('is group full', this.isGroupFull(this.getGroupForAudioIndex(audioIndex)))
     const group = this.getGroupForAudioIndex(audioIndex)
     return !this.isGroupFull(group) && !this.isMaxActiveAudio() && !this.isBurstBufferFull()
   }
 
   getGroupForAudioIndex = audioIndex => {
-    const {composition} = this.state
-    return composition[audioIndex].group
+    return this.composition[audioIndex].group
   }
 
   getAvailableAudioSlotCount = () => {
@@ -686,9 +678,7 @@ class MusicPane extends Component {
   }
 
   getAudioByIndex = audioIndex => {
-    const {composition} = this.state
-    const audioName = composition[audioIndex].audioName
-    return this.audioItems[audioName]
+    return this.composition[audioIndex].audio
   }
 
   startAllowDisabledTimer = () => {
