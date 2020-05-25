@@ -35,7 +35,9 @@
         "high": [
           "Soprano 1",
           "Soprano 2",
-          "Soprano 3"
+          "Soprano 3",
+          "Soprano 4",
+          "Soprano 5"
         ],
         "medium": [
         ],
@@ -53,7 +55,9 @@
           "Guitar 2",
           "Guitar 3",
           "Guitar 4",
-          "Guitar 5"
+          "Guitar 5",
+          "Guitar 6",
+          "Guitar 7"
         ],
         "low": [
         ]

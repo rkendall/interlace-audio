@@ -2,61 +2,9 @@ import React, {Component, Fragment} from 'react'
 import {Howl, Howler} from 'howler'
 import ReactLoading from 'react-loading'
 import debounce from 'lodash/debounce'
+import memoize from 'lodash/memoize';
 import './MusicPane.css'
 import Trigger from './Trigger'
-
-class PlayQueue {
-  constructor({onAdd, onFire}) {
-    this.values = []
-    this.onAdd = onAdd
-    this.onFire = onFire
-  }
-
-  add(value) {
-    this.values.push(value)
-    this.onAdd(value)
-  }
-
-  fire() {
-    this.values.forEach(val => {
-      this.onFire(val)
-    })
-    this.values = []
-  }
-
-  clear() {
-    this.values = []
-  }
-}
-
-class EndQueue extends Map {
-  constructor({onFire}) {
-    super()
-    this.onFire = onFire
-  }
-
-  add(key, value) {
-    if (!super.has(key)) {
-      super.set(key, [value])
-    } else {
-      super.get(key).push(value)
-    }
-  }
-
-  fire(key) {
-    if (super.has(key)) {
-      super.get(key).forEach(audioIndex => {
-        // TODO only fire this if item is not looping
-        this.onFire(audioIndex)
-      })
-      super.delete(key)
-    }
-  }
-
-  clear() {
-    super.clear()
-  }
-}
 
 class MusicPane extends Component {
   constructor() {
@@ -69,14 +17,11 @@ class MusicPane extends Component {
       fadeAllSquares: false,
       // Prevents too many sounds from being started at once
       maxBurstCount: null,
-      itemsLooping: new Map(),
       paused: false,
       // forces rerender when items are started or stopped
       itemsPlayingCount: 0,
     }
     this.composition = []
-    this.audioQueue = []
-    this.audioToStop = new Map()
     this.playTimer = null
     this.allowCallTimer = null
     this.loadingTimer = null
@@ -86,12 +31,12 @@ class MusicPane extends Component {
     this.nextPlayTime = 0
     this.allowCompositionChange = true
     this.allowCompositionChangeTimeout = 0
-    this.startItemLooping = null
-    this.stopItemLooping = null
     this.itemsPlaying = new Set()
     this.superGroups = {}
     this.activeAudioCounts = {}
-
+    this.playQueue = new Set()
+    this.itemsLooping = new Set()
+    this.lastItemLooping = null
   }
 
   componentDidUpdate(prevProps) {
@@ -106,7 +51,7 @@ class MusicPane extends Component {
     } else if (squareCount && squareCount !== prevProps.squareCount) {
       this.changeComposition()
     } else if (stopLooping) {
-      this.loopingQueue.clear()
+      this.itemsLooping.clear()
     }
   }
 
@@ -116,7 +61,7 @@ class MusicPane extends Component {
   }
 
   render() {
-    const {loading, allowDisabled, fadeAllSquares, itemsLooping, itemsPlayingCount} = this.state
+    const {loading, allowDisabled, fadeAllSquares} = this.state
     const {squareCount, vanishSquares, onPlayStarted} = this.props
     return !loading && this.composition.length && squareCount ?
       (<Fragment>
@@ -139,7 +84,7 @@ class MusicPane extends Component {
                   disabled: !this.isAudioPlayable(audioIndex),
                   allowDisabled,
                   isPlaying: this.isItemPlaying(audioIndex),
-                  isLooping: itemsLooping.has(audioIndex),
+                  isLooping: this.itemsLooping.has(audioIndex),
                   fadeSquares: vanishSquares,
                   fadeAllSquares,
                 }
@@ -153,115 +98,50 @@ class MusicPane extends Component {
       ) : <div className="loading"><ReactLoading type="spinningBubbles" color="blue" delay={300}/></div>
   }
 
-  initLoopingQueue = () => {
-    let itemsLooping = new Map()
-    let lastItemLooping
-
-    const updateState = () => {
-      this.setState({itemsLooping})
+  areAllSlotsUsed = () => {
+    if (this.isMaxActiveAudio()) {
+      return true
     }
-    const canLoop = audioIndex => this.isItemPlaying(audioIndex) || this.isAudioPlayable(audioIndex)
-    const isLooping = (audioIndex) => itemsLooping.has(audioIndex)
+    const {groupLimits} = this.state
+    return !Object.keys(groupLimits).some(group => !this.isGroupFull(group))
+  }
 
-    const stop = (audioIndex) => {
-      const item = itemsLooping.get(audioIndex)
-      if (!item) {
-        return
-      }
-      itemsLooping.delete(audioIndex)
-      updateState()
-      this.setItemAsStopped(audioIndex)
+  stopLastLoopingItemIfNecessary = () => {
+    if (this.itemsPlaying.length === this.state.maxSoundCount - 1) {
+      return
     }
-    const stopLastLoopingItemIfNecessary = () => {
-      const availableAudioSlots = this.getAvailableAudioSlotCount()
-      if (availableAudioSlots === 0) {
-        stop(lastItemLooping)
-      }
+    if (this.areAllSlotsUsed()) {
+      this.stopItemLooping(this.lastItemLooping)
     }
+  }
 
-    const start = (audioIndex) => {
-      stopLastLoopingItemIfNecessary()
-      const duration = this.getAudioByIndex(audioIndex).duration
-      const endTime = this.nextPlayTime + duration
-      const item = {audioIndex, active: true, endTime, duration}
-      itemsLooping.set(audioIndex, item)
-      updateState()
-      lastItemLooping = audioIndex
-      this.setItemAsStarted(audioIndex)
-    }
+  startItemLooping = audioIndex => {
+    this.itemsLooping.add(audioIndex)
+    this.itemsPlaying.add(audioIndex)
+    this.stopLastLoopingItemIfNecessary()
+    this.incrementAudioCount()
+    this.lastItemLooping = audioIndex
+  }
 
-    const toggle = audioIndex => {
-      if (isLooping(audioIndex)) {
-        stop(audioIndex)
-      } else if (canLoop(audioIndex)) {
-        start(audioIndex)
-      }
-    }
-
-    const fire = () => {
-      if (this.state.allowDisabled) {
-        if (this.startItemLooping && (this.isItemPlaying(this.startItemLooping) || this.isAudioPlayable(this.startItemLooping))) {
-          start(this.startItemLooping)
-          this.startItemLooping = null
-        } else if (this.stopItemLooping) {
-          stop(this.stopItemLooping)
-          this.stopItemLooping = null
-        }
-      }
-      itemsLooping.forEach(item => {
-        const {audioIndex, endTime, duration} = item
-        if (endTime === this.nextPlayTime) {
-          this.playAudio(audioIndex)
-          // this.setItemAsStarted(audioIndex)
-          item.endTime = endTime + duration
-        }
-      })
-    }
-
-    const clear = () => {
-      itemsLooping.forEach(({audioIndex}) => {
-        this.setItemAsStopped(audioIndex)
-      })
-      itemsLooping = new Map()
-      updateState()
-    }
-    const getLoopingCount = () => itemsLooping.size
-
-    return {
-      isLooping,
-      toggle,
-      fire,
-      clear,
-      getLoopingCount,
-    }
-
+  stopItemLooping = audioIndex => {
+    this.itemsLooping.delete(audioIndex)
+    this.incrementAudioCount()
   }
 
   playAudio = audioIndex => {
     const sound = this.composition[audioIndex].audio
-    sound.play()
+    const audioId = sound.play()
+    this.composition[audioIndex].audioId = audioId
   }
 
   setItemAsStarted = audioIndex => {
-      this.itemsPlaying.add(audioIndex)
-      this.setActiveAudioCounts()
-  }
-
-  playQueue = new PlayQueue({onAdd: this.setItemAsStarted, onFire: this.playAudio})
-
-  setItemAsStopped = audioIndex => {
-    console.log('set item as stopped', audioIndex)
-      this.itemsPlaying.delete(audioIndex)
-      this.setActiveAudioCounts()
-  }
-
-  endQueue = new EndQueue({onFire: audioItem => {
-    if (!this.loopingQueue.isLooping(audioItem)) {
-      this.setItemAsStopped(audioItem)
+    if (this.isBurstLimitReached()) {
+      return
     }
-  }})
-
-  loopingQueue = this.initLoopingQueue()
+    this.itemsPlaying.add(audioIndex)
+    this.playQueue.add(audioIndex)
+    this.incrementAudioCount()
+  }
 
   suppressContextMenu = event => {
     event.preventDefault()
@@ -343,20 +223,27 @@ class MusicPane extends Component {
 
   createAudioItem = audioInd => {
     const {currentCompositionName} = this.props
-    const loadPromise = new Promise((resolve) => {
+    const loadPromise = new Promise((resolve, reject) => {
       const audioName = this.composition[audioInd].audioName
       const src = `audio/${currentCompositionName}/${audioName}.mp3`
       const audio = new Howl({
         src,
         volume: 1,
-        onload: resolve,
+        onload: () => {
+          this.composition[audioInd].end = Math.round(audio.duration()) - (this.state.endOffset / 1000)
+          resolve()
+        },
         onloaderror: (id, error) => {
           console.error(`Error loading ${src} -- ${error}`)
+          this.composition[audioInd].audio = {play: noOp, seek: noOp, playing: noOp, once: noOp, fade: noOp}
+          this.composition[audioInd].duration = 0
+          reject(audioInd)
         },
         onplayerror: (id, error) => {
           console.error(`Error playing ${src} -- ${error}`)
         },
       })
+      const noOp = () => {}
       this.composition[audioInd].audio = audio
     })
     return loadPromise
@@ -417,7 +304,8 @@ class MusicPane extends Component {
     } else if (this.isStillVisible()) {
       initTimeout = 1500
     }
-    this.loopingQueue.clear()
+    this.itemsPlaying.clear()
+    this.itemsLooping.clear()
     this.setState({fadeAllSquares: true})
     return initTimeout
   }
@@ -437,6 +325,7 @@ class MusicPane extends Component {
     this.allowCompositionChange = false
     clearTimeout(this.allowCallTimer)
     this.allowCallTimer = setTimeout(() => {
+      this.allowCompositionChange = true
     }, this.allowCompositionChangeTimeout)
   }
 
@@ -444,19 +333,16 @@ class MusicPane extends Component {
     const {rawCompositions, currentCompositionName} = this.props
     const compositionData = rawCompositions[currentCompositionName]
     this.audioItemsByRange = this.getAudioItemsByRange(compositionData.groups)
-    this.audioItemsUniqueArray = this.flattenAudioItems(this.audioItemsByRange)
     this.setState({fadeAllSquares: false}, () => {
       this.composition = []
       this.clearAudio()
-      this.playQueue.clear()
-      this.endQueue.clear()
-      this.loopingQueue.clear()
+      this.itemsPlaying.clear()
+      this.itemsLooping.clear()
       this.initializeStatus(compositionData)
       this.clearTimers()
       this.initializeTriggers()
       const audioLoadPromises = this.loadAllAudio()
-      Promise.all(audioLoadPromises).then(() => {
-        this.addAudioDurations()
+      Promise.allSettled(audioLoadPromises).then(() => {
         this.setPlayTimer()
         clearTimeout(this.loadingTimer)
         this.setState({loading: false})
@@ -470,18 +356,19 @@ class MusicPane extends Component {
       const groupLimits = this.getGroupLimits(groups, superGroups)
       this.audioQueue = []
       this.initializeItemsPlaying()
+      this.playQueue = new Set()
       const superGroupCollection = {}
       this.activeAudioCounts = {}
+      this.superGroupContent = {}
       Object.entries(superGroups).forEach(([superGroupName, superGroup]) => {
-        this.activeAudioCounts[superGroupName] = 0
+        this.superGroupContent[superGroupName] = []
         superGroup.groups.forEach(groupName => {
           superGroupCollection[groupName] = superGroupName
+          this.superGroupContent[superGroupName].push(groupName)
         })
       })
-      Object.keys(groupLimits).forEach(group => {
-        this.activeAudioCounts[group] = 0
-      })
-      this.loopingQueue.clear()
+      this.itemsPlaying.clear()
+      this.itemsLooping.clear()
       this.superGroups = superGroupCollection
       this.setState({
         maxSoundCount,
@@ -491,24 +378,29 @@ class MusicPane extends Component {
       })
     }
 
-  getDuration = audioLength => {
-    const {endOffset} = this.state
-    const duration = Math.round(audioLength) * 1000
-    return duration - endOffset
-  }
-
-  addAudioDurations = () => {
-    this.composition.forEach(audioItem => {
-      const {audio} = audioItem
-      audio.on('load', () => {
-        audioItem.duration = this.getDuration(audio.duration())
-      })
-      audio.load()
-    })
-  }
-
   clearAudio = () => {
     Howler.unload()
+  }
+
+  // TODO Check the functionality here for the conditionals
+  updateFinishedAudio = () => {
+    this.itemsPlaying.forEach(audioIndex => {
+      const {audio, end, audioId} = this.composition[audioIndex]
+      const rawPosition = audioId ? audio.seek(null, audioId) : audio.seek() || null
+      const position = Math.ceil(rawPosition)
+      if (isNaN(position)) {
+        this.itemsPlaying.delete(audioIndex)
+        this.itemsLooping.delete(audioIndex)
+        this.incrementAudioCount()
+      } else if (position === end) {
+        if (this.itemsLooping.has(audioIndex)) {
+          this.playQueue.add(audioIndex)
+        } else {
+          this.itemsPlaying.delete(audioIndex)
+          this.incrementAudioCount()
+        }
+      }
+    })
   }
 
   setPlayTimer = () => {
@@ -524,8 +416,8 @@ class MusicPane extends Component {
         const timeUntilPlay = this.nextPlayTime - now
         timeout = 100
         if (!endTimesSet && timeUntilPlay <= 900) {
-          this.endQueue.fire(this.nextPlayTime)
           endTimesSet = true
+          this.updateFinishedAudio()
         }
         if (timeUntilPlay <= 200) {
           this.isQueueLockedForDragging = true
@@ -534,10 +426,12 @@ class MusicPane extends Component {
           timeout = 10
         }
         if (!fireDone && timeUntilPlay <= 0) {
-          timeout = 200
-          this.playQueue.fire()
-          this.loopingQueue.fire()
+          this.playQueue.forEach(audioIndex => {
+            this.playAudio(audioIndex)
+          })
+          this.playQueue.clear()
           fireDone = true
+          timeout = 200
         }
         if (timeUntilPlay <= -100) {
           this.isQueueLockedForDragging = false
@@ -546,10 +440,10 @@ class MusicPane extends Component {
           this.nextPlayTime += 1000
           endTimesSet = false
           fireDone = false
-          // To prevent hanging on error
-          if (!this.playQueue.length && !this.isPlayerActive()) {
-            this.initializeItemsPlaying()
-            this.activeAudioCounts = {}
+          // As a safeguard
+          if (!this.isPlayerActive()) {
+            this.itemsPlaying.clear()
+            this.itemsLooping.clear()
             this.incrementAudioCount()
           }
           if (this.getItemPlayingCount() === 0) {
@@ -580,19 +474,7 @@ class MusicPane extends Component {
     })
   }
 
-  setActiveAudioCounts = () => {
-    this.activeAudioCounts = {}
-    this.itemsPlaying.forEach(audioIndex => {
-      const group = this.getGroupForAudioIndex(audioIndex)
-      const superGroup = this.superGroups[group]
-      this.activeAudioCounts[group] = this.activeAudioCounts[group] ? this.activeAudioCounts[group] += 1 : 1
-      if (superGroup) {
-        this.activeAudioCounts[superGroup] = this.activeAudioCounts[superGroup] ? this.activeAudioCounts[superGroup] += 1 : 1
-      }
-    })
-    console.log('items playing', this.itemsPlaying)
-    this.incrementAudioCount()
-  }
+  isBurstLimitReached = () => this.playQueue.size >= this.state.maxBurstCount
 
   isPlayerActive = () => {
     return this.composition.some(({audio}) => audio.playing())
@@ -603,78 +485,46 @@ class MusicPane extends Component {
   getItemPlayingCount = () => this.itemsPlaying.size
 
   isAudioPlayable = audioIndex => {
-    console.log('playing count', this.getItemPlayingCount())
-    console.log('is group full', this.isGroupFull(this.getGroupForAudioIndex(audioIndex)))
+    if (this.isItemPlaying(audioIndex) || this.isMaxActiveAudio()) {
+      return false
+    }
     const group = this.getGroupForAudioIndex(audioIndex)
-    return !this.isGroupFull(group) && !this.isMaxActiveAudio() && !this.isBurstBufferFull()
+    return !this.isGroupDisabled(group)
   }
 
   getGroupForAudioIndex = audioIndex => {
     return this.composition[audioIndex].group
   }
 
-  getAvailableAudioSlotCount = () => {
-    if (this.isMaxActiveAudio()) {
-      return 0
-    }
-    const {groupLimits} = this.state
-    const availableSlotsForGroups = Object.entries(groupLimits).reduce((slots, [groupName, limit]) => {
-      return {
-        ...slots,
-        [groupName]: limit - (this.activeAudioCounts[groupName] || 0)
-      }
-    }, {})
-    const availableSlotCount = Object.entries(availableSlotsForGroups).reduce((count, [groupName, availableSlotsInSuperGroup]) => {
-      if (!this.superGroups[groupName]) {
-        return count + availableSlotsInSuperGroup
-      } else {
-        const superGroupName = groupName
-        const availableSlotsForSubgroups = Object.entries(availableSlotsForGroups).reduce((slots, [name, availableSubCount]) => {
-          const isGroupPartOfSuperGroup = this.superGroups[name] === superGroupName
-          const slotsToAddFromSubGroup = isGroupPartOfSuperGroup ? availableSubCount : 0
-          slots += slotsToAddFromSubGroup
-          return slots
-        }, 0)
-        return Math.min(availableSlotsForSubgroups, availableSlotsInSuperGroup)
-      }
-    }, 0)
-    const totalAvailable = this.state.maxSoundCount - this.getItemPlayingCount()
-    return Math.min(availableSlotCount, totalAvailable)
+  getGroupActiveCount = groupToCheck => this.composition.filter(({audioIndex, group}) => group === groupToCheck && this.isItemPlaying(audioIndex)).length
+
+  getActiveSuperGroupCount = superGroup => this.superGroupContent[superGroup].reduce((count, groupName) => count + this.getGroupActiveCount(groupName), 0)
+
+  isGroupFull = groupToCheck => {
+    const groupCount = this.getGroupActiveCount(groupToCheck)
+    return groupCount >= this.state.groupLimits[groupToCheck]
   }
 
-  isGroupFull = group => {
-    if (this.activeAudioCounts[group] === this.state.groupLimits[group]) {
+  isSuperGroupFull = superGroup => {
+    const superGroupCount = this.getActiveSuperGroupCount(superGroup)
+    return superGroupCount >= this.state.groupLimits[superGroup]
+  }
+
+  isGroupDisabledBase = ({group, itemsPlayingCount}) => {
+    if (this.isGroupFull(group)) {
       return true
     }
     const superGroup = this.superGroups[group]
-    return superGroup ? this.activeAudioCounts[superGroup] === this.state.groupLimits[superGroup] : false
+    return superGroup ? this.isSuperGroupFull(superGroup) : false
   }
+
+  isGroupDisabledMemoized = memoize(this.isGroupDisabledBase)
+
+  isGroupDisabled = group =>
+    this.isGroupDisabledMemoized({group, itemsPlayingCount: this.state.itemsPlayingCount})
 
   isMaxActiveAudio = () => {
     return this.getItemPlayingCount() >= this.state.maxSoundCount
-  }
-
-  isBurstBufferFull = () => {
-    const {maxBurstCount} = this.state
-    return this.playQueue.length + this.loopingQueue.getLoopingCount() >= maxBurstCount
-  }
-
-  setAudioStopTimes = ({playTime, queue, stopList}) => {
-    queue.forEach(audioIndex => {
-      const duration = this.getAudioByIndex(audioIndex).duration
-      const endTime = playTime + duration
-      const itemsForTime = stopList.get(endTime) || []
-      const areExistingItems = itemsForTime.length
-      if (!areExistingItems) {
-        itemsForTime.push(audioIndex)
-      }
-      stopList.set(endTime, itemsForTime)
-    })
-  }
-
-  addAudioToQueue = audioIndex => {
-    this.audioQueue.push(audioIndex)
-    this.setItemAsStarted(audioIndex)
   }
 
   getAudioByIndex = audioIndex => {
@@ -712,36 +562,27 @@ class MusicPane extends Component {
     this.resetAllowDisabled()
   }
 
-  getEndTime = audioIndex => {
-    const duration = this.getAudioByIndex(audioIndex).duration
-    return this.nextPlayTime + duration
-  }
-
   onTrigger = ({audioIndex, isDragged}) => {
-    if (!this.isBurstBufferFull() &&
-      this.isAudioPlayable(audioIndex) && !this.isItemPlaying(audioIndex) && !this.loopingQueue.isLooping(audioIndex) && !(isDragged && this.isQueueLockedForDragging)
+    if (this.isAudioPlayable(audioIndex) && !(isDragged && this.isQueueLockedForDragging)
     ) {
-      this.playQueue.add(audioIndex)
-      this.endQueue.add(this.getEndTime(audioIndex), audioIndex)
-      // this.setAudioStopTimes({playTime: this.nextPlayTime, queue: this.audioQueue, stopList: this.audioToStop})
-      //
+      this.setItemAsStarted(audioIndex)
     }
     this.handleDisabling(isDragged)
   }
 
   onUnclick = audioIndex => {
     clearTimeout(this.loopStartTimer)
-    this.startItemLooping = null
-    this.stopItemLooping = null
   }
 
   onLoopToggle = audioIndex => {
-    if (this.loopingQueue.isLooping(audioIndex)) {
-      this.stopItemLooping = audioIndex
+    if (this.itemsLooping.has(audioIndex)) {
+      this.stopItemLooping(audioIndex)
     } else {
       this.loopStartTimer = setTimeout(() => {
-        this.startItemLooping = audioIndex
-      }, 300)
+        if (this.isAudioPlayable(audioIndex) || this.isItemPlaying(audioIndex)) {
+          this.startItemLooping(audioIndex)
+        }
+      }, 400)
     }
   }
 

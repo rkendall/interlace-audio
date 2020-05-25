@@ -1,7 +1,7 @@
 {
   "title": "Twilit Ballad",
   "maxSoundCount": 6,
-  "maxBurstCount": 2,
+  "maxBurstCount": 3,
   "superGroups": {
     "accompaniment": {
       "groups": [
@@ -165,7 +165,20 @@
         ],
         "medium": [
           "Drum Kit 1",
-          "Drum Kit 2"
+          "Drum Kit 2",
+          "Drum Kit 3"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "per1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Tambourine 1"
         ],
         "low": [
         ]
