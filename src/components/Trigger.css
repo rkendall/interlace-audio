@@ -278,14 +278,14 @@
 }
 
 .bra {
-	background: linear-gradient(120deg, #dbcaf2 0%, #161e98 100%);
+	background: linear-gradient(120deg, #dbcaf2 0%, #755298 100%);
 }
 
 .per {
 	background: linear-gradient(120deg, #DFEAF2 0%, #ada8a2 100%);
 }
 
-.drums {
+.drums, .effects {
 	background: linear-gradient(120deg, #8d9499 0%, #000000 100%);
 }
 
@@ -304,6 +304,48 @@
 .rhythm, .glass {
 	background: linear-gradient(120deg, #D1F2CB 0%, #5F8223 100%);
 }
+
+
+
+/*.secondary.voice {*/
+	/*background: #b27794;*/
+/*}*/
+
+/*.secondary.str {*/
+	/*background: #da99a4;*/
+/*}*/
+
+/*.secondary.win {*/
+	/*background: #a6bcd9;*/
+/*}*/
+
+/*.secondary.bra {*/
+	/*background: #7880c1;*/
+/*}*/
+
+/*.secondary.per {*/
+	/*background: #cdcdcb;*/
+/*}*/
+
+/*.secondary.drums {*/
+	/*background: #646565;*/
+/*}*/
+
+/*.secondary.pia, .secondary.vib, .secondary.tuned {*/
+	/*background: #e6d491;*/
+/*}*/
+
+/*.secondary.bas, .secondary.pizz {*/
+	/*background: #bb9881;*/
+/*}*/
+
+/*.secondary.guitar, .secondary.plucked {*/
+	/*background: #96b8ab;*/
+/*}*/
+
+/*.secondary.rhythm, .secondary.glass {*/
+	/*background: #aabb8e;*/
+/*}*/
 
 .text {
 	position: absolute;

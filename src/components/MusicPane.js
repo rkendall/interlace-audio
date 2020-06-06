@@ -98,27 +98,20 @@ class MusicPane extends Component {
       ) : <div className="loading"><ReactLoading type="spinningBubbles" color="blue" delay={300}/></div>
   }
 
-  areAllSlotsUsed = () => {
-    if (this.isMaxActiveAudio()) {
-      return true
-    }
-    const {groupLimits} = this.state
-    return !Object.keys(groupLimits).some(group => !this.isGroupFull(group))
-  }
-
-  stopLastLoopingItemIfNecessary = () => {
-    if (this.itemsPlaying.length === this.state.maxSoundCount - 1) {
+  stopLastLoopingItemIfNecessary = audioIndex => {
+    if (this.itemsLooping.size <= this.state.maxSoundCount - 1) {
       return
     }
-    if (this.areAllSlotsUsed()) {
-      this.stopItemLooping(this.lastItemLooping)
-    }
+    this.stopItemLooping(this.lastItemLooping)
   }
 
   startItemLooping = audioIndex => {
     this.itemsLooping.add(audioIndex)
-    this.itemsPlaying.add(audioIndex)
-    this.stopLastLoopingItemIfNecessary()
+    if (!this.isItemPlaying(audioIndex)) {
+      this.itemsPlaying.add(audioIndex)
+      this.playQueue.add(audioIndex)
+    }
+    this.stopLastLoopingItemIfNecessary(audioIndex)
     this.incrementAudioCount()
     this.lastItemLooping = audioIndex
   }
@@ -130,8 +123,10 @@ class MusicPane extends Component {
 
   playAudio = audioIndex => {
     const sound = this.composition[audioIndex].audio
-    const audioId = sound.play()
-    this.composition[audioIndex].audioId = audioId
+    if (sound) {
+      const audioId = sound.play()
+      this.composition[audioIndex].audioId = audioId
+    }
   }
 
   setItemAsStarted = audioIndex => {
@@ -271,7 +266,7 @@ class MusicPane extends Component {
 
   fadeAllAudio = () => {
     this.composition.forEach(({audio}) => {
-      if (audio.playing()) {
+      if (audio && audio.playing()) {
         audio.once('fade', () => {
           audio.once('fade', () => {
             audio.fade(.1, 0, 500)
@@ -382,17 +377,17 @@ class MusicPane extends Component {
     Howler.unload()
   }
 
-  // TODO Check the functionality here for the conditionals
   updateFinishedAudio = () => {
     this.itemsPlaying.forEach(audioIndex => {
       const {audio, end, audioId} = this.composition[audioIndex]
-      const rawPosition = audioId ? audio.seek(null, audioId) : audio.seek() || null
-      const position = Math.ceil(rawPosition)
-      if (isNaN(position)) {
+      if (!audio) {
         this.itemsPlaying.delete(audioIndex)
         this.itemsLooping.delete(audioIndex)
-        this.incrementAudioCount()
-      } else if (position === end) {
+        return
+      }
+      const rawPosition = audio.seek(null, audioId) || null
+      const position = Math.ceil(rawPosition)
+      if (typeof position !== 'number' || position >= end) {
         if (this.itemsLooping.has(audioIndex)) {
           this.playQueue.add(audioIndex)
         } else {
@@ -477,7 +472,7 @@ class MusicPane extends Component {
   isBurstLimitReached = () => this.playQueue.size >= this.state.maxBurstCount
 
   isPlayerActive = () => {
-    return this.composition.some(({audio}) => audio.playing())
+    return this.composition.some(({audio}) => audio && audio.playing())
   }
 
   isItemPlaying = audioIndex => this.itemsPlaying.has(audioIndex)

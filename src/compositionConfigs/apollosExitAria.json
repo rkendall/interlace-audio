@@ -1,0 +1,132 @@
+{
+  "title": "Apollo's Exit Aria",
+  "maxSoundCount": 8,
+  "maxBurstCount": 5,
+  "groups": {
+    "voice": {
+      "instruments": {
+        "high": [
+          "Tenor 1",
+          "Tenor 2",
+          "Tenor 3",
+          "Tenor 4"
+        ],
+        "medium": [
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "str1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Violin 1"
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "str2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Violin 10"
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "str3": {
+      "instruments": {
+        "high": [
+          "Violin 30"
+        ],
+        "medium": [
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "str4": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Viola 1"
+        ]
+      },
+      "maxActive": 1
+    },
+    "str5": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Cello 1"
+        ]
+      },
+      "maxActive": 1
+    },
+    "win1": {
+      "instruments": {
+        "high": [
+          "Flute 1"
+        ],
+        "medium": [
+          "Flute 2"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "win2": {
+      "instruments": {
+        "high": [
+          "Oboe 1"
+        ],
+        "medium": [
+          "Oboe 2"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "bra1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Horn 1",
+          "Horn 2"
+        ]
+      },
+      "maxActive": 2
+    },
+    "pia1": {
+      "instruments": {
+        "high": [
+          "Celesta 1",
+          "Piano 1"
+        ],
+        "medium": [
+          "Piano 2"
+        ],
+        "low": [
+          "Piano 3"
+        ]
+      },
+      "maxActive": 1
+    }
+  }
+}

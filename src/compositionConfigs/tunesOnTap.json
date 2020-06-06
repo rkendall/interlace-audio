@@ -1,70 +1,50 @@
 {
-  "title": "Fiesta",
-  "maxSoundCount": 4,
+  "title": "Tunes on Tap",
+  "maxSoundCount": 6,
   "maxBurstCount": 2,
   "superGroups": {
-    "orch": {
+    "lead1": {
+      "groups": [
+        "win1",
+        "win3",
+        "str1",
+        "bra1",
+        "pia1"
+      ],
+      "maxActive": 1
+    },
+    "piano1": {
+      "groups": [
+        "pia1",
+        "pia2"
+      ],
+      "maxActive": 1
+    },
+    "acc1": {
+      "groups": [
+        "win2",
+        "str2",
+        "bra2"
+      ],
+      "maxActive": 1
+    },
+    "strings": {
       "groups": [
         "str1",
-        "win1",
-        "bra1"
+        "str2"
       ],
-      "maxActive": 2
-    },
-    "percussion": {
-      "groups": [
-        "per1",
-        "per2",
-        "per3",
-        "per4"
-      ],
-      "maxActive": 2
+      "maxActive": 1
     }
   },
   "groups": {
-    "voice": {
-      "instruments": {
-        "high": [
-          "Soprano 1",
-          "Soprano 2",
-          "Soprano 3",
-          "Soprano 4",
-          "Soprano 5"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "guitar": {
+    "drums1": {
       "instruments": {
         "high": [
         ],
         "medium": [
-          "Guitar 1",
-          "Guitar 2",
-          "Guitar 3",
-          "Guitar 4",
-          "Guitar 5",
-          "Guitar 6",
-          "Guitar 7"
         ],
         "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "bra": {
-      "instruments": {
-        "high": [
-          "Trumpet 1",
-          "Trumpet 2"
-        ],
-        "medium": [
-        ],
-        "low": [
+          "Drum Kit 1"
         ]
       },
       "maxActive": 1
@@ -86,7 +66,7 @@
         "high": [
         ],
         "medium": [
-          "Maracas 1"
+          "Drum Kit 2"
         ],
         "low": [
         ]
@@ -96,11 +76,11 @@
     "per3": {
       "instruments": {
         "high": [
+          "Congas 1"
         ],
         "medium": [
         ],
         "low": [
-          "Footwork 1"
         ]
       },
       "maxActive": 1
@@ -108,9 +88,78 @@
     "per4": {
       "instruments": {
         "high": [
+          "Cymbals 1"
         ],
         "medium": [
-          "Hand Claps 1"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "win1": {
+      "instruments": {
+        "high": [
+          "Alto Sax 1",
+          "Alto Sax 2",
+          "Alto Sax 3",
+          "Alto Sax 4"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "win2": {
+      "instruments": {
+        "high": [
+          "Alto Sax 10",
+          "Alto Sax 11",
+          "Alto Sax 12",
+          "Alto Sax 13"
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Baritone Sax 1"
+        ]
+      },
+      "maxActive": 1
+    },
+    "win3": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Tenor Sax 1",
+          "Tenor Sax 2"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "bra1": {
+      "instruments": {
+        "high": [
+          "Trumpet 1"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "bra2": {
+      "instruments": {
+        "high": [
+          "Trumpet 10",
+          "Trumpet 11"
+        ],
+        "medium": [
         ],
         "low": [
         ]
@@ -120,20 +169,27 @@
     "str1": {
       "instruments": {
         "high": [
-          "Violin 7",
-          "Violin 8"
-        ],
-        "medium": [
           "Violin 1",
           "Violin 2",
           "Violin 3",
-          "Violin 4",
-          "Violin 5"
+          "Violin 4"
+        ],
+        "medium": [
         ],
         "low": [
-          "Violin 6",
-          "Viola 1",
-          "Viola 2"
+        ]
+      },
+      "maxActive": 1
+    },
+    "str2": {
+      "instruments": {
+        "high": [
+          "Violin 10",
+          "Violin 11"
+        ],
+        "medium": [
+        ],
+        "low": [
         ]
       },
       "maxActive": 1
@@ -145,36 +201,7 @@
         "medium": [
         ],
         "low": [
-          "String Bass 1",
-          "String Bass 2"
-        ]
-      },
-      "maxActive": 1
-    },
-    "win1": {
-      "instruments": {
-        "high": [
-          "Clarinet 1",
-          "Clarinet 2"
-        ],
-        "medium": [
-          "Clarinet 3"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "win2": {
-      "instruments": {
-        "high": [
-          "Flute 1",
-          "Flute 2"
-        ],
-        "medium": [
-          "Flute 3"
-        ],
-        "low": [
+          "String Bass 1"
         ]
       },
       "maxActive": 1
@@ -182,10 +209,21 @@
     "pia1": {
       "instruments": {
         "high": [
-          "Piano 2"
         ],
         "medium": [
-          "Piano 1"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "pia2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Piano 1",
+          "Piano 2"
         ],
         "low": [
         ]

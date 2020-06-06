@@ -14,17 +14,27 @@ import afternoon from './compositionConfigs/afternoon.json'
 import night from './compositionConfigs/night.json'
 import afterMidnight from './compositionConfigs/afterMidnight.json'
 import glassDreams from './compositionConfigs/glassDreams.json'
+import dream from './compositionConfigs/dream.json'
+import bumpsInTheNight from './compositionConfigs/bumpsInTheNight.json'
+import dreamlandRushHour from './compositionConfigs/dreamlandRushHour.json'
 import promenade from './compositionConfigs/promenade.json'
 import rushHour from './compositionConfigs/rushHour.json'
+import tunesOnTap from './compositionConfigs/tunesOnTap.json'
 import treadmillToccata from './compositionConfigs/treadmillToccata.json'
 import siesta from './compositionConfigs/siesta.json'
 import fiesta from './compositionConfigs/fiesta.json'
+import apollosExitAria from './compositionConfigs/apollosExitAria.json'
 import eveningEmbers from './compositionConfigs/eveningEmbers.json'
 import twilitBallad from './compositionConfigs/twilitBallad.json'
+import darkSerenade from './compositionConfigs/darkSerenade.json'
 import midnightBlues from './compositionConfigs/midnightBlues.json'
 
 const compositionData = [
+  {afterMidnight},
   {glassDreams},
+  {dream},
+  {bumpsInTheNight},
+  {dreamlandRushHour},
   {aubade},
   {afterCoffee},
   {treadmillToccata},
@@ -34,29 +44,37 @@ const compositionData = [
   {siesta},
   {fiesta},
   {rushHour},
+  {tunesOnTap},
+  {apollosExitAria},
   {eveningEmbers},
   {twilitBallad},
+  {darkSerenade},
   {night},
   {midnightBlues},
-  {afterMidnight},
 ]
 
 const timeSlots =
 {
   afterMidnight: 1,
   glassDreams: 2,
+  dream: 3,
+  bumpsInTheNight: 4,
+  dreamlandRushHour: 5,
   aubade: 6,
   afterCoffee: 7,
   treadmillToccata: 8,
-  promenade: 10,
+  promenade: 9,
   noon: 12,
   afternoon: 13,
   siesta: 14,
   fiesta: 15,
   rushHour: 17,
-  eveningEmbers: 18,
-  twilitBallad: 20,
-  night: 21,
+  tunesOnTap: 18,
+  apollosExitAria: 19,
+  eveningEmbers: 20,
+  twilitBallad: 21,
+  darkSerenade: 22,
+  night: 23,
   midnightBlues: 0,
 }
 

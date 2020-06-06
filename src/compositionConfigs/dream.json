@@ -1,132 +1,36 @@
 {
-  "title": "Twilit Ballad",
-  "maxSoundCount": 5,
+  "title": "Iron Dreams",
+  "maxSoundCount": 7,
   "maxBurstCount": 3,
   "superGroups": {
-    "accompaniment": {
+    "strings": {
       "groups": [
-        "guitar1",
-        "pia2"
-      ],
-      "maxActive": 1
-    },
-    "bass": {
-      "groups": [
+        "str1",
         "str2",
-        "pizz1"
+        "str3",
+        "str4",
+        "win1"
+      ],
+      "maxActive": 4
+    },
+    "heavy": {
+      "groups": [
+        "pian1",
+        "bra2"
       ],
       "maxActive": 1
     }
   },
   "groups": {
-    "win1": {
-      "instruments": {
-        "high": [
-          "Flute 1",
-          "Flute 2",
-          "Flute 3",
-          "Flute 4",
-          "Flute 7",
-          "Alto Sax 7",
-          "Alto Sax 8"
-        ],
-        "medium": [
-          "Alto Sax 1",
-          "Alto Sax 2",
-          "Alto Sax 3",
-          "Alto Sax 4",
-          "Alto Sax 5",
-          "Alto Sax 6"
-        ],
-        "low": []
-      },
-      "maxActive": 1
-    },
-    "win2": {
-      "instruments": {
-        "high": [
-          "Flute 5",
-          "Flute 6"
-        ],
-        "medium": [
-        ],
-        "low": []
-      },
-      "maxActive": 1
-    },
-    "win3": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Clarinet 1",
-          "Clarinet 2"
-        ],
-        "low": []
-      },
-      "maxActive": 1
-    },
-    "bra1": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Horn 1",
-          "Horn 2"
-        ],
-        "low": []
-      },
-      "maxActive": 1
-    },
-    "guitar1": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Guitar 1",
-          "Guitar 2",
-          "Guitar 3",
-          "Guitar 4",
-          "Guitar 5"
-        ],
-        "low": []
-      },
-      "maxActive": 1
-    },
-    "pia1": {
-      "instruments": {
-        "high": [
-          "Piano 3"
-        ],
-        "medium": [
-          "Piano 1"
-        ],
-        "low": []
-      },
-      "maxActive": 1
-    },
-    "pia2": {
-      "instruments": {
-        "high": [
-          "Piano 5"
-        ],
-        "medium": [
-          "Piano 2",
-          "Piano 4"
-        ],
-        "low": []
-      },
-      "maxActive": 1
-    },
     "str1": {
       "instruments": {
         "high": [
-          "Violin 3",
-          "Violin 4"
+          "Violin 5",
+          "Violin 6"
         ],
         "medium": [
-          "Violin 1",
-          "Violin 2"
+          "Violin 3",
+          "Violin 7"
         ],
         "low": []
       },
@@ -135,41 +39,121 @@
     "str2": {
       "instruments": {
         "high": [
+          "Violin 10",
+          "Violin 11"
+        ],
+        "medium": [
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "str3": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Violin 1",
+          "Violin 2",
+          "Violin 4"
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "str4": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Viola 1",
+          "Viola 2"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "str5": {
+      "instruments": {
+        "high": [
         ],
         "medium": [
         ],
         "low": [
           "Cello 1",
           "Cello 2",
-          "Cello 3",
-          "Cello 4"
+          "Bass 1"
         ]
       },
       "maxActive": 1
     },
-    "pizz1": {
+    "win1": {
+      "instruments": {
+        "high": [
+          "Oboe 1",
+          "Oboe 2"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "win2": {
+      "instruments": {
+        "high": [
+          "Flute 1",
+          "Flute 2"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "bra1": {
+      "instruments": {
+        "high": [
+          "Trumpets 1",
+          "Trumpets 2"
+        ],
+        "medium": [
+          "Horn 1",
+          "Horn 2"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 2
+    },
+    "bra2": {
       "instruments": {
         "high": [
         ],
         "medium": [
         ],
         "low": [
-          "String Bass 1",
-          "String Bass 2"
+          "Trombone 1",
+          "Trombone 2"
         ]
       },
       "maxActive": 1
     },
-    "drums": {
+    "pia1": {
       "instruments": {
         "high": [
+          "Piano 5"
         ],
         "medium": [
-          "Drum Kit 1",
-          "Drum Kit 2",
-          "Drum Kit 3"
+          "Piano 3",
+          "Piano 4"
         ],
         "low": [
+          "Piano 1",
+          "Piano 2"
         ]
       },
       "maxActive": 1
@@ -179,9 +163,46 @@
         "high": [
         ],
         "medium": [
-          "Tambourine 1"
+          "Tubular Bells 1"
         ],
         "low": [
+          "Tubular Bells 2",
+          "Tubular Bells 3",
+          "Tubular Bells 4"
+        ]
+      },
+      "maxActive": 1
+    },
+    "per2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Snare Drum 1",
+          "Snare Drum 2",
+          "Cymbal 1"
+        ],
+        "low": [
+          "Tympani 1",
+          "Tympani 2",
+          "Tamtam 1",
+          "Tamtam 2"
+        ]
+      },
+      "maxActive": 1
+    },
+    "per3": {
+      "instruments": {
+        "high": [
+          "Celesta 1",
+          "Celesta 2"
+        ],
+        "medium": [
+          "Lithophone 1",
+          "Lithophone 2"
+        ],
+        "low": [
+          "Lithophone 3"
         ]
       },
       "maxActive": 1
