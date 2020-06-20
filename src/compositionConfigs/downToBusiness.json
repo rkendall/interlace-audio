@@ -1,39 +1,64 @@
 {
-  "title": "Rush Hour",
-  "maxSoundCount": 8,
-  "maxBurstCount": 5,
+  "title": "Down to Business",
+  "maxSoundCount": 6,
+  "maxBurstCount": 2,
+  "superGroups": {
+    "violins": {
+      "groups": [
+        "primaryStrings1",
+        "primaryStrings2",
+        "str2"
+      ],
+      "maxActive": 2
+    },
+    "main": {
+      "groups": [
+        "primaryStrings1",
+        "primaryStrings2",
+        "str2",
+        "str3",
+        "str4",
+        "win1",
+        "win2",
+        "pia1"
+      ],
+      "maxActive": 5
+    },
+    "acc": {
+      "groups": [
+        "str3",
+        "str4",
+        "pia1"
+      ],
+      "maxActive": 1
+    },
+    "flute": {
+      "groups": [
+        "primaryWinds1",
+        "win1"
+      ],
+      "maxActive": 1
+    },
+    "oboe": {
+      "groups": [
+        "primaryWinds2",
+        "win2"
+      ],
+      "maxActive": 1
+    }
+  },
   "groups": {
-    "pizz": {
-      "instruments": {
-        "high": [
-          "Violin 10",
-          "Violin 11"
-        ],
-        "medium": [
-        ],
-        "low": []
-      },
-      "maxActive": 1
-    },
-    "str1": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Violin 1",
-          "Violin 2"
-        ],
-        "low": []
-      },
-      "maxActive": 1
-    },
     "primaryStrings1": {
       "instruments": {
         "high": [
         ],
         "medium": [
+          "Violin 1",
+          "Violin 2",
           "Violin 3",
-          "Violin 4"
+          "Violin 4",
+          "Violin 5",
+          "Violin 6"
         ],
         "low": []
       },
@@ -42,27 +67,42 @@
     "primaryStrings2": {
       "instruments": {
         "high": [
+          "Violin 20",
+          "Violin 21",
+          "Violin 22"
         ],
         "medium": [
-          "Violin 20",
-          "Violin 21"
         ],
         "low": []
       },
       "maxActive": 1
     },
-    "primaryStrings3": {
+    "str2": {
       "instruments": {
         "high": [
         ],
         "medium": [
-          "Viola 1"
+          "Violin 10",
+          "Violin 11"
         ],
         "low": []
       },
       "maxActive": 1
     },
-    "str5": {
+    "str3": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Viola 1",
+          "Viola 2"
+        ]
+      },
+      "maxActive": 1
+    },
+    "str4": {
       "instruments": {
         "high": [
         ],
@@ -78,25 +118,28 @@
     "primaryWinds1": {
       "instruments": {
         "high": [
+          "Flute 3",
+          "Flute 4"
+
         ],
         "medium": [
-          "Flute 1",
-          "Flute 2",
-          "Flute 3"
         ],
-        "low": []
+        "low": [
+        ]
       },
       "maxActive": 1
     },
     "win1": {
       "instruments": {
         "high": [
-          "Oboe 2"
+          "Flute 2"
+
         ],
         "medium": [
-          "Oboe 1"
+          "Flute 1"
         ],
-        "low": []
+        "low": [
+        ]
       },
       "maxActive": 1
     },
@@ -105,21 +148,21 @@
         "high": [
         ],
         "medium": [
-          "Oboe 3"
+          "Oboe 1"
         ],
-        "low": []
+        "low": [
+        ]
       },
       "maxActive": 1
     },
-    "primaryWinds3": {
+    "win2": {
       "instruments": {
         "high": [
         ],
         "medium": [
+          "Oboe 2"
         ],
         "low": [
-          "Bassoon 1",
-          "Bassoon 2"
         ]
       },
       "maxActive": 1
@@ -127,11 +170,9 @@
     "bra1": {
       "instruments": {
         "high": [
-          "Trumpets 1",
-          "Trumpets 2"
+          "Horn 1"
         ],
         "medium": [
-          "Trumpets 3"
         ],
         "low": [
         ]
@@ -141,9 +182,9 @@
     "bra2": {
       "instruments": {
         "high": [
+          "Horn 2"
         ],
         "medium": [
-          "Horn 1"
         ],
         "low": [
         ]
@@ -153,9 +194,9 @@
     "bra3": {
       "instruments": {
         "high": [
+          "Horn 3"
         ],
         "medium": [
-          "Horn 2"
         ],
         "low": [
         ]
@@ -169,39 +210,61 @@
         "medium": [
         ],
         "low": [
-          "Trombone 1",
+          "Trombone 1"
+        ]
+      },
+      "maxActive": 1
+    },
+    "bra5": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
           "Trombone 2"
         ]
       },
       "maxActive": 1
     },
-    "pia": {
+    "pia1": {
       "instruments": {
         "high": [
-          "Piano 3",
-          "Piano 4"
+          "Piano 6"
         ],
         "medium": [
-          "Piano 1",
-          "Piano 2"
+          "Piano 2",
+          "Piano 3",
+          "Piano 4",
+          "Piano 5"
         ],
         "low": [
+          "Piano 1"
         ]
       },
       "maxActive": 1
     },
-    "per": {
+    "per1": {
       "instruments": {
         "high": [
         ],
         "medium": [
-          "Rails 1",
-          "Cymbal 1",
-          "Lithophone 1"
+          "Tympani 1"
         ],
         "low": [
-          "Tamtam 1",
-          "Tympani 1"
+          "Tympani 2"
+        ]
+      },
+      "maxActive": 1
+    },
+    "per2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Cymbal 1"
+        ],
+        "low": [
         ]
       },
       "maxActive": 1

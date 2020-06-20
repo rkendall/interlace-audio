@@ -1,150 +1,146 @@
 {
-  "title": "After Midnight",
-  "maxSoundCount": 5,
+  "title": "Teatime",
+  "maxSoundCount": 6,
   "maxBurstCount": 2,
   "superGroups": {
-    "mel": {
+    "melody": {
       "groups": [
-        "guitar",
-        "bra",
-        "win"
+        "str1",
+        "str3",
+        "pia3",
+        "win1"
       ],
-      "maxActive": 2
+      "maxActive": 1
     },
-    "rhythm": {
+    "accompaniment": {
       "groups": [
-        "guitar2"
+        "str2",
+        "win2"
       ],
-      "maxActive": 2
+      "maxActive": 1
+    },
+    "bass": {
+      "groups": [
+        "str3",
+        "str4",
+        "win3"
+      ],
+      "maxActive": 1
     }
   },
   "groups": {
-    "per1": {
+    "pia1": {
       "instruments": {
         "high": [
+          "Piano 7"
         ],
         "medium": [
-          "Cymbal 1"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 2
-    },
-      "per2": {
-        "instruments": {
-          "high": [
-          ],
-          "medium": [
-          ],
-          "low": [
-            "Snare Drum 1"
-          ]
-        },
-        "maxActive": 1
-      },
-      "per3": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Congas 1"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "per4": {
-      "instruments": {
-        "high": [
-          "Tambourine 1",
-          "Tambourine 2"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "per5": {
-      "instruments": {
-        "high": [
-          "Cowbell 1"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "drums": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Drum Kit 1",
-          "Drum Kit 2"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "pia": {
-      "instruments": {
-        "high": [
-          "Piano 6"
-        ],
-        "medium": [
+          "Piano 1",
           "Piano 2",
           "Piano 3",
           "Piano 4",
-          "Piano 5"
+          "Piano 5",
+          "Piano 6"
+        ],
+        "low": [
+          "Piano 40"
+        ]
+      },
+      "maxActive": 1
+    },
+    "pia2": {
+      "instruments": {
+        "high": [
+          "Piano 10",
+          "Piano 11"
+        ],
+        "medium": [
         ],
         "low": [
         ]
       },
       "maxActive": 1
     },
-    "guitar": {
+    "pia3": {
       "instruments": {
         "high": [
-          "Electric Guitar 1",
-          "Electric Guitar 2",
-          "Electric Guitar 3"
+        ],
+        "medium": [
+          "Piano 30"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "plucked1": {
+      "instruments": {
+        "high": [
+          "Harp 1",
+          "Harp 2"
         ],
         "medium": [
         ],
         "low": [
         ]
       },
-      "maxActive": 2
+      "maxActive": 1
     },
-    "guitar2": {
+    "str1": {
       "instruments": {
         "high": [
         ],
         "medium": [
-          "Electric Guitar 4"
+          "Violin 1",
+          "Violin 2",
+          "Violin 3",
+          "Violin 4",
+          "Violin 5"
         ],
         "low": [
         ]
       },
-      "maxActive": 2
+      "maxActive": 1
     },
-    "bra": {
+    "str2": {
       "instruments": {
         "high": [
-          "Trumpet 1",
-          "Trumpet 2",
-          "Trumpet 3"
+          "Violin 10",
+          "Violin 11"
+        ],
+        "medium": [
+          "Violin 12"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "str3": {
+      "instruments": {
+        "high": [
         ],
         "medium": [
         ],
         "low": [
+          "Cello 1",
+          "Cello 2",
+          "Cello 3",
+          "Cello 4"
+        ]
+      },
+      "maxActive": 1
+    },
+    "str4": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Viola 1",
+          "Cello 10",
+          "Cello 11"
         ]
       },
       "maxActive": 1
@@ -152,39 +148,50 @@
     "win1": {
       "instruments": {
         "high": [
-          "Alto Sax 1",
-          "Alto Sax 2"
-        ],
-        "medium": [
-          "Tenor Sax 1",
-          "Tenor Sax 2"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 2
-    },
-    "win2": {
-      "instruments": {
-        "high": [
+          "Flute 1",
+          "Flute 2"
         ],
         "medium": [
         ],
         "low": [
-          "Baritone Sax 1"
         ]
       },
       "maxActive": 1
     },
-    "pizz1": {
+    "win2": {
+      "instruments": {
+        "high": [
+          "Flute 10",
+          "Flute 11"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "win3": {
       "instruments": {
         "high": [
         ],
-        "medium": [],
+        "medium": [
+        ],
         "low": [
-          "String Bass 1",
-          "String Bass 2",
-          "String Bass 3"
+          "Bassoon 1"
+        ]
+      },
+      "maxActive": 1
+    },
+    "bra1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Horn 1",
+          "Horn 2"
+        ],
+        "low": [
         ]
       },
       "maxActive": 1

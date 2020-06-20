@@ -266,42 +266,54 @@
 }
 
 .voice {
-	background: linear-gradient(120deg, #d68e76 0%, #860a60 100%);
+	background: linear-gradient(120deg, #dbcaf2 0%, #9c76bf 100%);
+}
+
+.primaryStrings {
+	background: linear-gradient(120deg, #F2DAB3 0%, #ed4c88 100%);
 }
 
 .str {
-	background: linear-gradient(120deg, #F2DAB3 0%, #d14a6e 100%);
+	background: linear-gradient(120deg, #d68e76 0%, #ae0a87 100%);
+}
+
+.primaryWinds {
+	background: linear-gradient(120deg, #e4f8f8 0%, #80bae8 100%);
 }
 
 .win {
-	background: linear-gradient(120deg, #DEF2F2 0%, #5a87c1 100%);
+	background: linear-gradient(120deg, #a3abe0 0%, #424bc1 100%);
 }
 
 .bra {
-	background: linear-gradient(120deg, #dbcaf2 0%, #755298 100%);
+	background: linear-gradient(120deg, #fff6ce 0%, #eec365 100%);
 }
 
 .per {
-	background: linear-gradient(120deg, #DFEAF2 0%, #ada8a2 100%);
+	background: linear-gradient(120deg, #DFEAF2 0%, #6b6660 100%);
 }
 
 .drums, .effects {
 	background: linear-gradient(120deg, #8d9499 0%, #000000 100%);
 }
 
-.pia, .vib, .tuned {
-	background: linear-gradient(120deg, #F2EDD2 0%, #dbb517 100%);
+.rhythm, .glass {
+	background: linear-gradient(120deg, #fff6ce 0%, #d66b42 100%);
 }
 
 .bas, .pizz {
 	background: linear-gradient(120deg, #ffcccc 0%, #864811 100%);
 }
 
-.guitar, .plucked {
-	background: linear-gradient(120deg, #d7f0f2 0%, #318266 100%);
+.primaryPlucked {
+	background: linear-gradient(120deg, #f4fdff 0%, #93d1bf 100%);
 }
 
-.rhythm, .glass {
+.guitar, .plucked {
+	background: linear-gradient(120deg, #d7f0f2 0%, #31775b 100%);
+}
+
+.pia, .vib, .tuned {
 	background: linear-gradient(120deg, #D1F2CB 0%, #5F8223 100%);
 }
 

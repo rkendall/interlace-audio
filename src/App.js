@@ -7,17 +7,20 @@ import MusicPane from './components/MusicPane'
 import Message from './components/Message'
 import ErrorBoundary from './components/ErrorBoundary'
 import './App.css'
-import aubade from './compositionConfigs/audbade.json'
-import afterCoffee from './compositionConfigs/afterCoffee.json'
-import noon from './compositionConfigs/noon.json'
-import afternoon from './compositionConfigs/afternoon.json'
-import night from './compositionConfigs/night.json'
-import afterMidnight from './compositionConfigs/afterMidnight.json'
+import waterDreams from './compositionConfigs/waterDreams.json'
 import glassDreams from './compositionConfigs/glassDreams.json'
 import dream from './compositionConfigs/dream.json'
 import bumpsInTheNight from './compositionConfigs/bumpsInTheNight.json'
 import dreamlandRushHour from './compositionConfigs/dreamlandRushHour.json'
+import aubade from './compositionConfigs/audbade.json'
+import afterCoffee from './compositionConfigs/afterCoffee.json'
 import promenade from './compositionConfigs/promenade.json'
+import downToBusiness from './compositionConfigs/downToBusiness.json'
+import reverie from './compositionConfigs/reverie.json'
+import afternoon from './compositionConfigs/afternoon.json'
+import night from './compositionConfigs/night.json'
+import tableMusic from './compositionConfigs/tableMusic.json'
+import teatime from './compositionConfigs/teatime.json'
 import rushHour from './compositionConfigs/rushHour.json'
 import tunesOnTap from './compositionConfigs/tunesOnTap.json'
 import treadmillToccata from './compositionConfigs/treadmillToccata.json'
@@ -30,7 +33,7 @@ import darkSerenade from './compositionConfigs/darkSerenade.json'
 import midnightBlues from './compositionConfigs/midnightBlues.json'
 
 const compositionData = [
-  {afterMidnight},
+  {waterDreams},
   {glassDreams},
   {dream},
   {bumpsInTheNight},
@@ -39,10 +42,13 @@ const compositionData = [
   {afterCoffee},
   {treadmillToccata},
   {promenade},
-  {noon},
+  {downToBusiness},
+  {reverie},
+  {tableMusic},
   {afternoon},
   {siesta},
   {fiesta},
+  {teatime},
   {rushHour},
   {tunesOnTap},
   {apollosExitAria},
@@ -55,7 +61,7 @@ const compositionData = [
 
 const timeSlots =
 {
-  afterMidnight: 1,
+  waterDreams: 1,
   glassDreams: 2,
   dream: 3,
   bumpsInTheNight: 4,
@@ -64,10 +70,13 @@ const timeSlots =
   afterCoffee: 7,
   treadmillToccata: 8,
   promenade: 9,
-  noon: 12,
+  downToBusiness: 10,
+  reverie: 11,
+  tableMusic: 12,
   afternoon: 13,
   siesta: 14,
   fiesta: 15,
+  teatime: 16,
   rushHour: 17,
   tunesOnTap: 18,
   apollosExitAria: 19,

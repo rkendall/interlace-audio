@@ -1,141 +1,84 @@
 {
-  "title": "Midnight Blues",
+  "title": "Table Music",
   "maxSoundCount": 5,
   "maxBurstCount": 2,
   "superGroups": {
     "mel": {
       "groups": [
-        "primaryPlucked1",
-        "primaryWinds"
+        "guitar",
+        "bra",
+        "win"
       ],
       "maxActive": 2
     },
-    "acc": {
+    "rhythm": {
       "groups": [
-        "guitar2",
-        "guitar3"
+        "guitar2"
       ],
-      "maxActive": 1
-    },
-    "low": {
-      "groups": [
-        "pia",
-        "guitar3"
-      ],
-      "maxActive": 1
+      "maxActive": 2
     }
   },
   "groups": {
-    "primaryWinds": {
-      "instruments": {
-        "high": [
-          "Alto Sax 1",
-          "Alto Sax 2",
-          "Alto Sax 3",
-          "Alto Sax 4",
-          "Alto Sax 5",
-          "Alto Sax 6"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "primaryPlucked1": {
-      "instruments": {
-        "high": [
-          "Electric Guitar 1",
-          "Electric Guitar 2",
-          "Electric Guitar 3",
-          "Electric Guitar 4",
-          "Electric Guitar 5",
-          "Electric Guitar 6",
-          "Electric Guitar 7",
-          "Electric Guitar 8",
-          "Electric Guitar 9",
-          "Electric Guitar 10",
-          "Electric Guitar 11",
-          "Electric Guitar 12",
-          "Electric Guitar 13",
-          "Electric Guitar 14",
-          "Electric Guitar 15",
-          "Electric Guitar 16"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "guitar2": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Electric Guitar 20",
-          "Electric Guitar 21",
-          "Electric Guitar 22",
-          "Electric Guitar 23"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "guitar3": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Electric Guitar 30",
-          "Electric Guitar 31",
-          "Electric Guitar 32",
-          "Electric Guitar 33"
-        ]
-      },
-      "maxActive": 1
-    },
-    "pia": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Electric Organ 1",
-          "Electric Organ 2"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
     "per1": {
       "instruments": {
         "high": [
-          "High Hat 1"
         ],
         "medium": [
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "per2": {
-      "instruments": {
-        "high": [
           "Cymbal 1"
-        ],
-        "medium": [
         ],
         "low": [
         ]
       },
       "maxActive": 2
+    },
+      "per2": {
+        "instruments": {
+          "high": [
+          ],
+          "medium": [
+          ],
+          "low": [
+            "Snare Drum 1"
+          ]
+        },
+        "maxActive": 1
+      },
+      "per3": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Congas 1"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "per4": {
+      "instruments": {
+        "high": [
+          "Tambourine 1",
+          "Tambourine 2"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "per5": {
+      "instruments": {
+        "high": [
+          "Cowbell 1"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
     },
     "drums": {
       "instruments": {
@@ -143,20 +86,92 @@
         ],
         "medium": [
           "Drum Kit 1",
-          "Drum Kit 1"
+          "Drum Kit 2"
         ],
         "low": [
         ]
       },
       "maxActive": 1
     },
+    "pia": {
+      "instruments": {
+        "high": [
+          "Piano 6"
+        ],
+        "medium": [
+          "Piano 2",
+          "Piano 3",
+          "Piano 4",
+          "Piano 5"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "guitar": {
+      "instruments": {
+        "high": [
+          "Electric Guitar 1",
+          "Electric Guitar 2",
+          "Electric Guitar 3"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 2
+    },
+    "guitar2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Electric Guitar 4"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 2
+    },
     "bra": {
       "instruments": {
         "high": [
-          "Trumpets 1",
-          "Trumpets 2"
+          "Trumpet 1",
+          "Trumpet 2",
+          "Trumpet 3"
+        ],
+        "medium": [
         ],
         "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "win1": {
+      "instruments": {
+        "high": [
+          "Alto Sax 1",
+          "Alto Sax 2"
+        ],
+        "medium": [
+          "Tenor Sax 1",
+          "Tenor Sax 2"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 2
+    },
+    "win2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Baritone Sax 1"
         ]
       },
       "maxActive": 1
@@ -165,11 +180,11 @@
       "instruments": {
         "high": [
         ],
+        "medium": [],
         "low": [
           "String Bass 1",
           "String Bass 2",
-          "String Bass 3",
-          "String Bass 4"
+          "String Bass 3"
         ]
       },
       "maxActive": 1

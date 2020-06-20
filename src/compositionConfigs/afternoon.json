@@ -5,9 +5,11 @@
   "superGroups": {
     "mel": {
       "groups": [
+        "primaryStrings1",
+        "primaryStrings2",
         "str1",
         "str2",
-        "win",
+        "primaryWinds1",
         "bra"
       ],
       "maxActive": 2
@@ -16,6 +18,13 @@
       "groups": [
         "pia",
         "vib"
+      ],
+      "maxActive": 1
+    },
+    "bass": {
+      "groups": [
+        "primaryStrings3",
+        "str3"
       ],
       "maxActive": 1
     }
@@ -33,10 +42,9 @@
       },
       "maxActive": 1
     },
-    "str1": {
+    "primaryStrings1": {
       "instruments": {
         "high": [
-          "Violin 3",
           "Violin 11",
           "Violin 14",
           "Violin 15",
@@ -44,15 +52,52 @@
         ],
         "medium": [
           "Violin 1",
-          "Violin 2",
-          "Violin 4",
           "Violin 5",
           "Violin 6",
+          "Violin 7",
           "Violin 13",
           "Violin 17"
         ],
         "low": [
           "Violin 12"
+        ]
+      },
+      "maxActive": 1
+    },
+    "primaryStrings2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Viola 2"
+        ]
+      },
+      "maxActive": 1
+    },
+    "primaryStrings3": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [],
+        "low": [
+          "Cello 2",
+          "Cello 3"
+        ]
+      },
+      "maxActive": 1
+    },
+    "str1": {
+      "instruments": {
+        "high": [
+          "Violin 3"
+        ],
+        "medium": [
+          "Violin 2",
+          "Violin 4"
+        ],
+        "low": [
         ]
       },
       "maxActive": 1
@@ -63,13 +108,10 @@
           "Violin 10"
         ],
         "medium": [
-          "Violin 5",
-          "Violin 7",
           "Violin 8"
         ],
         "low": [
-          "Viola 1",
-          "Viola 2"
+          "Viola 1"
         ]
       },
       "maxActive": 1
@@ -81,8 +123,6 @@
         "medium": [],
         "low": [
           "Cello 1",
-          "Cello 2",
-          "Cello 3",
           "Double Bass 1"
         ]
       },
@@ -128,7 +168,7 @@
       },
       "maxActive": 1
     },
-    "win": {
+    "primaryWinds1": {
       "instruments": {
         "high": [
           "Oboe 1"

@@ -5,11 +5,12 @@
   "superGroups": {
     "lead1": {
       "groups": [
-        "win1",
-        "win3",
-        "str1",
+        "primaryWinds1",
+        "primaryWinds2",
+        "primaryStrings1",
         "bra1",
-        "pia1"
+        "pia1",
+        "bra3"
       ],
       "maxActive": 1
     },
@@ -24,14 +25,29 @@
       "groups": [
         "win2",
         "str2",
-        "bra2"
+        "bra2",
+        "win4"
       ],
       "maxActive": 1
     },
     "strings": {
       "groups": [
-        "str1",
+        "primaryStrings1",
         "str2"
+      ],
+      "maxActive": 1
+    },
+    "bass": {
+      "groups": [
+        "bra3",
+        "win4"
+      ],
+      "maxActive": 1
+    },
+    "trumpets": {
+      "groups": [
+        "bra1",
+        "bra2"
       ],
       "maxActive": 1
     }
@@ -97,7 +113,7 @@
       },
       "maxActive": 1
     },
-    "win1": {
+    "primaryWinds1": {
       "instruments": {
         "high": [
           "Alto Sax 1",
@@ -123,12 +139,11 @@
         "medium": [
         ],
         "low": [
-          "Baritone Sax 1"
         ]
       },
       "maxActive": 1
     },
-    "win3": {
+    "primaryWinds2": {
       "instruments": {
         "high": [
         ],
@@ -137,6 +152,18 @@
           "Tenor Sax 2"
         ],
         "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "win4": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Baritone Sax 1"
         ]
       },
       "maxActive": 1
@@ -166,13 +193,31 @@
       },
       "maxActive": 1
     },
-    "str1": {
+    "bra3": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
+          "Trombone 1",
+          "Trombone 2",
+          "Trombone 3",
+          "Trombone 4",
+          "Trombone 5",
+          "Trombone 6"
+        ]
+      },
+      "maxActive": 1
+    },
+    "primaryStrings1": {
       "instruments": {
         "high": [
           "Violin 1",
           "Violin 2",
           "Violin 3",
-          "Violin 4"
+          "Violin 4",
+          "Violin 5"
         ],
         "medium": [
         ],
@@ -211,6 +256,10 @@
         "high": [
         ],
         "medium": [
+          "Piano 1",
+          "Piano 2",
+          "Piano 3",
+          "Piano 4"
         ],
         "low": [
         ]
@@ -222,8 +271,9 @@
         "high": [
         ],
         "medium": [
-          "Piano 1",
-          "Piano 2"
+          "Piano 5",
+          "Piano 6",
+          "Piano 7"
         ],
         "low": [
         ]

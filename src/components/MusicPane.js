@@ -124,6 +124,7 @@ class MusicPane extends Component {
   playAudio = audioIndex => {
     const sound = this.composition[audioIndex].audio
     if (sound) {
+      console.log('playing', this.composition[audioIndex].audioName)
       const audioId = sound.play()
       this.composition[audioIndex].audioId = audioId
     }
@@ -358,7 +359,10 @@ class MusicPane extends Component {
       Object.entries(superGroups).forEach(([superGroupName, superGroup]) => {
         this.superGroupContent[superGroupName] = []
         superGroup.groups.forEach(groupName => {
-          superGroupCollection[groupName] = superGroupName
+          if (!superGroupCollection[groupName]) {
+            superGroupCollection[groupName] = []
+          }
+          superGroupCollection[groupName].push(superGroupName)
           this.superGroupContent[superGroupName].push(groupName)
         })
       })
@@ -477,10 +481,21 @@ class MusicPane extends Component {
 
   isItemPlaying = audioIndex => this.itemsPlaying.has(audioIndex)
 
+  isInstrumentPlaying = audioIndex => {
+    let isPlaying = false
+    const instrumentName = this.composition[audioIndex].audioName
+    this.itemsPlaying.forEach(itemInd => {
+      if (this.composition[itemInd].audioName === instrumentName) {
+        isPlaying = true
+      }
+    })
+    return isPlaying
+  }
+
   getItemPlayingCount = () => this.itemsPlaying.size
 
   isAudioPlayable = audioIndex => {
-    if (this.isItemPlaying(audioIndex) || this.isMaxActiveAudio()) {
+    if (this.isItemPlaying(audioIndex) || this.isMaxActiveAudio() || this.isInstrumentPlaying(audioIndex)) {
       return false
     }
     const group = this.getGroupForAudioIndex(audioIndex)
@@ -509,8 +524,11 @@ class MusicPane extends Component {
     if (this.isGroupFull(group)) {
       return true
     }
-    const superGroup = this.superGroups[group]
-    return superGroup ? this.isSuperGroupFull(superGroup) : false
+    const superGroups = this.superGroups[group]
+    if (superGroups) {
+      return superGroups.some(superGroup => this.isSuperGroupFull(superGroup))
+    }
+    return false
   }
 
   isGroupDisabledMemoized = memoize(this.isGroupDisabledBase)

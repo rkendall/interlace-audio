@@ -3,7 +3,7 @@
   "maxSoundCount": 11,
   "maxBurstCount": 7,
   "groups": {
-    "str": {
+    "primaryStrings1": {
       "instruments": {
         "high": [
           "Violin 1",
@@ -128,7 +128,7 @@
       },
       "maxActive": 3
     },
-    "pia": {
+    "pia1": {
       "instruments": {
         "high": [
         ],
@@ -141,7 +141,7 @@
       },
       "maxActive": 1
     },
-    "bas": {
+    "pia2": {
       "instruments": {
         "high": [
           "Lithophone 1"

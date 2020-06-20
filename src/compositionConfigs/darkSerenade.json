@@ -1,14 +1,19 @@
 {
-  "title": "Elegy for the Day",
+  "title": "Elegy for the Daylight",
   "maxSoundCount": 7,
   "maxBurstCount": 3,
   "groups": {
-    "str1": {
+    "primaryStrings1": {
       "instruments": {
         "high": [
           "Violin 30",
           "Violin 31",
-          "Violin 32"
+          "Violin 32",
+          "Violin 33",
+          "Violin 34",
+          "Violin 35",
+          "Violin 36",
+          "Violin 37"
         ],
         "medium": [
         ],

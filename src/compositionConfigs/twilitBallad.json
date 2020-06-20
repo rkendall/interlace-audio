@@ -19,7 +19,7 @@
     }
   },
   "groups": {
-    "win1": {
+    "primaryWinds1": {
       "instruments": {
         "high": [
           "Flute 1",

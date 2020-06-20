@@ -5,7 +5,9 @@
   "superGroups": {
     "strings": {
       "groups": [
-        "str1",
+        "primaryStrings1",
+        "primaryStrings2",
+        "primaryStrings3",
         "str2",
         "str3",
         "str4",
@@ -22,17 +24,40 @@
     }
   },
   "groups": {
-    "str1": {
+    "primaryStrings1": {
       "instruments": {
         "high": [
           "Violin 5",
           "Violin 6"
         ],
         "medium": [
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "primaryStrings2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
           "Violin 3",
+          "Violin 4",
           "Violin 7"
         ],
         "low": []
+      },
+      "maxActive": 1
+    },
+    "primaryStrings3": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Viola 2"
+        ],
+        "low": [
+        ]
       },
       "maxActive": 1
     },
@@ -54,8 +79,7 @@
         ],
         "medium": [
           "Violin 1",
-          "Violin 2",
-          "Violin 4"
+          "Violin 2"
         ],
         "low": []
       },
@@ -66,8 +90,7 @@
         "high": [
         ],
         "medium": [
-          "Viola 1",
-          "Viola 2"
+          "Viola 1"
         ],
         "low": [
         ]
