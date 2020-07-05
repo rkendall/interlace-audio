@@ -5,11 +5,19 @@
   "superGroups": {
     "orch": {
       "groups": [
+        "primaryStrings1",
         "str1",
-        "win1",
+        "primaryWinds1",
         "bra1"
       ],
       "maxActive": 2
+    },
+    "strings": {
+      "groups": [
+        "primaryStrings1",
+        "str1"
+      ],
+      "maxActive": 1
     },
     "percussion": {
       "groups": [
@@ -19,6 +27,13 @@
         "per4"
       ],
       "maxActive": 2
+    },
+    "guitar": {
+      "groups": [
+        "primaryPlucked1",
+        "plucked1"
+      ],
+      "maxActive": 1
     }
   },
   "groups": {
@@ -38,18 +53,30 @@
       },
       "maxActive": 1
     },
-    "guitar": {
+    "primaryPlucked1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Guitar 3",
+          "Guitar 4",
+          "Guitar 6",
+          "Guitar 7"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "plucked1": {
       "instruments": {
         "high": [
         ],
         "medium": [
           "Guitar 1",
           "Guitar 2",
-          "Guitar 3",
-          "Guitar 4",
           "Guitar 5",
-          "Guitar 6",
-          "Guitar 7"
+          "Guitar 8"
         ],
         "low": [
         ]
@@ -117,7 +144,7 @@
       },
       "maxActive": 1
     },
-    "str1": {
+    "primaryStrings1": {
       "instruments": {
         "high": [
           "Violin 7",
@@ -131,7 +158,18 @@
           "Violin 5"
         ],
         "low": [
-          "Violin 6",
+          "Violin 6"
+        ]
+      },
+      "maxActive": 1
+    },
+    "str1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
           "Viola 1",
           "Viola 2"
         ]
@@ -151,7 +189,7 @@
       },
       "maxActive": 1
     },
-    "win1": {
+    "primaryWinds1": {
       "instruments": {
         "high": [
           "Clarinet 1",
@@ -165,7 +203,7 @@
       },
       "maxActive": 1
     },
-    "win2": {
+    "primaryWinds2": {
       "instruments": {
         "high": [
           "Flute 1",

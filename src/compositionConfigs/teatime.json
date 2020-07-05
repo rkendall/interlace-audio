@@ -5,24 +5,24 @@
   "superGroups": {
     "melody": {
       "groups": [
-        "str1",
-        "str3",
+        "primaryStrings1",
+        "primaryStrings2",
         "pia3",
-        "win1"
+        "primaryWinds1"
       ],
       "maxActive": 1
     },
     "accompaniment": {
       "groups": [
-        "str2",
+        "str1",
         "win2"
       ],
       "maxActive": 1
     },
     "bass": {
       "groups": [
-        "str3",
-        "str4",
+        "primaryStrings2",
+        "primaryStrings3",
         "win3"
       ],
       "maxActive": 1
@@ -86,7 +86,7 @@
       },
       "maxActive": 1
     },
-    "str1": {
+    "primaryStrings1": {
       "instruments": {
         "high": [
         ],
@@ -102,21 +102,7 @@
       },
       "maxActive": 1
     },
-    "str2": {
-      "instruments": {
-        "high": [
-          "Violin 10",
-          "Violin 11"
-        ],
-        "medium": [
-          "Violin 12"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
-    "str3": {
+    "primaryStrings2": {
       "instruments": {
         "high": [
         ],
@@ -131,7 +117,21 @@
       },
       "maxActive": 1
     },
-    "str4": {
+    "str1": {
+      "instruments": {
+        "high": [
+          "Violin 10",
+          "Violin 11"
+        ],
+        "medium": [
+          "Violin 12"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "primaryStrings3": {
       "instruments": {
         "high": [
         ],
@@ -145,7 +145,7 @@
       },
       "maxActive": 1
     },
-    "win1": {
+    "primaryWinds1": {
       "instruments": {
         "high": [
           "Flute 1",

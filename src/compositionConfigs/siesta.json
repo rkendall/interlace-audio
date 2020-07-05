@@ -5,12 +5,19 @@
   "superGroups": {
     "strings": {
       "groups": [
+        "primaryStrings1",
+        "primaryStrings1",
         "str1",
-        "str2",
-        "str3",
-        "str4"
+        "str2"
       ],
       "maxActive": 2
+    },
+    "flute": {
+      "groups": [
+        "primaryWinds1",
+        "win1"
+      ],
+      "maxActive": 1
     }
   },
   "groups": {
@@ -28,7 +35,7 @@
       },
       "maxActive": 1
     },
-    "guitar": {
+    "plucked1": {
       "instruments": {
         "high": [
         ],
@@ -68,7 +75,7 @@
       },
       "maxActive": 1
     },
-    "str1": {
+    "primaryStrings1": {
       "instruments": {
         "high": [
         ],
@@ -83,20 +90,7 @@
       },
       "maxActive": 1
     },
-    "str2": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Violin 5"
-        ],
-        "low": [
-          "Violin 6"
-        ]
-      },
-      "maxActive": 1
-    },
-    "str3": {
+    "primaryStrings2": {
       "instruments": {
         "high": [
           "Violin 7",
@@ -109,7 +103,20 @@
       },
       "maxActive": 1
     },
-    "str4": {
+    "str1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Violin 5"
+        ],
+        "low": [
+          "Violin 6"
+        ]
+      },
+      "maxActive": 1
+    },
+    "str2": {
       "instruments": {
         "high": [
         ],
@@ -135,7 +142,32 @@
       },
       "maxActive": 1
     },
+    "primaryWinds1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Flute 3"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
     "win1": {
+      "instruments": {
+        "high": [
+          "Flute 1",
+          "Flute 2"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "win2": {
       "instruments": {
         "high": [
           "Clarinet 1",
@@ -149,20 +181,7 @@
       },
       "maxActive": 1
     },
-    "win2": {
-      "instruments": {
-        "high": [
-          "Flute 1",
-          "Flute 2"
-        ],
-        "medium": [
-          "Flute 3"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
+
     "pia1": {
       "instruments": {
         "high": [

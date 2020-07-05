@@ -181,7 +181,7 @@
       },
       "maxActive": 1
     },
-    "per1": {
+    "tuned1": {
       "instruments": {
         "high": [
         ],
@@ -196,7 +196,23 @@
       },
       "maxActive": 1
     },
-    "per2": {
+    "tuned2": {
+      "instruments": {
+        "high": [
+          "Celesta 1",
+          "Celesta 2"
+        ],
+        "medium": [
+          "Lithophone 1",
+          "Lithophone 2"
+        ],
+        "low": [
+          "Lithophone 3"
+        ]
+      },
+      "maxActive": 1
+    },
+    "per1": {
       "instruments": {
         "high": [
         ],
@@ -210,22 +226,6 @@
           "Tympani 2",
           "Tamtam 1",
           "Tamtam 2"
-        ]
-      },
-      "maxActive": 1
-    },
-    "per3": {
-      "instruments": {
-        "high": [
-          "Celesta 1",
-          "Celesta 2"
-        ],
-        "medium": [
-          "Lithophone 1",
-          "Lithophone 2"
-        ],
-        "low": [
-          "Lithophone 3"
         ]
       },
       "maxActive": 1

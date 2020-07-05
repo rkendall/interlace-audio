@@ -1,7 +1,21 @@
 {
   "title": "Nocturne",
   "maxSoundCount": 10,
+  "maxBurstCount": 4,
   "groups": {
+    "primaryWinds1": {
+      "instruments": {
+        "high": [
+
+        ],
+        "medium": [
+          "Flute 2",
+          "Flute 3"
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
     "win1": {
       "instruments": {
         "high": [
@@ -34,7 +48,7 @@
       },
       "maxActive": 1
     },
-    "per1": {
+    "tuned1": {
       "instruments": {
         "high": [
           "Marimba 2",
@@ -42,25 +56,47 @@
           "Glockenspiel 2",
           "Celesta 1",
           "Glockenspiel 1",
-          "Marimba 1",
-          "Temple Blocks 2"
+          "Marimba 1"
         ],
         "medium": [
           "Vibes 2",
           "Tubular Bells 2",
-          "Taiko Drums 1",
           "Tubular Bells 1",
           "Xylophone 3",
-          "Temple Blocks 1",
           "Vibes 1",
           "Tubular Bells 3"
         ],
         "low": [
         ]
       },
-      "maxActive": 6
+      "maxActive": 3
+    },
+    "per1": {
+      "instruments": {
+        "high": [
+          "Temple Blocks 2"
+        ],
+        "medium": [
+          "Temple Blocks 1"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
     },
     "per2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Taiko Drums 1"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "per3": {
       "instruments": {
         "high": [
         ],
@@ -73,11 +109,22 @@
       },
       "maxActive": 1
     },
+    "primaryStrings1": {
+      "instruments": {
+        "high": [
+          "Violin 4",
+          "Violin 5"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
     "str1": {
       "instruments": {
         "high": [
-          "Violin 5",
-          "Violin 4",
           "Violin 6"
         ],
         "medium": [
@@ -91,7 +138,7 @@
           "Violin 2"
         ]
       },
-      "maxActive": 3
+      "maxActive": 2
     },
     "str2": {
       "instruments": {
@@ -105,7 +152,7 @@
           "Cello 4"
         ]
       },
-      "maxActive": 2
+      "maxActive": 1
     },
     "pizz": {
       "instruments": {
@@ -132,7 +179,6 @@
     "pia": {
       "instruments": {
         "high": [
-          "Harp 1",
           "Piano 2"
         ],
         "medium": [],
@@ -140,7 +186,18 @@
           "Piano 1"
         ]
       },
-      "maxActive": 3
+      "maxActive": 2
+    },
+    "plucked1": {
+      "instruments": {
+        "high": [
+          "Harp 1"
+        ],
+        "medium": [],
+        "low": [
+        ]
+      },
+      "maxActive": 1
     }
   }
 }

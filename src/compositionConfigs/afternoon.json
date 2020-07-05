@@ -17,7 +17,7 @@
     "acc": {
       "groups": [
         "pia",
-        "vib"
+        "tuned1"
       ],
       "maxActive": 1
     },
@@ -145,8 +145,7 @@
       "instruments": {
         "high": [
           "Cymbals 1",
-          "Temple Blocks 1",
-          "Xylophone 1"
+          "Temple Blocks 1"
         ],
         "medium": [],
         "low": [
@@ -200,10 +199,9 @@
       "maxActive": 1,
       "length": 3000
     },
-    "tuned": {
+    "plucked": {
       "instruments": {
         "high": [
-          "Marimba 1"
         ],
         "medium": [
           "Harp 1",
@@ -213,7 +211,7 @@
       },
       "maxActive": 2
     },
-    "vib": {
+    "tuned1": {
       "instruments": {
         "high": [
           "Vibes 1",
@@ -225,8 +223,30 @@
         ],
         "low": []
       },
-      "maxActive": 1,
+      "maxActive": 2,
       "length": 2000
+    },
+    "tuned2": {
+      "instruments": {
+        "high": [
+          "Marimba 1"
+        ],
+        "medium": [
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "tuned3": {
+      "instruments": {
+        "high": [
+          "Xylophone 1"
+        ],
+        "medium": [],
+        "low": [
+        ]
+      },
+      "maxActive": 1
     },
     "bra": {
       "instruments": {

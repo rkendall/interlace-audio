@@ -212,7 +212,7 @@
       },
       "maxActive": 1
     },
-    "pia0": {
+    "pia1": {
       "instruments": {
         "high": [
           "Celesta 1",
@@ -229,7 +229,7 @@
       },
       "maxActive": 1
     },
-    "pia1": {
+    "tuned1": {
       "instruments": {
         "high": [
           "Vibes 1",

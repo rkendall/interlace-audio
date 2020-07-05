@@ -6,23 +6,20 @@
     "mel": {
       "groups": [
         "primaryPlucked1",
-        "primaryWinds"
+        "primaryWinds",
+        "bra"
       ],
       "maxActive": 2
     },
-    "acc": {
+    "all": {
       "groups": [
+        "primaryPlucked1",
+        "primaryWinds",
+        "bra",
         "guitar2",
-        "guitar3"
+        "pia1"
       ],
-      "maxActive": 1
-    },
-    "low": {
-      "groups": [
-        "pia",
-        "guitar3"
-      ],
-      "maxActive": 1
+      "maxActive": 2
     }
   },
   "groups": {
@@ -78,29 +75,18 @@
           "Electric Guitar 20",
           "Electric Guitar 21",
           "Electric Guitar 22",
-          "Electric Guitar 23"
+          "Electric Guitar 23",
+          "Electric Guitar 24",
+          "Electric Guitar 25",
+          "Electric Guitar 26",
+          "Electric Guitar 27"
         ],
         "low": [
         ]
       },
       "maxActive": 1
     },
-    "guitar3": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Electric Guitar 30",
-          "Electric Guitar 31",
-          "Electric Guitar 32",
-          "Electric Guitar 33"
-        ]
-      },
-      "maxActive": 1
-    },
-    "pia": {
+    "pia1": {
       "instruments": {
         "high": [
         ],
@@ -142,10 +128,10 @@
         "high": [
         ],
         "medium": [
-          "Drum Kit 1",
-          "Drum Kit 1"
         ],
         "low": [
+          "Drum Kit 1",
+          "Drum Kit 2"
         ]
       },
       "maxActive": 1

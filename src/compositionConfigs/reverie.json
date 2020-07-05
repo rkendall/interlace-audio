@@ -1,11 +1,11 @@
 {
   "title": "Reverie",
   "maxSoundCount": 8,
-  "maxBurstCount": 4,
+  "maxBurstCount": 3,
   "superGroups": {
     "mel": {
       "groups": [
-        "win1",
+        "primaryWinds1",
         "bra",
         "pia1"
       ],
@@ -13,10 +13,18 @@
     },
     "mel2": {
       "groups": [
-        "win2",
+        "win1",
+        "primaryWinds2",
         "pia2"
       ],
       "maxActive": 2
+    },
+    "lowPiano": {
+      "groups": [
+        "pia2",
+        "pia4"
+      ],
+      "maxActive": 1
     }
   },
   "groups": {
@@ -33,14 +41,25 @@
           "Violin 8"
         ],
         "low": [
+        ]
+      },
+      "maxActive": 2
+    },
+    "str2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+        ],
+        "low": [
           "Violin 2",
           "Violin 3",
           "Violin 4"
         ]
       },
-      "maxActive": 3
+      "maxActive": 1
     },
-    "per": {
+    "tuned1": {
       "instruments": {
         "high": [
           "Celesta 1",
@@ -57,7 +76,7 @@
       },
       "maxActive": 3
     },
-    "win1": {
+    "primaryWinds1": {
       "instruments": {
         "high": [
           "Flute 1",
@@ -68,6 +87,31 @@
         "medium": [
         ],
         "low": []
+      },
+      "maxActive": 1
+    },
+    "primaryWinds2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Flute 2"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "win1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Flute 5",
+          "Oboe 2"
+        ],
+        "low": [
+        ]
       },
       "maxActive": 1
     },
@@ -95,20 +139,6 @@
       },
       "maxActive": 1
     },
-    "win2": {
-      "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Flute 2",
-          "Flute 5",
-          "Oboe 2"
-        ],
-        "low": [
-        ]
-      },
-      "maxActive": 1
-    },
     "pia2": {
       "instruments": {
         "high": [
@@ -128,10 +158,19 @@
         ],
         "medium": [
           "Piano 2",
-          "Harp 1",
           "Piano 4",
-          "Harp 2",
           "Piano 6"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 2
+    },
+    "pia4": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
         ],
         "low": [
           "Piano 1",
@@ -141,9 +180,22 @@
           "Piano 3"
         ]
       },
-      "maxActive": 2
+      "maxActive": 1
     },
-    "str2": {
+    "plucked1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Harp 1",
+          "Harp 2"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "str3": {
       "instruments": {
         "high": [
         ],
@@ -154,7 +206,7 @@
           "Cello 3"
         ]
       },
-      "maxActive": 2
+      "maxActive": 1
     }
   }
 }

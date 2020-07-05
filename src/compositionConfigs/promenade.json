@@ -2,6 +2,22 @@
   "title": "Commuter Processional",
   "maxSoundCount": 5,
   "maxBurstCount": 2,
+  "superGroups": {
+    "oboe": {
+      "groups": [
+        "primaryWinds1",
+        "win1"
+      ],
+      "maxActive": 1
+    },
+    "bass": {
+      "groups": [
+        "primaryStrings2",
+        "win4"
+      ],
+      "maxActive": 1
+    }
+  },
   "groups": {
     "pizz1": {
       "instruments": {
@@ -16,7 +32,7 @@
       },
       "maxActive": 1
     },
-    "str1": {
+    "primaryStrings1": {
       "instruments": {
         "high": [
         ],
@@ -31,7 +47,7 @@
       },
       "maxActive": 1
     },
-    "str2": {
+    "primaryStrings2": {
       "instruments": {
         "high": [
         ],
@@ -58,10 +74,20 @@
       },
       "maxActive": 1
     },
+    "primaryWinds1": {
+      "instruments": {
+        "high": [
+          "Oboe 1"
+        ],
+        "medium": [
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
     "win1": {
       "instruments": {
         "high": [
-          "Oboe 1",
           "Oboe 2",
           "Oboe 3"
         ],
@@ -97,6 +123,18 @@
         "medium": [
         ],
         "low": []
+      },
+      "maxActive": 1
+    },
+    "win4": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [],
+        "low": [
+          "Bassoon 1",
+          "Bassoon 2"
+        ]
       },
       "maxActive": 1
     },
@@ -156,18 +194,6 @@
     "per2": {
       "instruments": {
         "high": [
-          "Marimba 1"
-        ],
-        "medium": [
-          "Marimba 2"
-        ],
-        "low": []
-      },
-      "maxActive": 1
-    },
-    "per3": {
-      "instruments": {
-        "high": [
           "Wood Blocks 1",
           "Wood Blocks 2"
         ],
@@ -177,15 +203,15 @@
       },
       "maxActive": 1
     },
-    "win4": {
+    "tuned1": {
       "instruments": {
         "high": [
+          "Marimba 1"
         ],
-        "medium": [],
-        "low": [
-          "Bassoon 1",
-          "Bassoon 2"
-        ]
+        "medium": [
+          "Marimba 2"
+        ],
+        "low": []
       },
       "maxActive": 1
     }

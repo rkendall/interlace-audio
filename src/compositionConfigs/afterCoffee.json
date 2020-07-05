@@ -2,17 +2,42 @@
   "title": "After Coffee",
   "maxSoundCount": 7,
   "maxBurstCount": 4,
+  "superGroups": {
+    "strings": {
+      "groups": [
+        "primaryStrings1",
+        "str1"
+      ],
+      "maxActive": 3
+    },
+    "winds": {
+      "groups": [
+        "primaryWinds1",
+        "win1"
+      ],
+      "maxActive": 3
+    }
+  },
   "groups": {
+    "primaryStrings1": {
+      "instruments": {
+        "high": [
+          "Violins 3"
+        ],
+        "medium": [
+          "Violins 1",
+          "Violins 2"
+        ]
+      },
+      "maxActive": 3
+    },
     "str1": {
       "instruments": {
         "high": [
-          "Violins 3",
           "Violins 4",
           "Violins 5"
         ],
         "medium": [
-          "Violins 1",
-          "Violins 2",
           "Violas 1",
           "Violas 2",
           "Violas 3",
@@ -30,16 +55,25 @@
       },
       "maxActive": 2
     },
-    "win": {
+    "primaryWinds1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Oboe 1",
+          "Clarinet 1"
+        ]
+      },
+      "maxActive": 3
+    },
+    "win1": {
       "instruments": {
         "high": [
           "Flutes 2",
           "Piccolo 1"
         ],
         "medium": [
-          "Flutes 1",
-          "Oboe 1",
-          "Clarinet 1"
+          "Flutes 1"
         ]
       },
       "maxActive": 3
@@ -60,15 +94,15 @@
       },
       "maxActive": 2
     },
-    "pia": {
+    "plucked": {
       "instruments": {
         "medium": [
           "Harp 1"
         ]
       },
-      "maxActive": 2
+      "maxActive": 1
     },
-    "per1": {
+    "tuned1": {
       "instruments": {
         "high": [
           "Xylophone 1",
@@ -85,7 +119,7 @@
       },
       "maxActive": 3
     },
-    "per2": {
+    "per1": {
       "instruments": {
         "high": [
         ],
@@ -98,7 +132,7 @@
       },
       "maxActive": 1
     },
-    "per3": {
+    "per2": {
       "instruments": {
         "high": [
         ],

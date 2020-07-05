@@ -3,7 +3,20 @@
   "maxSoundCount": 6,
   "maxBurstCount": 5,
   "groups": {
-    "pia": {
+    "pia1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Piano 1",
+          "Piano 2"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "tuned1": {
       "instruments": {
         "high": [
           "Vibes 1",
@@ -11,9 +24,7 @@
           "Vibes 3a"
         ],
         "medium": [
-          "Piano 1",
           "Vibes 2",
-          "Piano 2",
           "Harp 1",
           "Vibes 2b",
           "Vibes 2a"
@@ -23,23 +34,19 @@
           "Vibes 3"
         ]
       },
-      "maxActive": 3
+      "maxActive": 2
     },
-    "per": {
+    "tuned2": {
       "instruments": {
         "high": [
           "Celesta",
           "Glockenspiel 1",
-          "Temple Blocks",
           "Xylophone 1",
           "Xylophone 2",
           "Xylophone 3"
         ],
         "medium": [
-          "Taiko Drums 1",
           "Marimba 1",
-          "Taiko Drums 2",
-          "Taiko Drums 3",
           "Tubular Bells 1",
           "Tubular Bells 2",
           "Tubular Bells 3"
@@ -47,9 +54,36 @@
         "low": [
         ]
       },
-      "maxActive": 3
+      "maxActive": 2
     },
-    "str1": {
+    "plucked1": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Harp 1"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "per1": {
+      "instruments": {
+        "high": [
+          "Temple Blocks"
+        ],
+        "medium": [
+          "Taiko Drums 1",
+          "Taiko Drums 2",
+          "Taiko Drums 3"
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 2
+    },
+    "primaryStrings1": {
       "instruments": {
         "high": [
           "Violin 2",
@@ -64,7 +98,7 @@
       },
       "maxActive": 3
     },
-    "str2": {
+    "primaryStrings2": {
       "instruments": {
         "high": [
         ],
@@ -75,7 +109,7 @@
       },
       "maxActive": 1
     },
-    "win": {
+    "primaryWinds1": {
       "instruments": {
         "high": [
         ],

@@ -5,15 +5,10 @@
   "superGroups": {
     "mel": {
       "groups": [
-        "guitar",
+        "primaryPlucked1",
         "bra",
-        "win"
-      ],
-      "maxActive": 2
-    },
-    "rhythm": {
-      "groups": [
-        "guitar2"
+        "primaryWinds1",
+        "pia1"
       ],
       "maxActive": 2
     }
@@ -93,7 +88,7 @@
       },
       "maxActive": 1
     },
-    "pia": {
+    "pia1": {
       "instruments": {
         "high": [
           "Piano 6"
@@ -109,7 +104,7 @@
       },
       "maxActive": 1
     },
-    "guitar": {
+    "primaryPlucked1": {
       "instruments": {
         "high": [
           "Electric Guitar 1",
@@ -121,19 +116,20 @@
         "low": [
         ]
       },
-      "maxActive": 2
+      "maxActive": 1
     },
-    "guitar2": {
+    "plucked1": {
       "instruments": {
         "high": [
         ],
         "medium": [
-          "Electric Guitar 4"
+          "Electric Guitar 4",
+          "Electric Guitar 5"
         ],
         "low": [
         ]
       },
-      "maxActive": 2
+      "maxActive": 1
     },
     "bra": {
       "instruments": {
@@ -149,7 +145,7 @@
       },
       "maxActive": 1
     },
-    "win1": {
+    "primaryWinds1": {
       "instruments": {
         "high": [
           "Alto Sax 1",
@@ -162,9 +158,9 @@
         "low": [
         ]
       },
-      "maxActive": 2
+      "maxActive": 1
     },
-    "win2": {
+    "win1": {
       "instruments": {
         "high": [
         ],

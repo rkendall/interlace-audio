@@ -134,11 +134,22 @@
       },
       "maxActive": 1
     },
-    "per": {
+    "tuned": {
       "instruments": {
         "high": [
           "Glockenspiel 1",
           "Glockenspiel 2"
+        ],
+        "medium": [
+        ],
+        "low": [
+        ]
+      },
+      "maxActive": 1
+    },
+    "per": {
+      "instruments": {
+        "high": [
         ],
         "medium": [
           "Tambourine 1",
@@ -147,7 +158,7 @@
         "low": [
         ]
       },
-      "maxActive": 3
+      "maxActive": 2
     }
   }
 }

@@ -196,12 +196,23 @@
         ],
         "medium": [
           "Rails 1",
-          "Cymbal 1",
-          "Lithophone 1"
+          "Cymbal 1"
         ],
         "low": [
           "Tamtam 1",
           "Tympani 1"
+        ]
+      },
+      "maxActive": 1
+    },
+    "tuned": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Lithophone 1"
+        ],
+        "low": [
         ]
       },
       "maxActive": 1
