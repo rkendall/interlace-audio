@@ -7,9 +7,11 @@ import MusicPane from './components/MusicPane'
 import Message from './components/Message'
 import ErrorBoundary from './components/ErrorBoundary'
 import './App.css'
+
 import waterDreams from './compositionConfigs/waterDreams.json'
 import glassDreams from './compositionConfigs/glassDreams.json'
-import dream from './compositionConfigs/dream.json'
+import ironDreams from './compositionConfigs/ironDreams.json'
+import ironDreamsPoem from './poems/ironDreams'
 import bumpsInTheNight from './compositionConfigs/bumpsInTheNight.json'
 import dreamlandRushHour from './compositionConfigs/dreamlandRushHour.json'
 import aubade from './compositionConfigs/audbade.json'
@@ -35,7 +37,7 @@ import midnightBlues from './compositionConfigs/midnightBlues.json'
 const compositionData = [
   {waterDreams},
   {glassDreams},
-  {dream},
+  {ironDreams},
   {bumpsInTheNight},
   {dreamlandRushHour},
   {aubade},
@@ -59,11 +61,13 @@ const compositionData = [
   {midnightBlues},
 ]
 
+const poems = {ironDreamsPoem}
+
 const timeSlots =
 {
   waterDreams: 1,
   glassDreams: 2,
-  dream: 3,
+  ironDreams: 3,
   bumpsInTheNight: 4,
   dreamlandRushHour: 5,
   aubade: 6,
@@ -89,6 +93,11 @@ const timeSlots =
 
 let rawCompositionTemp = {}
 compositionData.forEach(async data => {
+  const [name, value] = Object.entries(data)[0]
+  const poem = poems[`${name}Poem`] || null
+  if (poem) {
+    value.poem = poem
+  }
   rawCompositionTemp = {
     ...rawCompositionTemp,
     ...data,
@@ -117,6 +126,8 @@ class App extends Component {
       vanishSquares: false,
       stopLooping: false,
       height: null,
+      showPoetry: false,
+      isPoetry: false,
     }
   }
 
@@ -132,7 +143,7 @@ class App extends Component {
   }
 
   render() {
-    const {currentCompositionName, squareCount, vanishSquares, sidebarOpen, instructionsOpen, stopLooping, height} = this.state
+    const {currentCompositionName, squareCount, vanishSquares, showPoetry, isPoetry, sidebarOpen, instructionsOpen, stopLooping, height} = this.state
 
     return (
       <div className="main">
@@ -144,12 +155,14 @@ class App extends Component {
             timeSlots={timeSlots}
             onChange={this.onCompositionSelected}
             onFadeSelected={this.onFadeSelected}
+            onPoetrySelected={this.onPoetrySelected}
             onStopLooping={this.onStopLooping}
             onToggleInstructions={this.onToggleInstructions}
             instructionsOpen={instructionsOpen}
             initialSelectedValue={currentCompositionName}
             sidebarOpen={sidebarOpen}
             height={height}
+            isPoetry={isPoetry}
           />}
           open={sidebarOpen}
           docked={sidebarOpen}
@@ -168,6 +181,8 @@ class App extends Component {
                     vanishSquares={vanishSquares}
                     stopLooping={stopLooping}
                     onPlayStarted={this.onPlayStarted}
+                    showPoetry={showPoetry}
+                    onPoemInitialized={this.onPoemInitialized}
                   />
                 </ErrorBoundary>
               </ReactResizeDetector>
@@ -223,6 +238,16 @@ class App extends Component {
     this.setState({
       vanishSquares: !this.state.vanishSquares,
     })
+  }
+
+  onPoetrySelected = value => {
+    this.setState({
+      showPoetry: !this.state.showPoetry,
+    })
+  }
+
+  onPoemInitialized = isPoetry => {
+    this.setState(({isPoetry: currentStatus}) => currentStatus !== isPoetry ? {isPoetry} : null)
   }
 
   onStopLooping = () => {

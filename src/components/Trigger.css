@@ -369,10 +369,23 @@
 	/*background: #aabb8e;*/
 /*}*/
 
-.text {
+@keyframes fadePoetryIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.text, .poetry {
 	position: absolute;
-	top: 0;
-	margin-top: calc(50% - 6px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 80px;
+	padding: 0 5px;
+	box-sizing: border-box;
 	font-size: 12px;
 	opacity: 0;
 	text-align: center;
@@ -395,28 +408,24 @@
 	top: -100vh;
 }
 
-@keyframes fadeTextIn {
-	0% {
-		opacity: 0;
-	}
-	25% {
-		opacity: 0;
-	}
-	50% {
-		opacity: 1;
-	}
-	100% {
-		opacity: 1;
-	}
+.poetry-enter {
+	animation: fadePoetryIn 300ms ease-in;
+	animation-fill-mode: forwards;
+	will-change: transform;
 }
 
-@keyframes fadeTextOut {
-	0% {
-		opacity: 1;
-	}
-	100% {
-		opacity: 0;
-	}
+.poetry-enter-active {
+	animation: fadePoetryIn 300ms ease-in;
+	animation-fill-mode: forwards;
+	transform: translate(0, -100vh);
+	transition: transform 10s ease-in;
+}
+
+.poetry-enter-done {
+	animation: fadePoetryIn 300ms ease-in;
+	animation-fill-mode: forwards;
+	position: absolute;
+	top: -100vh;
 }
 
 .textHintContainer, .textHint {
@@ -446,8 +455,34 @@
 	animation: none;
 }
 
+@keyframes fadeTextIn {
+	0% {
+		opacity: 0;
+	}
+	25% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeTextOut {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
 .textHint {
 	margin-top: calc(50% - 6px);
+	box-sizing: border-box;
+	padding: 0 5px;
 	font-size: 12px;
 	text-align: center;
 	user-select: none;

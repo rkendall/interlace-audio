@@ -33,7 +33,7 @@ class SideBar extends Component {
   }
 
   render() {
-    const {onFadeSelected, onStopLooping, onToggleInstructions, toggleSidebar, compositionTitles, sidebarOpen, instructionsOpen} = this.props
+    const {onFadeSelected, onPoetrySelected, onStopLooping, onToggleInstructions, toggleSidebar, compositionTitles, sidebarOpen, instructionsOpen, isPoetry} = this.props
     const {selectedInd} = this.state
     return (
       <Fragment>
@@ -81,7 +81,7 @@ class SideBar extends Component {
               action={onStopLooping}
             >Stop All Looping
             </Button>
-            <div className="selectFade">
+            <div className="selectOptions">
               <label>
                 <input
                   name="fade"
@@ -90,6 +90,16 @@ class SideBar extends Component {
                 />
                 <span className="label">Magic Vanishing Act</span>
               </label>
+              <label className={isPoetry ? '' : 'selectionDisabled'}>
+                <input
+                  name="poetry"
+                  type="checkbox"
+                  onChange={onPoetrySelected}
+                  disabled={!isPoetry}
+                />
+                <span className="label">Poetry</span>
+              </label>
+
             </div>
             <button className="button" onClick={onToggleInstructions}>{instructionsOpen ? 'Hide' : 'View'} Help</button>
           </div>

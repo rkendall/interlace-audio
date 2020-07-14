@@ -5,6 +5,7 @@ import debounce from 'lodash/debounce'
 import memoize from 'lodash/memoize';
 import './MusicPane.css'
 import Trigger from './Trigger'
+import poetry from '../poetry';
 
 class MusicPane extends Component {
   constructor() {
@@ -20,6 +21,7 @@ class MusicPane extends Component {
       paused: false,
       // forces rerender when items are started or stopped
       itemsPlayingCount: 0,
+      isPoetry: false,
     }
     this.composition = []
     this.playTimer = null
@@ -61,8 +63,8 @@ class MusicPane extends Component {
   }
 
   render() {
-    const {loading, allowDisabled, fadeAllSquares} = this.state
-    const {squareCount, vanishSquares, onPlayStarted} = this.props
+    const {loading, allowDisabled, fadeAllSquares, isPoetry} = this.state
+    const {squareCount, vanishSquares, onPlayStarted, showPoetry} = this.props
     return !loading && this.composition.length && squareCount ?
       (<Fragment>
           <div className="paneWrapper" onMouseOver={this.handleInactivity} onTouchStart={onPlayStarted}>
@@ -87,6 +89,7 @@ class MusicPane extends Component {
                   isLooping: this.itemsLooping.has(audioIndex),
                   fadeSquares: vanishSquares,
                   fadeAllSquares,
+                  isPoetry: isPoetry && showPoetry,
                 }
                 return (
                   <Trigger {...triggerProps} />
@@ -124,7 +127,7 @@ class MusicPane extends Component {
   playAudio = audioIndex => {
     const sound = this.composition[audioIndex].audio
     if (sound) {
-      console.log('playing', this.composition[audioIndex].audioName)
+      // console.log('playing', this.composition[audioIndex].audioName)
       const audioId = sound.play()
       this.composition[audioIndex].audioId = audioId
     }
@@ -326,10 +329,12 @@ class MusicPane extends Component {
   }
 
   initializeComposition = () => {
-    const {rawCompositions, currentCompositionName} = this.props
+    const {rawCompositions, currentCompositionName, onPoemInitialized} = this.props
     const compositionData = rawCompositions[currentCompositionName]
     this.audioItemsByRange = this.getAudioItemsByRange(compositionData.groups)
-    this.setState({fadeAllSquares: false}, () => {
+    const isPoetry = poetry.init(compositionData.poem)
+    onPoemInitialized(isPoetry)
+    this.setState({fadeAllSquares: false, isPoetry}, () => {
       this.composition = []
       this.clearAudio()
       this.itemsPlaying.clear()

@@ -3,10 +3,11 @@ import {Transition, CSSTransition} from 'react-transition-group'
 import TinyGesture from 'tinygesture'
 import classNames from 'classnames'
 import './Trigger.css'
+import poetry from '../poetry'
 
 export default class Trigger extends PureComponent {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       isDisplayed: false,
       isTextAnimating: false,
@@ -22,6 +23,7 @@ export default class Trigger extends PureComponent {
       suppressTextHint: false,
       allowCursorDisabled: false,
       isCursorDisabled: false,
+      poemWord: '',
     }
     this.disabledElement = createRef()
     this.sensor = createRef()
@@ -79,25 +81,26 @@ export default class Trigger extends PureComponent {
   }
 
   render() {
-    const {audioIndex, audioName, group, isLooping, isPlaying} = this.props
-    const {showDisabled, isDisabledAnimating, isSecondaryActive, isSquareHovered, isSquareTriggered, isGlowActive, isTextAnimating, isLoopingAnimationActive, stopLooping, isDisplayed, suppressTextHint, isCursorDisabled} = this.state
+    const {audioName, audioIndex, group, isLooping, isPlaying, isPoetry} = this.props
+    const {showDisabled, isDisabledAnimating, isSecondaryActive, isSquareHovered, isSquareTriggered, isGlowActive, isTextAnimating, isLoopingAnimationActive, stopLooping, isDisplayed, suppressTextHint, isCursorDisabled, poemWord} = this.state
     const doLooping = isLooping && !stopLooping
     const active = (isPlaying || isTextAnimating) && !isLoopingAnimationActive
-    const displayName = audioName.replace(/ \d+\w?$/, '')
     const activateSecondary = isSecondaryActive && !isLoopingAnimationActive
     const groupClassName = group.replace(/\d+$/, '')
     const disabledActive = showDisabled || isDisabledAnimating
+    const text = isPoetry ? poemWord : audioName.replace(/ \d+\w?$/, '')
+    const textHint = isPoetry ? '' : text
     return (
       <div className={classNames('trigger', {visible: isDisplayed}, {isDisabled: isCursorDisabled})}>
         <CSSTransition
           in={active}
-          timeout={3000}
-          classNames="text"
+          timeout={isPoetry ? 10000 : 3000}
+          classNames={isPoetry ? 'poetry' : 'text'}
           unmountOnExit
           onEnter={this.onTextAnimationStarted}
           onEntered={this.onTextAnimationDone}
         >
-          <div className="text" key={audioIndex}>{displayName}</div>
+          <div className={isPoetry ? 'poetry' : 'text'} key={audioIndex}><div>{text}</div></div>
         </CSSTransition>
         <CSSTransition
           in={isSquareTriggered}
@@ -174,7 +177,7 @@ export default class Trigger extends PureComponent {
               timeout={{enter: 1000, exit: 500}}
               classNames="textHint"
             >
-              {!suppressTextHint ? <div key={audioIndex} className="textHint">{displayName}</div> : <div />}
+              {!suppressTextHint ? <div key={audioIndex} className="textHint">{textHint}</div> : <div />}
             </CSSTransition>
           </div>
         </CSSTransition>
@@ -197,10 +200,17 @@ export default class Trigger extends PureComponent {
 
   gesture = null
 
-  onTextAnimationStarted = ()=> {
-    this.setState({
-      isTextAnimating: true,
-      showTextHint: false,
+  onTextAnimationStarted = () => {
+    const { group, isPoetry, allowDisabled } = this.props
+    this.setState(() => {
+      const newState = {
+        isTextAnimating: true,
+        showTextHint: false,
+      }
+      if (isPoetry) {
+        newState.poemWord = poetry.get({group, fast: !allowDisabled})
+      }
+      return newState
     })
   }
 

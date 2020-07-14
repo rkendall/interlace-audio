@@ -189,8 +189,16 @@ p:last-of-type {
   text-shadow: 0 0 1px #ae470c !important;
 }
 
-.selectFade * {
+.selectOptions * {
   cursor: pointer;
+}
+
+.selectOptions label {
+  display: block;
+}
+
+.selectOptions .selectionDisabled {
+  color: gray;
 }
 
 .label {
