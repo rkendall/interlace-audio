@@ -2,10 +2,11 @@ import React, {Component, Fragment} from 'react'
 import {Howl, Howler} from 'howler'
 import ReactLoading from 'react-loading'
 import debounce from 'lodash/debounce'
-import memoize from 'lodash/memoize';
+import memoize from 'lodash/memoize'
 import './MusicPane.css'
 import Trigger from './Trigger'
-import poetry from '../poetry';
+import poetry from '../poetry'
+import {shuffleArray} from '../utilities'
 
 class MusicPane extends Component {
   constructor() {
@@ -39,6 +40,7 @@ class MusicPane extends Component {
     this.playQueue = new Set()
     this.itemsLooping = new Set()
     this.lastItemLooping = null
+    this.lastPointerId = null
   }
 
   componentDidUpdate(prevProps) {
@@ -98,7 +100,7 @@ class MusicPane extends Component {
             </div>
           </div>
         </Fragment>
-      ) : <div className="loading"><ReactLoading type="spinningBubbles" color="blue" delay={300}/></div>
+      ) : <div className="loading" onTouchStart={onPlayStarted}><ReactLoading type="spinningBubbles" color="blue" delay={300}/></div>
   }
 
   stopLastLoopingItemIfNecessary = audioIndex => {
@@ -186,16 +188,6 @@ class MusicPane extends Component {
     return audioPromises
   }
 
-  shuffleArray = arr => {
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * i)
-      const temp = arr[i]
-      arr[i] = arr[j]
-      arr[j] = temp
-    }
-    return arr
-  }
-
   getCumulativeLength = audioItemsByRange => Object.values(audioItemsByRange).reduce((count, values) => count + values.length, 0)
 
   getSizedAudioItemsArray = squareCount => {
@@ -214,7 +206,7 @@ class MusicPane extends Component {
       })
     }
     Object.entries(audioItems).forEach(([range, arr]) => {
-      audioItems[range] = this.shuffleArray(arr)
+      audioItems[range] = shuffleArray(arr)
     })
     const duplicatedAudioItems = this.flattenAudioItems(audioItems)
     return duplicatedAudioItems.slice(0, squareCount)
@@ -329,11 +321,10 @@ class MusicPane extends Component {
   }
 
   initializeComposition = () => {
-    const {rawCompositions, currentCompositionName, onPoemInitialized} = this.props
+    const {rawCompositions, currentCompositionName} = this.props
     const compositionData = rawCompositions[currentCompositionName]
     this.audioItemsByRange = this.getAudioItemsByRange(compositionData.groups)
     const isPoetry = poetry.init(compositionData.poem)
-    onPoemInitialized(isPoetry)
     this.setState({fadeAllSquares: false, isPoetry}, () => {
       this.composition = []
       this.clearAudio()
@@ -580,26 +571,38 @@ class MusicPane extends Component {
     this.resetAllowDisabled()
   }
 
-  onTrigger = ({audioIndex, isDragged}) => {
+  onTrigger = ({audioIndex, isMouseDragged, pointerId}) => {
+    const isDragged = pointerId ? pointerId === this.lastPointerId : isMouseDragged
     if (this.isAudioPlayable(audioIndex) && !(isDragged && this.isQueueLockedForDragging)
     ) {
       this.setItemAsStarted(audioIndex)
     }
     this.handleDisabling(isDragged)
+    this.lastPointerId = pointerId
+    return {
+      isDragged
+    }
   }
 
   onUnclick = audioIndex => {
     clearTimeout(this.loopStartTimer)
   }
 
-  onLoopToggle = audioIndex => {
+  startLoopHandler = audioIndex => {
+    if (this.isAudioPlayable(audioIndex) || this.isItemPlaying(audioIndex)) {
+      this.startItemLooping(audioIndex)
+    }
+  }
+
+  onLoopToggle = (audioIndex, isDoubleClick) => {
     if (this.itemsLooping.has(audioIndex)) {
       this.stopItemLooping(audioIndex)
+    } else if (isDoubleClick) {
+      clearTimeout(this.loopStartTimer)
+      this.startLoopHandler(audioIndex)
     } else {
       this.loopStartTimer = setTimeout(() => {
-        if (this.isAudioPlayable(audioIndex) || this.isItemPlaying(audioIndex)) {
-          this.startItemLooping(audioIndex)
-        }
+        this.startLoopHandler(audioIndex)
       }, 400)
     }
   }

@@ -3,6 +3,7 @@
 	--sidebarTabOffset: 45px;
 	--windowHeight: 100vh;
 	--buttonColor: #d8470c;
+	--peach: #ffe0b0;
 }
 
 @media screen and (min-width: 320px) and (max-width: 767px) {

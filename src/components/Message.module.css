@@ -1,0 +1,216 @@
+@import '../variables.css';
+
+.messageWrapper {
+	height: 100%;
+}
+
+.messageContainer {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	background: white;
+	transition: opacity 0ms ease-out;
+	cursor: pointer;
+	z-index: 50;
+	overflow: hidden;
+}
+
+.animateEntry .messageContainer {
+	transition: opacity 500ms ease-out;
+}
+
+.message {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	background: white;
+	margin-left: calc(var(--sidebarWidth) + var(--sidebarTabOffset));
+	font-size: 1.1rem;
+}
+
+.desktop {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
+
+ul li.desktop {
+	display: list-item;
+}
+
+.welcome {
+	margin: 10px 0 20px 0;
+	padding-top: 10px;
+	font-size: 1.8rem;
+	font-weight: bold;
+	color: #3b3b3b;
+}
+
+.mobile {
+	display: none;
+}
+
+.body {
+	width: 40%;
+	height: 100%;
+}
+
+.mobileMessage p {
+	margin: 20px;
+}
+
+ul {
+	text-align: left;
+}
+
+.messageContainer-enter {
+	display: flex;
+}
+.messageContainer-enter-active {
+	opacity: 1;
+	transition: opacity 500ms ease-out;
+}
+.messageContainer-enter-done {
+	opacity: 1;
+	display: flex;
+}
+
+.messageContainer-exit {
+	display: flex;
+	opacity: 1;
+	transition: opacity 500ms ease-out;
+}
+.messageContainer-exit-active {
+	opacity: 0;
+	transition: opacity 500ms ease-out;
+}
+.messageContainer-exit-done {
+	opacity: 0;
+	display: none;
+}
+
+.intro {
+	width: 40%;
+}
+
+.heading {
+	position: relative;
+	display: flex;
+	justify-content: space-evenly;
+	width: 100%;
+}
+
+.title {
+	margin: 15px 0 15px 0;
+	text-align: center;
+	font-size: 1.8rem;
+	font-weight: bold;
+	color: darkgreen;
+}
+
+.notes {
+	position: absolute;
+	top: 30px;
+	font-size: 2rem;
+}
+
+.notes.left {
+	left: 45px;
+}
+
+.notes.right {
+	right: 45px;
+}
+
+.instructions {
+	text-align: left;
+}
+
+ul {
+	margin: 5px 0 5px -10px;
+}
+
+.instructions {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 10px;
+	padding: 10px;
+	border: solid lightgray 1px;
+	box-shadow: lightgrey 1px 2px 4px 0;
+}
+
+.prompt {
+	margin: 10px 0 10px 0;
+	font-size: 1.6rem;
+	font-weight: bold;
+	color: var(--buttonColor);
+}
+
+.intro button {
+	width: 40%;
+	margin: 5px 0;
+	padding: 5px;
+	text-align: center;
+	font-size: 1.3rem;
+	border: solid lightgray 1px;
+	border-radius: 10px;
+	box-shadow: lightgrey 1px 2px 4px 0;
+	background: var(--peach);
+}
+
+.advanced {
+	margin: 5px 0 0 0;
+	text-align: center;
+	font-weight: bold;
+}
+
+.mobile {
+	display: none;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+	.message .desktop {
+		display: none;
+	}
+	.mobile{
+		display: block;
+	}
+	.messageContainer {
+		overflow: scroll;
+		z-index: 200;
+	}
+	.message {
+		font-size: 1rem;
+		right: 0;
+		left: 0;
+		width: 100%;
+		margin: 0;
+	}
+	.intro {
+		display: block;
+		width: 90%;
+	}
+	.title {
+		font-size: 1.2rem;
+	}
+	.welcome {
+		margin: 10px 0 10px 0;
+		font-size: 1.2rem;
+		border-top: solid black 1px;
+	}
+	.desktop {
+		display: none;
+	}
+	.mobile {
+		display: block;
+	}
+	ul li.mobile {
+		display: list-item;
+	}
+}

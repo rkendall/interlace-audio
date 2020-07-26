@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import Sidebar from 'react-sidebar'
 import moment from 'moment'
+import TinyGesture from 'tinygesture'
 import ReactResizeDetector from 'react-resize-detector'
+import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import SidebarContent from './components/Sidebar'
 import MusicPane from './components/MusicPane'
 import Message from './components/Message'
@@ -16,22 +18,24 @@ import bumpsInTheNight from './compositionConfigs/bumpsInTheNight.json'
 import dreamlandRushHour from './compositionConfigs/dreamlandRushHour.json'
 import aubade from './compositionConfigs/audbade.json'
 import afterCoffee from './compositionConfigs/afterCoffee.json'
-import promenade from './compositionConfigs/promenade.json'
+import commuterProcessional from './compositionConfigs/commuterProcessional.json'
+import commuterProcessionalPoem from './poems/commuterProcessional'
 import downToBusiness from './compositionConfigs/downToBusiness.json'
 import reverie from './compositionConfigs/reverie.json'
-import afternoon from './compositionConfigs/afternoon.json'
-import night from './compositionConfigs/night.json'
+import danceOfTheAfternoonShadows from './compositionConfigs/danceOfTheAfternoonShadows.json'
+import siesta from './compositionConfigs/siesta.json'
+import fiesta from './compositionConfigs/fiesta.json'
+import fiestaPoem from './poems/fiesta'
+import nocturne from './compositionConfigs/nocturne.json'
 import tableMusic from './compositionConfigs/tableMusic.json'
 import teatime from './compositionConfigs/teatime.json'
 import rushHour from './compositionConfigs/rushHour.json'
 import tunesOnTap from './compositionConfigs/tunesOnTap.json'
 import treadmillToccata from './compositionConfigs/treadmillToccata.json'
-import siesta from './compositionConfigs/siesta.json'
-import fiesta from './compositionConfigs/fiesta.json'
 import apollosExitAria from './compositionConfigs/apollosExitAria.json'
 import eveningEmbers from './compositionConfigs/eveningEmbers.json'
 import twilitBallad from './compositionConfigs/twilitBallad.json'
-import darkSerenade from './compositionConfigs/darkSerenade.json'
+import elegyForTheDaylight from './compositionConfigs/elegyForTheDaylight.json'
 import midnightBlues from './compositionConfigs/midnightBlues.json'
 
 const compositionData = [
@@ -43,11 +47,11 @@ const compositionData = [
   {aubade},
   {afterCoffee},
   {treadmillToccata},
-  {promenade},
+  {commuterProcessional},
   {downToBusiness},
   {reverie},
   {tableMusic},
-  {afternoon},
+  {danceOfTheAfternoonShadows},
   {siesta},
   {fiesta},
   {teatime},
@@ -56,12 +60,12 @@ const compositionData = [
   {apollosExitAria},
   {eveningEmbers},
   {twilitBallad},
-  {darkSerenade},
-  {night},
+  {elegyForTheDaylight},
+  {nocturne},
   {midnightBlues},
 ]
 
-const poems = {ironDreamsPoem}
+const poems = {ironDreamsPoem, commuterProcessionalPoem, fiestaPoem}
 
 const timeSlots =
 {
@@ -73,11 +77,11 @@ const timeSlots =
   aubade: 6,
   afterCoffee: 7,
   treadmillToccata: 8,
-  promenade: 9,
+  commuterProcessional: 9,
   downToBusiness: 10,
   reverie: 11,
   tableMusic: 12,
-  afternoon: 13,
+  danceOfTheAfternoonShadows: 13,
   siesta: 14,
   fiesta: 15,
   teatime: 16,
@@ -86,8 +90,8 @@ const timeSlots =
   apollosExitAria: 19,
   eveningEmbers: 20,
   twilitBallad: 21,
-  darkSerenade: 22,
-  night: 23,
+  elegyForTheDaylight: 22,
+  nocturne: 23,
   midnightBlues: 0,
 }
 
@@ -107,9 +111,11 @@ const rawCompositions = rawCompositionTemp
 
 const compositionTitles = compositionData.map(data => {
   const name = Object.keys(data)[0]
+  const {title, poem} = rawCompositions[name]
   return {
     name,
-    title: rawCompositions[name].title
+    title,
+    hasPoetry: Boolean(poem),
   }
 })
 
@@ -117,9 +123,9 @@ const compositionTitles = compositionData.map(data => {
 class App extends Component {
   constructor() {
     super()
-    this.musicPaneRef = React.createRef();
+    this.musicPaneRef = React.createRef()
     this.state = {
-      currentCompositionName: this.selectCompositionByTimeOfDay(),
+      currentCompositionName: this.selectCompositionByHash() || this.selectCompositionByTimeOfDay(),
       sidebarOpen: true,
       instructionsOpen: true,
       squareCount: 0,
@@ -127,12 +133,29 @@ class App extends Component {
       stopLooping: false,
       height: null,
       showPoetry: false,
-      isPoetry: false,
     }
   }
 
+
   componentDidMount() {
     window.isTouchDevice = 'ontouchstart' in window
+    if (!window.isTouchDevice) {
+      return
+    }
+    const gesture = new TinyGesture(document.getElementById('sidebar'), {
+      threshold: () => 1,
+      velocityThreshold: 1,
+      disregardVelocityThreshold: () => 1,
+    })
+    gesture.on('panmove', event => {
+      const {sidebarOpen} = this.state
+      if (!sidebarOpen) {
+        this.toggleSidebar(true)
+      }
+    })
+    gesture.on('swipeleft', event => {
+      this.toggleSidebar(false)
+    })
   }
 
   componentDidUpdate() {
@@ -143,57 +166,58 @@ class App extends Component {
   }
 
   render() {
-    const {currentCompositionName, squareCount, vanishSquares, showPoetry, isPoetry, sidebarOpen, instructionsOpen, stopLooping, height} = this.state
+    const {currentCompositionName, squareCount, vanishSquares, showPoetry, sidebarOpen, instructionsOpen, stopLooping, height} = this.state
 
     return (
       <div className="main">
-        <Message open={instructionsOpen} onClick={this.onMessageClose}/>
-        <Sidebar
-          sidebar={<SidebarContent
-            toggleSidebar={this.toggleSidebar}
-            compositionTitles={compositionTitles}
-            timeSlots={timeSlots}
-            onChange={this.onCompositionSelected}
-            onFadeSelected={this.onFadeSelected}
-            onPoetrySelected={this.onPoetrySelected}
-            onStopLooping={this.onStopLooping}
-            onToggleInstructions={this.onToggleInstructions}
-            instructionsOpen={instructionsOpen}
-            initialSelectedValue={currentCompositionName}
-            sidebarOpen={sidebarOpen}
-            height={height}
-            isPoetry={isPoetry}
-          />}
-          open={sidebarOpen}
-          docked={sidebarOpen}
-          sidebarClassName="reactSidebar"
-          contentClassName="sidebarContent"
-        >
-          <div className="content">
-            <div ref={this.musicPaneRef} className="musicPaneContainer">
-              <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} refreshMode="debounce"
-                                   refreshRate={500}>
-                <ErrorBoundary>
-                  <MusicPane
-                    currentCompositionName={currentCompositionName}
-                    squareCount={squareCount}
-                    rawCompositions={rawCompositions}
-                    vanishSquares={vanishSquares}
-                    stopLooping={stopLooping}
-                    onPlayStarted={this.onPlayStarted}
-                    showPoetry={showPoetry}
-                    onPoemInitialized={this.onPoemInitialized}
-                  />
-                </ErrorBoundary>
-              </ReactResizeDetector>
+        <Message open={instructionsOpen} onClick={this.onMessageClose} titleCount={compositionTitles.length}/>
+          <Sidebar
+            sidebar={<SidebarContent
+              toggleSidebar={this.toggleSidebar}
+              compositionTitles={compositionTitles}
+              timeSlots={timeSlots}
+              onChange={this.onCompositionSelected}
+              onFadeSelected={this.onFadeSelected}
+              onPoetrySelected={this.onPoetrySelected}
+              onStopLooping={this.onStopLooping}
+              onToggleInstructions={this.onToggleInstructions}
+              instructionsOpen={instructionsOpen}
+              initialSelectedValue={currentCompositionName}
+              sidebarOpen={sidebarOpen}
+              height={height}
+            />}
+            open={sidebarOpen}
+            docked={sidebarOpen}
+            sidebarId="sidebar"
+            sidebarClassName="reactSidebar"
+            contentClassName="sidebarContent"
+          >
+            <div className="content">
+              <div ref={this.musicPaneRef} className="musicPaneContainer">
+                <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} refreshMode="debounce"
+                                     refreshRate={500}>
+                  <ErrorBoundary>
+                    <MusicPane
+                      currentCompositionName={currentCompositionName}
+                      squareCount={squareCount}
+                      rawCompositions={rawCompositions}
+                      vanishSquares={vanishSquares}
+                      stopLooping={stopLooping}
+                      onPlayStarted={this.onPlayStarted}
+                      showPoetry={showPoetry}
+                      onPoemInitialized={this.onPoemInitialized}
+                    />
+                  </ErrorBoundary>
+                </ReactResizeDetector>
+              </div>
+              <div className="scroller"><ChevronLeft/> <ChevronLeft/>
+                <div className="swipe">Swipe for more instruments</div>
+              </div>
             </div>
-          </div>
-        </Sidebar>
-           </div>
+          </Sidebar>
+      </div>
     )
   }
-
-  toggleTimer = null
 
   onResize = (width, height) => {
     const root = document.documentElement
@@ -204,9 +228,7 @@ class App extends Component {
 
   onPlayStarted = () => {
     if (window.innerWidth < 768) {
-      this.toggleTimer = setTimeout(() => {
-        this.toggleSidebar(false)
-      }, 1000)
+      this.toggleSidebar(false)
     }
   }
 
@@ -216,12 +238,15 @@ class App extends Component {
   }
 
   toggleSidebar = sidebarState => {
-    const {sidebarOpen} = this.state
-    if (sidebarOpen === sidebarState) {
-      return
-    }
-    clearTimeout(this.toggleTimer)
-    this.setState({sidebarOpen: sidebarState !== undefined ? sidebarState : !sidebarOpen});
+    this.setState(({sidebarOpen}) => {
+      if (sidebarState === undefined) {
+        return {sidebarOpen: !sidebarOpen}
+      }
+      if (sidebarOpen !== sidebarState) {
+        return {sidebarOpen: sidebarState}
+      }
+      return null
+    })
   }
 
   onCompositionSelected = ({value, id}) => {
@@ -240,14 +265,10 @@ class App extends Component {
     })
   }
 
-  onPoetrySelected = value => {
+  onPoetrySelected = () => {
     this.setState({
       showPoetry: !this.state.showPoetry,
     })
-  }
-
-  onPoemInitialized = isPoetry => {
-    this.setState(({isPoetry: currentStatus}) => currentStatus !== isPoetry ? {isPoetry} : null)
   }
 
   onStopLooping = () => {
@@ -272,6 +293,11 @@ class App extends Component {
     this.setState({
       stopLooping: false,
     })
+  }
+
+  selectCompositionByHash = () => {
+    const hash = window.location.hash.replace('#', '')
+    return timeSlots[hash] ? hash : null
   }
 
   selectCompositionByTimeOfDay = () => {

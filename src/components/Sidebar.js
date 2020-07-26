@@ -9,6 +9,7 @@ import {AwesomeButton as Button} from 'react-awesome-button'
 import 'react-awesome-button/dist/styles.css'
 import './Sidebar.css'
 import './Button.css'
+import ToolTip from './ToolTip';
 
 class SideBar extends Component {
   constructor(props) {
@@ -16,7 +17,8 @@ class SideBar extends Component {
     const {compositionTitles, initialSelectedValue} = props
     this.menu = createRef()
     const initialInd = compositionTitles.findIndex(({name}) => name === initialSelectedValue)
-    this.state = {selectedInd: initialInd}
+    const {hasPoetry} = compositionTitles[initialInd]
+    this.state = {selectedInd: initialInd, poetrySelected: false, hasPoetry, isOpen: true}
   }
 
   componentDidMount() {
@@ -25,16 +27,19 @@ class SideBar extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {height} = this.props
+    const {height, sidebarOpen} = this.props
     if (height !== prevProps.height) {
       const {selectedInd} = this.state
       this.scrollToSelection({selectedInd})
     }
+    this.setState(({isOpen}) => sidebarOpen !== isOpen ? {isOpen: sidebarOpen} : null)
   }
 
   render() {
-    const {onFadeSelected, onPoetrySelected, onStopLooping, onToggleInstructions, toggleSidebar, compositionTitles, sidebarOpen, instructionsOpen, isPoetry} = this.props
-    const {selectedInd} = this.state
+    const {onFadeSelected, onStopLooping, onToggleInstructions, toggleSidebar, compositionTitles, instructionsOpen} = this.props
+    const {selectedInd, poetrySelected, hasPoetry, isOpen} = this.state
+    const poetryAvailableTooltip = poetrySelected ? 'Turn poetry off' : 'Add poetry to the piece'
+    const poetryTooltip = hasPoetry ? poetryAvailableTooltip : 'Sorry, no poetry for this piece'
     return (
       <Fragment>
         <div className="rightTab" onClick={() => {
@@ -51,59 +56,73 @@ class SideBar extends Component {
               <div className="rangeLabel">Low</div>
             </div>
           </div>
-          <div className="header">
-            <div className="close">{sidebarOpen ? <ChevronLeft/> : <ChevronRight/>}</div>
+          <div className="sidebarChevron">
+            <div className="close">{isOpen ? <ChevronLeft/> : <ChevronRight/>}</div>
           </div>
         </div>
-        <div className={classNames('sidebar', {closed: !sidebarOpen})}>
-          <h1 className="box heading">{`${compositionTitles.length} Impromptus`}</h1>
-          <div className="box">
-            <div className="byline">
-              <div>Interactive Music</div>
-              <div>By <a href="http://robertkendall.com" target="_blank" rel="noopener noreferrer">Robert Kendall</a></div>
+        <div className="sidebar">
+          <div className="titleBox">
+            <h1 className="box heading">{`${compositionTitles.length} Impromptus`}</h1>
+            <div className="box">
+              <div className="byline">
+                <div>By <a className="button" href="http://robertkendall.com" target="_blank" rel="noopener noreferrer">Robert
+                  Kendall</a>
+                </div>
+              </div>
             </div>
           </div>
           <div className="box heading">Select an Impromptu</div>
-          <button className="up arrow box" onClick={this.selectNextOrPrevious.bind(null, 'previous')}><KeyboardArrowUp /></button>
-          <div id="menu" className="box menu" ref={this.menu}>
+          <button className="up arrow box" onClick={this.selectNextOrPrevious.bind(null, 'previous')}>
+            <KeyboardArrowUp /></button>
+          <div className="menuWrapper">
+            <div id="menu" className="box menu" ref={this.menu}>
               {compositionTitles.map(({name, title}, ind) => (
-                <div className={classNames('menuOption', {selected: ind === selectedInd})} onMouseDown={this.onChange.bind(null, ind)} key={name}>
+                <div className={classNames('menuOption', {selected: ind === selectedInd})}
+                     onMouseDown={this.onChange.bind(null, ind)} key={name}>
                   <Element name={name} key={name}>
-                      <div className="optionText"><div className="time">{this.getTimeForComposition(name)}</div> <div className="title">{title}</div></div>
+                    <div className="optionText">
+                      <div className="time">{this.getTimeForComposition(name)}</div>
+                      <div className="title">{title}</div>
+                    </div>
                   </Element>
                 </div>
               ))}
+            </div>
           </div>
-          <button className="down arrow box" onClick={this.selectNextOrPrevious.bind(null, 'next')}><KeyboardArrowDown /></button>
+          <button className="down arrow box" onClick={this.selectNextOrPrevious.bind(null, 'next')}>
+            <KeyboardArrowDown /></button>
           <div className="box controls">
-            <div className="instructions">Click and hold on a square to start/stop looping</div>
+            <div className="instructions">Click and hold square to start/stop looping</div>
             <Button
               action={onStopLooping}
             >Stop All Looping
             </Button>
             <div className="selectOptions">
-              <label>
+              <label data-tip="Try it and see" data-for='magicTip'>
                 <input
                   name="fade"
                   type="checkbox"
                   onChange={onFadeSelected}
                 />
-                <span className="label">Magic Vanishing Act</span>
+                <div className="label">Magic Vanishing Act</div>
               </label>
-              <label className={isPoetry ? '' : 'selectionDisabled'}>
+              <label className={hasPoetry ? '' : 'selectionDisabled'} data-tip={poetryTooltip} data-for='poetryTip'>
                 <input
                   name="poetry"
                   type="checkbox"
-                  onChange={onPoetrySelected}
-                  disabled={!isPoetry}
+                  onChange={this.poetrySelectionHandler}
+                  disabled={!hasPoetry}
                 />
-                <span className="label">Poetry</span>
+                <div className="label">Poetry</div>
               </label>
 
             </div>
-            <button className="button" onClick={onToggleInstructions}>{instructionsOpen ? 'Hide' : 'View'} Help</button>
+            <button className="button help" onClick={onToggleInstructions}>{instructionsOpen ? 'Hide' : 'View'} Help
+            </button>
           </div>
         </div>
+        <ToolTip id="magicTip" disable={window.isTouchDevice}/>
+        <ToolTip id="poetryTip" getContent={() => poetryTooltip } disable={hasPoetry}/>
       </Fragment>
     )
   }
@@ -137,10 +156,20 @@ class SideBar extends Component {
   onChange = ind => {
     const {onChange, compositionTitles} = this.props
     this.setState(({selectedInd}) => {
-      return ind !== selectedInd ? {selectedInd: ind} : null
+      if (ind !== selectedInd) {
+        const {name, hasPoetry} = compositionTitles[ind]
+        onChange({id: name})
+        window.location.hash = name
+        return {selectedInd: ind, hasPoetry, isOpen: false}
+      }
+      return null
     })
-    const name = compositionTitles[ind].name
-    onChange({id: name})
+  }
+
+  poetrySelectionHandler = () => {
+    const {onPoetrySelected} = this.props
+    this.setState(({poetrySelected}) => ({poetrySelected: !poetrySelected}))
+    onPoetrySelected()
   }
 
   selectNextOrPrevious = type => {
