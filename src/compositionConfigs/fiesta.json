@@ -1,7 +1,7 @@
 {
   "title": "Fiesta",
-  "maxSoundCount": 4,
-  "maxBurstCount": 2,
+  "maxSoundCount": 5,
+  "maxBurstCount": 3,
   "superGroups": {
     "orch": {
       "groups": [

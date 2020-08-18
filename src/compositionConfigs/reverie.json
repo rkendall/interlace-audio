@@ -19,9 +19,11 @@
       ],
       "maxActive": 2
     },
-    "lowPiano": {
+    "piano": {
       "groups": [
+        "pia1",
         "pia2",
+        "pia3",
         "pia4"
       ],
       "maxActive": 1
@@ -67,6 +69,16 @@
           "Celesta 3"
         ],
         "medium": [
+        ],
+        "low": []
+      },
+      "maxActive": 1
+    },
+    "tuned2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
           "Vibes 1",
           "Vibes 2",
           "Vibes 3",
@@ -74,7 +86,7 @@
         ],
         "low": []
       },
-      "maxActive": 3
+      "maxActive": 1
     },
     "primaryWinds1": {
       "instruments": {
@@ -164,7 +176,7 @@
         "low": [
         ]
       },
-      "maxActive": 2
+      "maxActive": 1
     },
     "pia4": {
       "instruments": {

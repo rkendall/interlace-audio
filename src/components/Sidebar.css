@@ -115,6 +115,8 @@ p {
 
 .menu {
 	overflow-y: scroll;
+	/* To prevent hammerjs from blocking scrolling */
+	touch-action: pan-y !important;
 }
 
 .menuOption {
@@ -123,6 +125,8 @@ p {
 	font-size: .85rem;
 	background: white;
 	cursor: pointer;
+	/* To prevent hammerjs from blocking scrolling */
+	touch-action: pan-y !important;
 }
 
 .menuOption.selected, .menuOption.selected:hover {
@@ -203,7 +207,7 @@ p {
 	margin-left: 5px;
 }
 
-@media screen and (min-width: 320px) and (max-width: 767px) {
+@media screen and (max-width: 767px) {
 
 	.box {
 		margin-left: 5px;
@@ -230,9 +234,13 @@ p {
 	.button {
 		margin-bottom: 5px;
 	}
+	.menuOption:hover {
+		background: none;
+	}
+
 }
 
-@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+@media screen and (max-width: 767px) and (orientation: landscape) {
 	.heading {
 		display: none
 	}

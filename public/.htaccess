@@ -1,4 +1,24 @@
-Options -MultiViews
+# Begin cache control on #
+ExpiresActive on
+ExpiresDefault "now plus 240 minutes"
+ExpiresByType text/html "now plus 240 minutes"
+<FilesMatch "\.(gif|gcf|jpg|jpeg|bmp|css|js|gff)$">
+FileETag MTime Size
+ExpiresDefault "now plus 240 minutes"
+</FilesMatch>
+#End cache control on #
+#Begin cache control off #
+#ExpiresActive on
+#ExpiresActive off
+#<FilesMatch ".*">
+#Header unset Cache-Control
+#Header unset Expires
+#Header unset Last-Modified
+#FileETag None
+#Header unset Pragma
+#</FilesMatch>
+# End cache control off #
+# Options -MultiViews
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.html [QSA,L]

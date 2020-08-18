@@ -10,7 +10,7 @@ export default class Message extends Component {
   constructor() {
       super()
       this.state = ({
-          animateEntry: false
+          animateEntry: window.innerWidth > 767,
       })
   }
 
@@ -76,7 +76,7 @@ export default class Message extends Component {
                   <div className={styles.advanced}>The Finer Points</div>
                   <ul>
                     <li className={styles.mobile}>Press and hold to loop the instrument. Tap to stop looping.</li>
-                    <li className={styles.desktop}>Click and hold or double click to loop the instrument. Click again to
+                    <li className={styles.desktop}>Click and hold to loop the instrument. Click again to
                       stop looping.
                     </li>
                     <li>Glowing squares are taking a break for musical reasons.</li>
@@ -84,7 +84,7 @@ export default class Message extends Component {
                     <li>Lighter colors generally have a more melodic role
                       than darker colors.
                     </li>
-                    <li>Some pieces include poetry, which you can enable with the <b>Poetry</b> checkbox at the left.
+                    <li>Some pieces include Word Art, which you can enable with the <b>Word Art</b> checkbox at the left.
                     </li>
                   </ul>
                 </div>

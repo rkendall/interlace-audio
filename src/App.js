@@ -22,6 +22,7 @@ import commuterProcessional from './compositionConfigs/commuterProcessional.json
 import commuterProcessionalPoem from './poems/commuterProcessional'
 import downToBusiness from './compositionConfigs/downToBusiness.json'
 import reverie from './compositionConfigs/reverie.json'
+import reveriePoem from './poems/reverie'
 import danceOfTheAfternoonShadows from './compositionConfigs/danceOfTheAfternoonShadows.json'
 import siesta from './compositionConfigs/siesta.json'
 import fiesta from './compositionConfigs/fiesta.json'
@@ -31,11 +32,14 @@ import tableMusic from './compositionConfigs/tableMusic.json'
 import teatime from './compositionConfigs/teatime.json'
 import rushHour from './compositionConfigs/rushHour.json'
 import tunesOnTap from './compositionConfigs/tunesOnTap.json'
+import tunesOnTapPoem from './poems/tunesOnTap'
 import treadmillToccata from './compositionConfigs/treadmillToccata.json'
 import apollosExitAria from './compositionConfigs/apollosExitAria.json'
 import eveningEmbers from './compositionConfigs/eveningEmbers.json'
+import eveningEmbersPoem from './poems/eveningEmbers'
 import twilitBallad from './compositionConfigs/twilitBallad.json'
 import elegyForTheDaylight from './compositionConfigs/elegyForTheDaylight.json'
+import elegyForTheDaylightPoem from './poems/elegyForTheDaylight'
 import midnightBlues from './compositionConfigs/midnightBlues.json'
 
 const compositionData = [
@@ -65,7 +69,15 @@ const compositionData = [
   {midnightBlues},
 ]
 
-const poems = {ironDreamsPoem, commuterProcessionalPoem, fiestaPoem}
+const poems = {
+  ironDreamsPoem,
+  commuterProcessionalPoem,
+  fiestaPoem,
+  eveningEmbersPoem,
+  reveriePoem,
+  tunesOnTapPoem,
+  elegyForTheDaylightPoem,
+}
 
 const timeSlots =
 {
@@ -133,7 +145,9 @@ class App extends Component {
       stopLooping: false,
       height: null,
       showPoetry: false,
+      allowMenuChange: true,
     }
+    this.toggleTimer = null
   }
 
 
@@ -159,62 +173,70 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    const {stopLooping} = this.state
+    const {stopLooping, allowMenuChange} = this.state
     if (stopLooping) {
       this.resetStopLooping()
+    }
+    if (!allowMenuChange) {
+      this.toggleTimer = setTimeout(() => {
+        this.setState({allowMenuChange: true})
+      }, 300)
     }
   }
 
   render() {
-    const {currentCompositionName, squareCount, vanishSquares, showPoetry, sidebarOpen, instructionsOpen, stopLooping, height} = this.state
+    const {currentCompositionName, squareCount, vanishSquares, showPoetry, sidebarOpen, instructionsOpen, stopLooping, height, allowMenuChange} = this.state
 
     return (
       <div className="main">
         <Message open={instructionsOpen} onClick={this.onMessageClose} titleCount={compositionTitles.length}/>
-          <Sidebar
-            sidebar={<SidebarContent
-              toggleSidebar={this.toggleSidebar}
-              compositionTitles={compositionTitles}
-              timeSlots={timeSlots}
-              onChange={this.onCompositionSelected}
-              onFadeSelected={this.onFadeSelected}
-              onPoetrySelected={this.onPoetrySelected}
-              onStopLooping={this.onStopLooping}
-              onToggleInstructions={this.onToggleInstructions}
-              instructionsOpen={instructionsOpen}
-              initialSelectedValue={currentCompositionName}
-              sidebarOpen={sidebarOpen}
-              height={height}
-            />}
-            open={sidebarOpen}
-            docked={sidebarOpen}
-            sidebarId="sidebar"
-            sidebarClassName="reactSidebar"
-            contentClassName="sidebarContent"
-          >
-            <div className="content">
-              <div ref={this.musicPaneRef} className="musicPaneContainer">
-                <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} refreshMode="debounce"
-                                     refreshRate={500}>
-                  <ErrorBoundary>
-                    <MusicPane
-                      currentCompositionName={currentCompositionName}
-                      squareCount={squareCount}
-                      rawCompositions={rawCompositions}
-                      vanishSquares={vanishSquares}
-                      stopLooping={stopLooping}
-                      onPlayStarted={this.onPlayStarted}
-                      showPoetry={showPoetry}
-                      onPoemInitialized={this.onPoemInitialized}
-                    />
-                  </ErrorBoundary>
-                </ReactResizeDetector>
-              </div>
-              <div className="scroller"><ChevronLeft/> <ChevronLeft/>
-                <div className="swipe">Swipe for more instruments</div>
-              </div>
+        <Sidebar
+          sidebar={<SidebarContent
+            toggleSidebar={this.toggleSidebar}
+            compositionTitles={compositionTitles}
+            timeSlots={timeSlots}
+            allowMenuChange={allowMenuChange}
+            onChange={this.onCompositionSelected}
+            onFadeSelected={this.onFadeSelected}
+            onPoetrySelected={this.onPoetrySelected}
+            onStopLooping={this.onStopLooping}
+            onToggleInstructions={this.onToggleInstructions}
+            instructionsOpen={instructionsOpen}
+            initialSelectedValue={currentCompositionName}
+            sidebarOpen={sidebarOpen}
+            height={height}
+          />}
+          open={sidebarOpen}
+          docked={sidebarOpen}
+          touchHandleWidth={50}
+          dragToggleDistance={10}
+          sidebarId="sidebar"
+          sidebarClassName="reactSidebar"
+          contentClassName="sidebarContent"
+        >
+          <div className="content">
+            <div ref={this.musicPaneRef} className="musicPaneContainer">
+              <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} refreshMode="debounce"
+                                   refreshRate={500}>
+                <ErrorBoundary>
+                  <MusicPane
+                    currentCompositionName={currentCompositionName}
+                    squareCount={squareCount}
+                    rawCompositions={rawCompositions}
+                    vanishSquares={vanishSquares}
+                    stopLooping={stopLooping}
+                    onPlayStarted={this.onPlayStarted}
+                    showPoetry={showPoetry}
+                    onPoemInitialized={this.onPoemInitialized}
+                  />
+                </ErrorBoundary>
+              </ReactResizeDetector>
             </div>
-          </Sidebar>
+            <div className="scroller"><ChevronLeft/> <ChevronLeft/>
+              <div className="swipe">Swipe left for more instruments</div>
+            </div>
+          </div>
+        </Sidebar>
       </div>
     )
   }
@@ -238,14 +260,18 @@ class App extends Component {
   }
 
   toggleSidebar = sidebarState => {
+    clearTimeout(this.toggleTimer)
     this.setState(({sidebarOpen}) => {
+      let newState = null
       if (sidebarState === undefined) {
-        return {sidebarOpen: !sidebarOpen}
+        newState = !sidebarOpen
+      } else if (sidebarOpen !== sidebarState) {
+        newState = sidebarState
       }
-      if (sidebarOpen !== sidebarState) {
-        return {sidebarOpen: sidebarState}
-      }
-      return null
+      return newState !== null ? {
+        sidebarOpen: newState,
+        allowMenuChange: false
+      } : null
     })
   }
 
@@ -260,18 +286,37 @@ class App extends Component {
   }
 
   onFadeSelected = () => {
+    if (!this.state.vanishSquares) {
+      // eslint-disable-next-line
+      gtag('event', 'enable_fade', {
+        'event_label': 'Enable Magic Vanishing Act',
+        'event_category': 'set_option',
+      })
+    }
     this.setState({
       vanishSquares: !this.state.vanishSquares,
     })
   }
 
   onPoetrySelected = () => {
+    if (!this.state.showPoetry) {
+      // eslint-disable-next-line
+      gtag('event', 'enable_poetry', {
+        'event_label': 'Enable poetry',
+        'event_category': 'set_option',
+      })
+    }
     this.setState({
       showPoetry: !this.state.showPoetry,
     })
   }
 
   onStopLooping = () => {
+    // eslint-disable-next-line
+    gtag('event', 'stop_all_looping', {
+      'event_label': 'Stop all looping',
+      'event_category': 'looping',
+    })
     this.setState({
       stopLooping: true,
     })
@@ -283,6 +328,13 @@ class App extends Component {
 
   onToggleInstructions = () => {
     this.setState(({instructionsOpen}) => {
+      if (!instructionsOpen) {
+        // eslint-disable-next-line
+        gtag('event', 'view_help', {
+          'event_label': 'View help',
+          'event_category': 'help',
+        })
+      }
       return {
         instructionsOpen: !instructionsOpen,
       }

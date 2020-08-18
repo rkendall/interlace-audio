@@ -65,7 +65,7 @@ class MusicPane extends Component {
   }
 
   render() {
-    const {loading, allowDisabled, fadeAllSquares, isPoetry} = this.state
+    const {loading, allowDisabled, fadeAllSquares, isPoetry, initialized} = this.state
     const {squareCount, vanishSquares, onPlayStarted, showPoetry} = this.props
     return !loading && this.composition.length && squareCount ?
       (<Fragment>
@@ -100,7 +100,7 @@ class MusicPane extends Component {
             </div>
           </div>
         </Fragment>
-      ) : <div className="loading" onTouchStart={onPlayStarted}><ReactLoading type="spinningBubbles" color="blue" delay={300}/></div>
+      ) : initialized && <div className="loading" onTouchStart={onPlayStarted}><ReactLoading type="spinningBubbles" color="blue" delay={300}/></div>
   }
 
   stopLastLoopingItemIfNecessary = audioIndex => {
@@ -145,7 +145,9 @@ class MusicPane extends Component {
   }
 
   suppressContextMenu = event => {
-    event.preventDefault()
+    if (process.env.NODE_ENV === 'production') {
+      event.preventDefault()
+    }
   }
 
   // Necessary for mobile
@@ -325,7 +327,7 @@ class MusicPane extends Component {
     const compositionData = rawCompositions[currentCompositionName]
     this.audioItemsByRange = this.getAudioItemsByRange(compositionData.groups)
     const isPoetry = poetry.init(compositionData.poem)
-    this.setState({fadeAllSquares: false, isPoetry}, () => {
+    this.setState({fadeAllSquares: false, isPoetry, loading: true}, () => {
       this.composition = []
       this.clearAudio()
       this.itemsPlaying.clear()
@@ -594,12 +596,9 @@ class MusicPane extends Component {
     }
   }
 
-  onLoopToggle = (audioIndex, isDoubleClick) => {
+  onLoopToggle = (audioIndex) => {
     if (this.itemsLooping.has(audioIndex)) {
       this.stopItemLooping(audioIndex)
-    } else if (isDoubleClick) {
-      clearTimeout(this.loopStartTimer)
-      this.startLoopHandler(audioIndex)
     } else {
       this.loopStartTimer = setTimeout(() => {
         this.startLoopHandler(audioIndex)

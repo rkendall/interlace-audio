@@ -4,6 +4,7 @@ body {
 	margin: 0;
 	font-size: 15px;
 	user-select: none;
+	touch-action: none;
 }
 
 .button {
@@ -71,7 +72,7 @@ body {
 	margin-left: 5px;
 }
 
-@media screen and (min-width: 320px) and (max-width: 767px) {
+@media screen and (max-width: 767px) {
 	.content {
 		width: 200vw;
 		overflow-x: scroll;
@@ -80,7 +81,7 @@ body {
 		display: flex;
 		align-items: center;
 		height: 50px;
-		margin-left: 10vw;
+		margin-left: 5vw;
 		background: transparent;
 	}
 }

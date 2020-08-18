@@ -218,12 +218,23 @@
         ],
         "medium": [
           "Snare Drum 1",
-          "Snare Drum 2",
-          "Cymbal 1"
+          "Snare Drum 2"
         ],
         "low": [
           "Tympani 1",
-          "Tympani 2",
+          "Tympani 2"
+        ]
+      },
+      "maxActive": 1
+    },
+    "per2": {
+      "instruments": {
+        "high": [
+        ],
+        "medium": [
+          "Cymbal 1"
+        ],
+        "low": [
           "Tamtam 1",
           "Tamtam 2"
         ]

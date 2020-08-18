@@ -277,6 +277,10 @@
 	background: linear-gradient(120deg, #d68e76 0%, #ae0a87 100%);
 }
 
+.bas, .pizz {
+	background: linear-gradient(120deg, #cc544e 0%, #910408 100%);
+}
+
 .primaryWinds {
 	background: linear-gradient(120deg, #e4f8f8 0%, #80bae8 100%);
 }
@@ -305,10 +309,6 @@
 	background: linear-gradient(120deg, #fff6ce 0%, #d66b42 100%);
 }
 
-.bas, .pizz {
-	background: linear-gradient(120deg, #cc544e 0%, #910408 100%);
-}
-
 .primaryPlucked {
 	background: linear-gradient(120deg, #fffff5 0%, #9ac783);
 }
@@ -326,48 +326,6 @@
 	background: linear-gradient(120deg, #8d9499 0%, #000000 100%);
 	/*background: linear-gradient(120deg, #D1F2CB 0%, #5F8223 100%);*/
 }
-
-
-
-/*.secondary.voice {*/
-	/*background: #b27794;*/
-/*}*/
-
-/*.secondary.str {*/
-	/*background: #da99a4;*/
-/*}*/
-
-/*.secondary.win {*/
-	/*background: #a6bcd9;*/
-/*}*/
-
-/*.secondary.bra {*/
-	/*background: #7880c1;*/
-/*}*/
-
-/*.secondary.per {*/
-	/*background: #cdcdcb;*/
-/*}*/
-
-/*.secondary.drums {*/
-	/*background: #646565;*/
-/*}*/
-
-/*.secondary.pia, .secondary.vib, .secondary.tuned {*/
-	/*background: #e6d491;*/
-/*}*/
-
-/*.secondary.bas, .secondary.pizz {*/
-	/*background: #bb9881;*/
-/*}*/
-
-/*.secondary.guitar, .secondary.plucked {*/
-	/*background: #96b8ab;*/
-/*}*/
-
-/*.secondary.rhythm, .secondary.glass {*/
-	/*background: #aabb8e;*/
-/*}*/
 
 @keyframes fadePoetryIn {
 	0% {
@@ -393,7 +351,26 @@
 	z-index: 25;
 }
 
-.trigger.largeText .text, .trigger.largeText .poetry, .trigger.largeText .textHint {
+.poetry .emphasized {
+	background: none;
+	color: #424bc1;
+	font-size: 13px;
+	font-weight: bold;
+	text-shadow:
+		-1px -1px 3px white,
+		1px -1px 3px white,
+		-1px 1px 3px white,
+		1px 1px 3px white;
+}
+
+.trigger.largeText .text,
+.trigger.largeText .poetry,
+.trigger.largeText .poetry .emphasized,
+.trigger.largeText .textHint {
+	font-size: 16px;
+}
+
+.trigger.largeText .poetry .emphasized {
 	font-size: 16px;
 }
 
@@ -403,7 +380,7 @@
 }
 
 .text-enter-active {
-	transform: translate(0, -100vh);
+	transform: translateY(-100vh);
 	transition: transform 3s ease-in;
 }
 
@@ -417,14 +394,18 @@
 	animation-fill-mode: forwards;
 	will-change: transform;
 }
-
-.poetry-enter-active {
+.poetry-enter-active .lowerRow {
 	animation: fadePoetryIn 300ms ease-in;
 	animation-fill-mode: forwards;
-	transform: translate(0, -100vh);
+	transform: translateY(-100vh);
 	transition: transform 10s ease-in;
 }
-
+.poetry-enter-active .topRow  {
+	animation: fadePoetryIn 300ms ease-in;
+	animation-fill-mode: forwards;
+	transform: translateY(-100vh);
+	transition: transform 18s ease-in;
+}
 .poetry-enter-done {
 	animation: fadePoetryIn 300ms ease-in;
 	animation-fill-mode: forwards;

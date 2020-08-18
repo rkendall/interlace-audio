@@ -1,44 +1,73 @@
 import {shuffleArray} from './utilities'
 
-let selectors = {}
-const lines = {}
-let active = false
-
-const getSelector = name => {
-  const baseName = name.replace(/\d+$/, '')
-  return selectors[baseName] || 'default'
+const state = {
+  aliasSelector: {},
+  lines: {},
+  styles: {},
+  important: [],
+  first: [],
+  alias: null,
+  active: false,
+  requiredNextPhrase: '',
 }
 
-const checkArrays = () => {
-  if (process.env.NODE_ENV === 'production') {
-    return
+const getAlias = name => {
+  const {aliasSelector} = state
+  return aliasSelector[name] || aliasSelector[name.replace(/\d+$/, '')] || 'default'
+}
+const refresh = text => {
+  if (!text.words.length) {
+    text.words = shuffleArray([...text.source])
   }
-  let count = null
-  Object.entries(lines).forEach(([name, text]) => {
-    if (name === 'fast') {
-      return
-    }
-    const newCount = text.source.length
-    if (count) {
-      if (count !== newCount) {
-        throw new Error(`Poetry section ${name} does not have correct number of words. Expecting ${count}.`)
-      }
-    } else {
-      count = newCount
-    }
-  })
+}
+const formatPhrase = words => words.shift().replace(/=/g, ' ')
+const getPhraseFromAlias = alias => {
+  const {lines, first} = state
+  const text = lines[alias]
+  if (alias === 'first') {
+    return formatPhrase(first)
+  }
+  refresh(text)
+  return formatPhrase(text.words)
+}
+
+const getFirst = () => state.lines.first.source[0]
+
+const getPhrase = ({group, fast}) => {
+  const {important, first, requiredNextPhrase} = state
+  if (first.length) {
+    state.alias = 'first'
+    return getPhraseFromAlias('first')
+  }
+  const selectedAlias = getAlias(group)
+  if (important.includes(selectedAlias)) {
+    state.requiredNextPhrase = ''
+    state.alias = selectedAlias
+    return getPhraseFromAlias(selectedAlias)
+  }
+  if (requiredNextPhrase) {
+    const phrase = requiredNextPhrase
+    state.requiredNextPhrase = ''
+    return phrase
+  }
+  state.alias = fast ? 'fast' : selectedAlias
+  return getPhraseFromAlias(state.alias)
 }
 
 const poetry = {
   init: poem => {
     if (!poem) {
-      active = false
+      state.active = false
       return false
     }
-    active = true
-    const {text, aliases = []} = poem
+    const {text, aliases = [], styles = {}, important = []} = poem
+    state.active = true
+    state.requiredNextPhrase = ''
+    state.first = []
+    state.styles = styles
+    state.important = important
 
-    selectors = aliases.reduce((accumulator, [groups, label]) => {
+    state.aliasSelector = aliases.reduce((accumulator, [groups, label]) => {
       groups.forEach(group => {
         accumulator[group] = label
       })
@@ -46,35 +75,28 @@ const poetry = {
     }, {})
 
     Object.entries(text).forEach(([name, section]) => {
-      lines[name] = {source: section.split(' '), words: []}})
-    checkArrays()
+      state.lines[name] = {
+        source: section.trim().split(' '),
+        words: [],
+      }
+      if (name === 'first') {
+        state.first = section.trim().split(' ')
+      }
+    })
     return true
   },
   get: ({group, fast = false}) => {
+    const {active, styles} = state
     if (!active) {
       return ''
     }
-    if (fast) {
-      const text = lines.fast
-      if (!text.words.length) {
-        text.words = shuffleArray([...text.source])
-      }
-      return text.words.shift().replace(/=/g, ' ')
+    let phrase = getPhrase({group, fast})
+    const connectorPosition = phrase.indexOf('+')
+    if (connectorPosition !== -1) {
+      state.requiredNextPhrase = phrase.substring(connectorPosition + 1, phrase.length)
+      phrase = phrase.substring(0, connectorPosition)
     }
-    let phrase = ''
-    Object.entries(lines).forEach(([name, text]) => {
-      if (name === 'fast') {
-        return
-      }
-      if (!text.words.length) {
-        text.words = [...text.source]
-      }
-      const nextPhrase = text.words.shift()
-      if (name === getSelector(group)) {
-        phrase = nextPhrase.replace(/=/g, ' ')
-      }
-    })
-    return phrase
+    return {phrase, style: styles[state.alias] || null}
   }
 }
 

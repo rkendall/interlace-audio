@@ -1,6 +1,7 @@
 import React, {Component, Fragment, createRef} from 'react'
 import classNames from 'classnames'
 import {Element, scroller} from 'react-scroll'
+import Hammer from 'hammerjs'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import ChevronRight from '@material-ui/icons/ChevronRight'
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp'
@@ -9,7 +10,7 @@ import {AwesomeButton as Button} from 'react-awesome-button'
 import 'react-awesome-button/dist/styles.css'
 import './Sidebar.css'
 import './Button.css'
-import ToolTip from './ToolTip';
+import ToolTip, { hideTooltip } from './ToolTip';
 
 class SideBar extends Component {
   constructor(props) {
@@ -24,7 +25,10 @@ class SideBar extends Component {
   componentDidMount() {
     const {selectedInd} = this.state
     this.scrollToSelection({selectedInd})
-  }
+    const options = [...this.menu.current.children]
+    options.forEach((child, ind) => {
+      this.addTouchListeners(child, ind)
+    })}
 
   componentDidUpdate(prevProps) {
     const {height, sidebarOpen} = this.props
@@ -38,8 +42,8 @@ class SideBar extends Component {
   render() {
     const {onFadeSelected, onStopLooping, onToggleInstructions, toggleSidebar, compositionTitles, instructionsOpen} = this.props
     const {selectedInd, poetrySelected, hasPoetry, isOpen} = this.state
-    const poetryAvailableTooltip = poetrySelected ? 'Turn poetry off' : 'Add poetry to the piece'
-    const poetryTooltip = hasPoetry ? poetryAvailableTooltip : 'Sorry, no poetry for this piece'
+    const poetryAvailableTooltip = poetrySelected ? 'Turn Word Art off' : 'Add Word Art to the piece'
+    const poetryTooltip = hasPoetry ? poetryAvailableTooltip : 'Sorry, no Word Art for this piece'
     return (
       <Fragment>
         <div className="rightTab" onClick={() => {
@@ -102,19 +106,19 @@ class SideBar extends Component {
                 <input
                   name="fade"
                   type="checkbox"
-                  onChange={onFadeSelected}
+                  onChange={this.fadeHandler}
                 />
                 <div className="label">Magic Vanishing Act</div>
               </label>
               <label className={hasPoetry ? '' : 'selectionDisabled'} data-tip={poetryTooltip} data-for='poetryTip'>
-                <input
-                  name="poetry"
-                  type="checkbox"
-                  onChange={this.poetrySelectionHandler}
-                  disabled={!hasPoetry}
-                />
-                <div className="label">Poetry</div>
-              </label>
+                  <input
+                    name="poetry"
+                    type="checkbox"
+                    onChange={this.poetrySelectionHandler}
+                    disabled={!hasPoetry}
+                  />
+                  <div className="label">Word Art</div>
+                </label>
 
             </div>
             <button className="button help" onClick={onToggleInstructions}>{instructionsOpen ? 'Hide' : 'View'} Help
@@ -122,9 +126,19 @@ class SideBar extends Component {
           </div>
         </div>
         <ToolTip id="magicTip" disable={window.isTouchDevice}/>
-        <ToolTip id="poetryTip" getContent={() => poetryTooltip } disable={hasPoetry}/>
+        <ToolTip id="poetryTip" />
       </Fragment>
     )
+  }
+
+  addTouchListeners = (el, ind) => {
+      const menuGestures = new Hammer(el);
+      menuGestures.get('swipe').recognizeWith('tap').recognizeWith('press')
+      menuGestures.get('press').set({time: 100}).requireFailure('swipe')
+      menuGestures.get('tap').requireFailure('swipe')
+      menuGestures.on('tap press swipe', event => {
+        this.onChange(ind)
+      })
   }
 
   scrollToSelection({selectedInd, animate = false}) {
@@ -154,22 +168,31 @@ class SideBar extends Component {
   }
 
   onChange = ind => {
-    const {onChange, compositionTitles} = this.props
+    const {onChange, compositionTitles, allowMenuChange} = this.props
     this.setState(({selectedInd}) => {
-      if (ind !== selectedInd) {
+      if (ind !== selectedInd && allowMenuChange) {
         const {name, hasPoetry} = compositionTitles[ind]
         onChange({id: name})
         window.location.hash = name
+        // eslint-disable-next-line no-undef
+        gtag('config', 'UA-173542609-1', {'page_path': `${window.location.pathname}${window.location.hash}`});
         return {selectedInd: ind, hasPoetry, isOpen: false}
       }
       return null
     })
   }
 
+  fadeHandler = () => {
+    const { onFadeSelected } = this.props
+    onFadeSelected()
+    hideTooltip()
+  }
+
   poetrySelectionHandler = () => {
     const {onPoetrySelected} = this.props
     this.setState(({poetrySelected}) => ({poetrySelected: !poetrySelected}))
     onPoetrySelected()
+    hideTooltip()
   }
 
   selectNextOrPrevious = type => {

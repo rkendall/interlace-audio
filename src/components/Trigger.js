@@ -3,11 +3,13 @@ import {Transition, CSSTransition} from 'react-transition-group'
 import classNames from 'classnames'
 import './Trigger.css'
 import poetry from '../poetry'
+import {isSmallScreen} from '../utilities';
 
 export default class Trigger extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
+      isTopRow: false,
       isDisplayed: false,
       isTextAnimating: false,
       isSquareHovered: false,
@@ -29,21 +31,25 @@ export default class Trigger extends PureComponent {
   }
 
   componentDidMount() {
+    const sensor = this.sensor.current
+    if (sensor && sensor.getBoundingClientRect().top === 0) {
+      this.setState({isTopRow: true})
+    }
     if (!window.isTouchDevice) {
       return
     }
     // Enables dragging with finger
-    this.sensor.current.addEventListener("pointerdown", (event)=> {
+    sensor.addEventListener("pointerdown", (event)=> {
       this.sensor.current.releasePointerCapture(event.pointerId)
       this.handleInteraction(event)
     })
-    this.sensor.current.addEventListener("pointerup", (event)=> {
+    sensor.addEventListener("pointerup", (event)=> {
       this.handleInteraction(event)
     })
-    this.sensor.current.addEventListener("pointerenter", (event)=> {
+    sensor.addEventListener("pointerenter", (event)=> {
       this.handleInteraction(event)
     })
-    this.sensor.current.addEventListener("pointerleave", (event)=> {
+    sensor.addEventListener("pointerleave", (event)=> {
       this.handleInteraction(event)
     })
   }
@@ -91,7 +97,7 @@ export default class Trigger extends PureComponent {
 
   render() {
     const {audioName, audioIndex, group, isLooping, isPlaying, isPoetry} = this.props
-    const {showDisabled, isDisabledAnimating, isSecondaryActive, isSquareHovered, isSquareTriggered, isGlowActive, isTextAnimating, isLoopingAnimationActive, stopLooping, isDisplayed, suppressTextHint, isCursorDisabled, poemWord} = this.state
+    const {isTopRow, showDisabled, isDisabledAnimating, isSecondaryActive, isSquareHovered, isSquareTriggered, isGlowActive, isTextAnimating, isLoopingAnimationActive, stopLooping, isDisplayed, suppressTextHint, isCursorDisabled, poemWord, poemStyle} = this.state
     const doLooping = isLooping && !stopLooping
     const active = (isPlaying || isTextAnimating) && !isLoopingAnimationActive
     const activateSecondary = isSecondaryActive && !isLoopingAnimationActive
@@ -100,7 +106,7 @@ export default class Trigger extends PureComponent {
     const canShowTextHint = !suppressTextHint && !isPoetry && !window.isTouchDevice
     const text = isPoetry ? poemWord : audioName.replace(/ \d+\w?$/, '')
     return (
-      <div className={classNames('trigger', {visible: isDisplayed}, {isDisabled: isCursorDisabled}, {largeText: window.isTouchDevice})}>
+      <div className={classNames('trigger', {visible: isDisplayed}, {isDisabled: isCursorDisabled}, {largeText: isSmallScreen()})}>
         <CSSTransition
           in={active}
           timeout={isPoetry ? 10000 : 3000}
@@ -110,7 +116,7 @@ export default class Trigger extends PureComponent {
           onEntered={this.onTextAnimationDone}
         >
           <div className={isPoetry ? 'poetry' : 'text'} key={audioIndex}>
-            <div>{text}</div>
+            <div className={classNames(poemStyle || '', isTopRow ? 'topRow' : 'lowerRow')}>{text}</div>
           </div>
         </CSSTransition>
         <CSSTransition
@@ -198,7 +204,6 @@ export default class Trigger extends PureComponent {
              onMouseLeave={this.handleInteraction}
              onMouseDown={this.handleInteraction}
              onMouseUp={this.handleInteraction}
-             onDoubleClick={this.handleInteraction}
              onTouchStart={this.handleInteraction}
              onTouchEnd={this.handleInteraction}/>
       </div>
@@ -219,7 +224,9 @@ export default class Trigger extends PureComponent {
         showTextHint: false,
       }
       if (isPoetry) {
-        newState.poemWord = poetry.get({group, fast: !allowDisabled})
+        const { phrase, style } = poetry.get({group, fast: !allowDisabled})
+        newState.poemWord = phrase
+        newState.poemStyle = style
       }
       return newState
     })
@@ -295,7 +302,7 @@ export default class Trigger extends PureComponent {
       const isHovered = type === 'mouseenter'
       const isUnHovered = type === 'mouseleave'
       const isUnclicked = type === 'mouseup' || type === 'mouseleave' || type === 'pointerleave'
-      const isDoubleClicked = type === 'dblclick'
+      const shouldDisableCursor = disabled || (isPlaying && !isLooping)
       // Allow new text to float before current text has finished floating
       if (isClicked && !disabled) {
         newState.isTextAnimating = false
@@ -309,9 +316,11 @@ export default class Trigger extends PureComponent {
         newState.isSecondaryActive = true
         newState.isClicked = true
       }
-      const shouldDisableCursor = disabled || (isPlaying && !isLooping)
       if (isDragged || (!shouldDisableCursor && isClicked)) {
         newState.allowCursorDisabled = false
+      }
+      if (isClicked) {
+        onLoopToggle(audioIndex)
       }
       if (isHovered || isTouched) {
         newState.isSquareTriggered = true
@@ -321,9 +330,6 @@ export default class Trigger extends PureComponent {
       if (isUnHovered || isUntouched) {
         newState.suppressTextHint = false
         newState.isSquareHovered = false
-      }
-      if (isClicked || isDoubleClicked) {
-        onLoopToggle(audioIndex, isDoubleClicked)
       }
       if (isUnclicked) {
         this.disableCursorTimer = setTimeout(() => {

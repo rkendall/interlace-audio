@@ -6,7 +6,7 @@ export default props => (
     {...props}
     place="right"
     effect="solid"
-    delayShow={300}
+    delayShow={500}
     delayHide={100}
     backgroundColor="var(--peach)"
     arrowColor="var(--peach)"
@@ -14,3 +14,9 @@ export default props => (
     borderColor="gray"
     border
   />)
+
+const hideTooltip = ReactTooltip.hide
+
+export {
+    hideTooltip,
+}
