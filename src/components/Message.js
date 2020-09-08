@@ -2,15 +2,15 @@ import React, {Component} from 'react'
 import {CSSTransition} from 'react-transition-group'
 import classNames from 'classnames'
 import 'react-awesome-button/dist/styles.css'
-// import './Message.css'
 import styles from './Message.module.css'
 import './Button.css'
+import { isSmallScreen } from '../utilities';
 
 export default class Message extends Component {
   constructor() {
       super()
       this.state = ({
-          animateEntry: window.innerWidth > 767,
+          animateEntry: !isSmallScreen(),
       })
   }
 
@@ -37,7 +37,7 @@ export default class Message extends Component {
           exitDone: styles['messageContainer-exit-done'],
         }}
       >
-          <div className={styles.messageContainer} onClick={!window.isTouchDevice ? onClick : () => {
+          <div className={styles.messageContainer} onClick={!isSmallScreen() ? onClick : () => {
           }}>
             <div className={styles.message}>
               <div className={styles.intro}>

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import Sidebar from 'react-sidebar'
 import moment from 'moment'
 import TinyGesture from 'tinygesture'
+// import FastClick from 'fastclick'
 import ReactResizeDetector from 'react-resize-detector'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import SidebarContent from './components/Sidebar'
@@ -9,6 +10,7 @@ import MusicPane from './components/MusicPane'
 import Message from './components/Message'
 import ErrorBoundary from './components/ErrorBoundary'
 import './App.css'
+import { isSmallScreen } from './utilities'
 
 import waterDreams from './compositionConfigs/waterDreams.json'
 import glassDreams from './compositionConfigs/glassDreams.json'
@@ -38,6 +40,7 @@ import apollosExitAria from './compositionConfigs/apollosExitAria.json'
 import eveningEmbers from './compositionConfigs/eveningEmbers.json'
 import eveningEmbersPoem from './poems/eveningEmbers'
 import twilitBallad from './compositionConfigs/twilitBallad.json'
+import twilitBalladPoem from './poems/twilitBallad.js'
 import elegyForTheDaylight from './compositionConfigs/elegyForTheDaylight.json'
 import elegyForTheDaylightPoem from './poems/elegyForTheDaylight'
 import midnightBlues from './compositionConfigs/midnightBlues.json'
@@ -77,6 +80,7 @@ const poems = {
   reveriePoem,
   tunesOnTapPoem,
   elegyForTheDaylightPoem,
+  twilitBalladPoem,
 }
 
 const timeSlots =
@@ -156,6 +160,7 @@ class App extends Component {
     if (!window.isTouchDevice) {
       return
     }
+    // FastClick.attach(document.body)
     const gesture = new TinyGesture(document.getElementById('sidebar'), {
       threshold: () => 1,
       velocityThreshold: 1,
@@ -249,12 +254,14 @@ class App extends Component {
   }
 
   onPlayStarted = () => {
-    if (window.innerWidth < 768) {
+    console.log('onPlayStarted')
+    if (isSmallScreen()) {
       this.toggleSidebar(false)
     }
   }
 
   onMessageClose = () => {
+    console.log('onMessageClose')
     this.onCloseInstructions()
     this.onPlayStarted()
   }
@@ -327,7 +334,9 @@ class App extends Component {
   }
 
   onToggleInstructions = () => {
+    console.log('onToggleInstructions')
     this.setState(({instructionsOpen}) => {
+      console.log('onToggleInstructions state', instructionsOpen)
       if (!instructionsOpen) {
         // eslint-disable-next-line
         gtag('event', 'view_help', {

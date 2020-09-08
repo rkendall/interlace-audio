@@ -14,7 +14,6 @@ class MusicPane extends Component {
     this.state = {
       initialized: false,
       loading: true,
-      squareCount: null,
       allowDisabled: true,
       fadeAllSquares: false,
       // Prevents too many sounds from being started at once
@@ -57,6 +56,7 @@ class MusicPane extends Component {
     } else if (stopLooping) {
       this.itemsLooping.clear()
     }
+    console.log('state', this.state)
   }
 
   componentWillUnmount() {

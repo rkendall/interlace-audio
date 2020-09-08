@@ -10,6 +10,7 @@
     "audio-play": "^2.2.1",
     "classnames": "^2.2.6",
     "detect-browser": "^5.1.1",
+    "fastclick": "^1.0.6",
     "hammerjs": "^2.0.8",
     "howler": "^2.2.0",
     "moment": "^2.22.2",

@@ -13,7 +13,7 @@
 	transition: opacity 0ms ease-out;
 	cursor: pointer;
 	z-index: 50;
-	overflow: hidden;
+	overflow: auto;
 }
 
 .animateEntry .messageContainer {
@@ -95,7 +95,7 @@ ul {
 }
 
 .intro {
-	width: 40%;
+	width: clamp(40%, 500px, 80%);
 }
 
 .heading {
@@ -120,11 +120,11 @@ ul {
 }
 
 .notes.left {
-	left: 45px;
+	left: 10%;
 }
 
 .notes.right {
-	right: 45px;
+	right: 10%;
 }
 
 .instructions {

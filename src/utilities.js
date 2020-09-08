@@ -8,4 +8,4 @@ export const shuffleArray = arr => {
   return arr
 }
 
-export const isSmallScreen = () => window.innerWidth <= 767
+export const isSmallScreen = () => window.innerWidth < 768
