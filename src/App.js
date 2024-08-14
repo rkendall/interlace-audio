@@ -2,15 +2,15 @@ import React, {Component} from 'react'
 import Sidebar from 'react-sidebar'
 import moment from 'moment'
 import TinyGesture from 'tinygesture'
-// import FastClick from 'fastclick'
 import ReactResizeDetector from 'react-resize-detector'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
+import ChevronRight from '@material-ui/icons/ChevronRight'
 import SidebarContent from './components/Sidebar'
 import MusicPane from './components/MusicPane'
 import Message from './components/Message'
 import ErrorBoundary from './components/ErrorBoundary'
 import './App.css'
-import { isSmallScreen } from './utilities'
+import {isSmallScreen} from './utilities'
 
 import waterDreams from './compositionConfigs/waterDreams.json'
 import glassDreams from './compositionConfigs/glassDreams.json'
@@ -141,12 +141,14 @@ class App extends Component {
     super()
     this.musicPaneRef = React.createRef()
     this.state = {
+      initialized: false,
       currentCompositionName: this.selectCompositionByHash() || this.selectCompositionByTimeOfDay(),
       sidebarOpen: true,
-      instructionsOpen: true,
+      messageOpen: true,
       squareCount: 0,
       vanishSquares: false,
       stopLooping: false,
+      showAllSquares: false,
       height: null,
       showPoetry: false,
       allowMenuChange: true,
@@ -160,7 +162,6 @@ class App extends Component {
     if (!window.isTouchDevice) {
       return
     }
-    // FastClick.attach(document.body)
     const gesture = new TinyGesture(document.getElementById('sidebar'), {
       threshold: () => 1,
       velocityThreshold: 1,
@@ -178,9 +179,12 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    const {stopLooping, allowMenuChange} = this.state
+    const {stopLooping, showAllSquares, allowMenuChange} = this.state
     if (stopLooping) {
       this.resetStopLooping()
+    }
+    if (showAllSquares) {
+      this.resetShowAllSquares()
     }
     if (!allowMenuChange) {
       this.toggleTimer = setTimeout(() => {
@@ -190,11 +194,15 @@ class App extends Component {
   }
 
   render() {
-    const {currentCompositionName, squareCount, vanishSquares, showPoetry, sidebarOpen, instructionsOpen, stopLooping, height, allowMenuChange} = this.state
+    const {currentCompositionName, squareCount, showAllSquares, vanishSquares, showPoetry, smartLooping, sidebarOpen, messageOpen, stopLooping, height, allowMenuChange} = this.state
+    const mainProps = {}
+    if (!isSmallScreen()) {
+      mainProps.onClick = this.onInteraction
+    }
 
     return (
-      <div className="main">
-        <Message open={instructionsOpen} onClick={this.onMessageClose} titleCount={compositionTitles.length}/>
+      <div className="main" {...mainProps}>
+        <Message open={messageOpen} onClick={this.closeMessage} titleCount={compositionTitles.length}/>
         <Sidebar
           sidebar={<SidebarContent
             toggleSidebar={this.toggleSidebar}
@@ -202,11 +210,13 @@ class App extends Component {
             timeSlots={timeSlots}
             allowMenuChange={allowMenuChange}
             onChange={this.onCompositionSelected}
+            onSmartLoopingSelected={this.onSmartLoopingSelected}
             onFadeSelected={this.onFadeSelected}
             onPoetrySelected={this.onPoetrySelected}
             onStopLooping={this.onStopLooping}
-            onToggleInstructions={this.onToggleInstructions}
-            instructionsOpen={instructionsOpen}
+            onShowAllSquares={this.onShowAllSquares}
+            toggleMessageHandler={this.toggleMessage}
+            messageOpen={messageOpen}
             initialSelectedValue={currentCompositionName}
             sidebarOpen={sidebarOpen}
             height={height}
@@ -215,6 +225,7 @@ class App extends Component {
           docked={sidebarOpen}
           touchHandleWidth={50}
           dragToggleDistance={10}
+          touch={false}
           sidebarId="sidebar"
           sidebarClassName="reactSidebar"
           contentClassName="sidebarContent"
@@ -228,8 +239,10 @@ class App extends Component {
                     currentCompositionName={currentCompositionName}
                     squareCount={squareCount}
                     rawCompositions={rawCompositions}
+                    smartLooping={smartLooping}
                     vanishSquares={vanishSquares}
                     stopLooping={stopLooping}
+                    showAllSquares={showAllSquares}
                     onPlayStarted={this.onPlayStarted}
                     showPoetry={showPoetry}
                     onPoemInitialized={this.onPoemInitialized}
@@ -237,8 +250,13 @@ class App extends Component {
                 </ErrorBoundary>
               </ReactResizeDetector>
             </div>
-            <div className="scroller"><ChevronLeft/> <ChevronLeft/>
-              <div className="swipe">Swipe left for more instruments</div>
+            <div className="scrollers">
+              <div className="scroller"><ChevronLeft/> <ChevronLeft/>
+                <div className="swipe">Swipe left for more instruments</div>
+              </div>
+              <div className="scroller">
+                <div className="swipe">Swipe right for more instruments</div><ChevronRight/> <ChevronRight/>
+              </div>
             </div>
           </div>
         </Sidebar>
@@ -254,16 +272,44 @@ class App extends Component {
   }
 
   onPlayStarted = () => {
-    console.log('onPlayStarted')
     if (isSmallScreen()) {
       this.toggleSidebar(false)
     }
   }
 
-  onMessageClose = () => {
-    console.log('onMessageClose')
-    this.onCloseInstructions()
-    this.onPlayStarted()
+  onInteraction = () => {
+    if (!isSmallScreen()) {
+      this.closeMessage()
+    }
+  }
+
+  closeMessage = () => {
+    this.setState(({initialized, messageOpen}) => {
+      const newState = {}
+      if (messageOpen) {
+        newState.messageOpen = false
+      }
+      if (!initialized) {
+        this.onPlayStarted()
+        newState.initialized = true
+      }
+      return Object.keys(newState).length ? newState : null
+    })
+  }
+
+  toggleMessage = () => {
+    this.setState(({messageOpen}) => {
+      if (!messageOpen) {
+        // eslint-disable-next-line
+        gtag('event', 'view_help', {
+          'event_label': 'View help',
+          'event_category': 'help',
+        })
+      }
+      return {
+        messageOpen: !messageOpen,
+      }
+    })
   }
 
   toggleSidebar = sidebarState => {
@@ -285,11 +331,24 @@ class App extends Component {
   onCompositionSelected = ({value, id}) => {
     const selectedCompositionName = value || id
     if (selectedCompositionName && selectedCompositionName !== this.state.currentCompositionName) {
-      this.onCloseInstructions()
       this.setState({
         currentCompositionName: selectedCompositionName,
       })
     }
+  }
+
+
+  onSmartLoopingSelected = () => {
+    if (!this.state.smartLooping) {
+      // eslint-disable-next-line
+      gtag('event', 'enable_smart_looping', {
+        'event_label': 'Enable Smart Looping',
+        'event_category': 'set_option',
+      })
+    }
+    this.setState({
+      smartLooping: !this.state.smartLooping,
+    })
   }
 
   onFadeSelected = () => {
@@ -329,36 +388,27 @@ class App extends Component {
     })
   }
 
-  onCloseInstructions = () => {
-    this.setState({instructionsOpen: false})
-  }
-
-  onToggleInstructions = () => {
-    console.log('onToggleInstructions')
-    this.setState(({instructionsOpen}) => {
-      console.log('onToggleInstructions state', instructionsOpen)
-      if (!instructionsOpen) {
-        // eslint-disable-next-line
-        gtag('event', 'view_help', {
-          'event_label': 'View help',
-          'event_category': 'help',
-        })
-      }
-      return {
-        instructionsOpen: !instructionsOpen,
-      }
-    })
-  }
-
   resetStopLooping = () => {
     this.setState({
       stopLooping: false,
     })
   }
 
+  onShowAllSquares = event => {
+    this.setState({
+      showAllSquares: true,
+    })
+  }
+
+  resetShowAllSquares = () => {
+    this.setState({
+      showAllSquares: false,
+    })
+  }
+
   selectCompositionByHash = () => {
     const hash = window.location.hash.replace('#', '')
-    return timeSlots[hash] ? hash : null
+    return timeSlots[hash] !== null ? hash : null
   }
 
   selectCompositionByTimeOfDay = () => {

@@ -6,11 +6,9 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import ChevronRight from '@material-ui/icons/ChevronRight'
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
-import {AwesomeButton as Button} from 'react-awesome-button'
-import 'react-awesome-button/dist/styles.css'
 import './Sidebar.css'
-import './Button.css'
-import ToolTip, { hideTooltip } from './ToolTip';
+import Button from './Button';
+import ToolTip, {hideTooltip} from './ToolTip';
 
 class SideBar extends Component {
   constructor(props) {
@@ -28,7 +26,8 @@ class SideBar extends Component {
     const options = [...this.menu.current.children]
     options.forEach((child, ind) => {
       this.addTouchListeners(child, ind)
-    })}
+    })
+  }
 
   componentDidUpdate(prevProps) {
     const {height, sidebarOpen} = this.props
@@ -40,7 +39,7 @@ class SideBar extends Component {
   }
 
   render() {
-    const {onFadeSelected, onStopLooping, onToggleInstructions, toggleSidebar, compositionTitles, instructionsOpen} = this.props
+    const {onShowAllSquares, onStopLooping, toggleSidebar, compositionTitles, messageOpen} = this.props
     const {selectedInd, poetrySelected, hasPoetry, isOpen} = this.state
     const poetryAvailableTooltip = poetrySelected ? 'Turn Word Art off' : 'Add Word Art to the piece'
     const poetryTooltip = hasPoetry ? poetryAvailableTooltip : 'Sorry, no Word Art for this piece'
@@ -69,8 +68,9 @@ class SideBar extends Component {
             <h1 className="box heading">{`${compositionTitles.length} Impromptus`}</h1>
             <div className="box">
               <div className="byline">
-                <div>By <a className="button" href="http://robertkendall.com" target="_blank" rel="noopener noreferrer">Robert
-                  Kendall</a>
+                <div>By <Button type="link" className="button" href="http://robertkendall.com" target="_blank"
+                                rel="noopener noreferrer" stopPropagation>Robert
+                  Kendall</Button>
                 </div>
               </div>
             </div>
@@ -94,51 +94,87 @@ class SideBar extends Component {
             </div>
           </div>
           <button className="down arrow box" onClick={this.selectNextOrPrevious.bind(null, 'next')}>
-            <KeyboardArrowDown /></button>
+            <KeyboardArrowDown />
+          </button>
           <div className="box controls">
             <div className="instructions">Click and hold square to start/stop looping</div>
-            <Button
-              action={onStopLooping}
-            >Stop All Looping
-            </Button>
             <div className="selectOptions">
-              <label data-tip="Try it and see" data-for='magicTip'>
-                <input
-                  name="fade"
-                  type="checkbox"
-                  onChange={this.fadeHandler}
-                />
-                <div className="label">Magic Vanishing Act</div>
-              </label>
-              <label className={hasPoetry ? '' : 'selectionDisabled'} data-tip={poetryTooltip} data-for='poetryTip'>
+              <div className="selectOption">
+                {/* div is workaround for Safari to size checkbox correctly */}
+                <div>
                   <input
-                    name="poetry"
+                    id="smartLooping"
+                    type="checkbox"
+                    onChange={this.smartLoopingHandler}
+                  />
+                </div>
+                <label htmlFor="smartLooping" data-tip="Vary the music on each loop" data-for='smartLoopingTip'>Smart
+                  Looping
+                </label>
+              </div>
+            </div>
+            <div className="buttonBar">
+              <Button
+                onClick={onStopLooping}
+              >Stop All Looping
+              </Button>
+            </div>
+          </div>
+          <div className="box controls">
+            <div className="selectOptions">
+              <div className="selectOption">
+                <div>
+                  <input
+                    id="fade"
+                    type="checkbox"
+                    onChange={this.fadeHandler}
+                  />
+                </div>
+                <label htmlFor="fade" data-tip="Try it and see" data-for='magicTip'>Magic Vanishing Act
+                </label>
+              </div>
+              <div className="selectOption">
+                <div>
+                  <input
+                    id="poetry"
                     type="checkbox"
                     onChange={this.poetrySelectionHandler}
                     disabled={!hasPoetry}
                   />
-                  <div className="label">Word Art</div>
+                </div>
+                <label htmlFor="poetry" className={hasPoetry ? '' : 'selectionDisabled'} data-tip={poetryTooltip}
+                       data-for='poetryTip'>
+                  {hasPoetry ? 'Word Art' : '(No Word Art for This Piece)'}
                 </label>
-
+              </div>
             </div>
-            <button className="button help" onClick={onToggleInstructions}>{instructionsOpen ? 'Hide' : 'View'} Help
-            </button>
+            <div className="buttonBar">
+              <Button
+                onClick={onShowAllSquares}
+              >Show All Instruments
+              </Button>
+              <Button
+                onClick={this.onToggleMessage}
+              >{messageOpen ? 'Hide' : 'View'} Help
+              </Button>
+            </div>
           </div>
         </div>
+        <ToolTip id="smartLoopingTip"/>
         <ToolTip id="magicTip" disable={window.isTouchDevice}/>
-        <ToolTip id="poetryTip" />
+        <ToolTip id="poetryTip"/>
       </Fragment>
     )
   }
 
   addTouchListeners = (el, ind) => {
-      const menuGestures = new Hammer(el);
-      menuGestures.get('swipe').recognizeWith('tap').recognizeWith('press')
-      menuGestures.get('press').set({time: 100}).requireFailure('swipe')
-      menuGestures.get('tap').requireFailure('swipe')
-      menuGestures.on('tap press swipe', event => {
-        this.onChange(ind)
-      })
+    const menuGestures = new Hammer(el);
+    menuGestures.get('swipe').recognizeWith('tap').recognizeWith('press')
+    menuGestures.get('press').set({time: 100}).requireFailure('swipe')
+    menuGestures.get('tap').requireFailure('swipe')
+    menuGestures.on('tap press swipe', event => {
+      this.onChange(ind)
+    })
   }
 
   scrollToSelection({selectedInd, animate = false}) {
@@ -182,8 +218,14 @@ class SideBar extends Component {
     })
   }
 
+  smartLoopingHandler = () => {
+    const {onSmartLoopingSelected} = this.props
+    onSmartLoopingSelected()
+    hideTooltip()
+  }
+
   fadeHandler = () => {
-    const { onFadeSelected } = this.props
+    const {onFadeSelected} = this.props
     onFadeSelected()
     hideTooltip()
   }
@@ -210,6 +252,12 @@ class SideBar extends Component {
     const selectedInd = type === 'previous' ? getPrevious() : getNext()
     this.scrollToSelection({selectedInd, animate: true})
     this.onChange(selectedInd)
+  }
+
+  onToggleMessage = (event) => {
+    event.stopPropagation()
+    const {toggleMessageHandler} = this.props
+    toggleMessageHandler()
   }
 
 }

@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 import {CSSTransition} from 'react-transition-group'
 import classNames from 'classnames'
-import 'react-awesome-button/dist/styles.css'
 import styles from './Message.module.css'
-import './Button.css'
+import Button from './Button'
 import { isSmallScreen } from '../utilities';
 
 export default class Message extends Component {
@@ -37,8 +36,7 @@ export default class Message extends Component {
           exitDone: styles['messageContainer-exit-done'],
         }}
       >
-          <div className={styles.messageContainer} onClick={!isSmallScreen() ? onClick : () => {
-          }}>
+          <div className={styles.messageContainer}>
             <div className={styles.message}>
               <div className={styles.intro}>
                 <div className={styles.heading}>
@@ -48,9 +46,9 @@ export default class Message extends Component {
                 </div>
                 <div className={classNames(styles.details, styles.subheading)}>
                   <div>Interactive Music</div>
-                  <div>By <a className="button" href="http://robertkendall.com" target="_blank"
-                             rel="noopener noreferrer">Robert
-                    Kendall</a>
+                  <div>By <Button type="link" href="http://robertkendall.com" target="_blank"
+                             rel="noopener noreferrer" stopPropagation>Robert
+                    Kendall</Button>
                   </div>
                 </div>
                 <div className={styles.details}>
@@ -69,7 +67,7 @@ export default class Message extends Component {
                     <li className={styles.mobile}>Swipe left at the bottom for more instruments.</li>
                     <li>Select a new piece from the menu on the left. There's one representing each time of day.</li>
                   </ul>
-                  <button className={styles.mobile} onClick={onClick}>Start</button>
+                  <Button className={styles.mobile} onClick={onClick} size="large">Start</Button>
                   <div className={classNames(styles.prompt, styles.desktop)}>Click anywhere to begin.</div>
                 </div>
                 <div className={styles.instructions}>

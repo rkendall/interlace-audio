@@ -55,10 +55,14 @@ export default class Trigger extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {fadeSquares, disabled, allowDisabled, isPlaying, fadeAllSquares, isLooping} = this.props
+    const {fadeSquares, disabled, allowDisabled, isPlaying, fadeAllSquares, showAllSquares, isLooping} = this.props
     const {isDisplayed} = this.state
     if (!isDisplayed) {
-      return
+      if (showAllSquares || isPlaying) {
+        this.setState({isDisplayed: true})
+      } else {
+        return
+      }
     }
     this.setState(state => {
       const {allowCursorDisabled} = state
@@ -96,7 +100,6 @@ export default class Trigger extends PureComponent {
   }
 
   render() {
-    console.log('trigger rendered')
     const {audioName, audioIndex, group, isLooping, isPlaying, isPoetry} = this.props
     const {isTopRow, showDisabled, isDisabledAnimating, isSecondaryActive, isSquareHovered, isSquareTriggered, isGlowActive, isTextAnimating, isLoopingAnimationActive, stopLooping, isDisplayed, suppressTextHint, isCursorDisabled, poemWord, poemStyle} = this.state
     const doLooping = isLooping && !stopLooping
@@ -279,7 +282,6 @@ export default class Trigger extends PureComponent {
   }
 
   handleInteraction = event => {
-    console.log('handleInteraction', event)
     const {onTrigger, audioIndex, fadeAllSquares, isPlaying, disabled, isLooping, onUnclick, onLoopToggle} = this.props
     if (fadeAllSquares) {
       return

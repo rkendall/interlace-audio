@@ -7,26 +7,6 @@ body {
 	touch-action: none;
 }
 
-.button {
-	margin-top: 10px;
-	padding: 0;
-	border: none;
-	background: none;
-	text-decoration: none;
-	font-weight: bold;
-	outline: none;
-	color: var(--buttonColor);
-	text-shadow: none;
-	transition: text-shadow 100ms;
-}
-
-.button:hover {
-	cursor: pointer;
-	color: var(--buttonColor);
-	text-shadow: 0 0 1px #ae470c !important;
-	transition: text-shadow 100ms;
-}
-
 .main {
 	width: 100vw;
 	height: var(--windowHeight);
@@ -64,7 +44,7 @@ body {
 	overflow: hidden;
 }
 
-.scroller {
+.scrollers, .scroller {
 	display: none;
 }
 
@@ -77,11 +57,16 @@ body {
 		width: 200vw;
 		overflow-x: scroll;
 	}
+	.scrollers {
+		display: flex;
+		justify-content: space-between;
+		margin-left: 5vw;
+		margin-right: 2vw;
+	}
 	.scroller {
 		display: flex;
 		align-items: center;
 		height: 50px;
-		margin-left: 5vw;
 		background: transparent;
 	}
 }

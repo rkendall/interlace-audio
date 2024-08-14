@@ -2,7 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory, to run the dev build you can run:
 
 ### `npm start`
 
@@ -24,6 +24,10 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
+
+### `serve build`
+
+runs the production build on port 5000
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 

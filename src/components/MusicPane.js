@@ -40,6 +40,7 @@ class MusicPane extends Component {
     this.itemsLooping = new Set()
     this.lastItemLooping = null
     this.lastPointerId = null
+    this.relatedItems = new Map()
   }
 
   componentDidUpdate(prevProps) {
@@ -54,9 +55,8 @@ class MusicPane extends Component {
     } else if (squareCount && squareCount !== prevProps.squareCount) {
       this.changeComposition()
     } else if (stopLooping) {
-      this.itemsLooping.clear()
+      this.stopAllLooping()
     }
-    console.log('state', this.state)
   }
 
   componentWillUnmount() {
@@ -66,7 +66,7 @@ class MusicPane extends Component {
 
   render() {
     const {loading, allowDisabled, fadeAllSquares, isPoetry, initialized} = this.state
-    const {squareCount, vanishSquares, onPlayStarted, showPoetry} = this.props
+    const {squareCount, showAllSquares, vanishSquares, onPlayStarted, showPoetry} = this.props
     return !loading && this.composition.length && squareCount ?
       (<Fragment>
           <div className="paneWrapper" onMouseOver={this.handleInactivity} onTouchStart={onPlayStarted}>
@@ -91,6 +91,7 @@ class MusicPane extends Component {
                   isLooping: this.itemsLooping.has(audioIndex),
                   fadeSquares: vanishSquares,
                   fadeAllSquares,
+                  showAllSquares,
                   isPoetry: isPoetry && showPoetry,
                 }
                 return (
@@ -100,7 +101,9 @@ class MusicPane extends Component {
             </div>
           </div>
         </Fragment>
-      ) : initialized && <div className="loading" onTouchStart={onPlayStarted}><ReactLoading type="spinningBubbles" color="blue" delay={300}/></div>
+      ) : initialized &&
+    <div className="loading" onTouchStart={onPlayStarted}><ReactLoading type="spinningBubbles" color="blue"
+                                                                        delay={300}/></div>
   }
 
   stopLastLoopingItemIfNecessary = audioIndex => {
@@ -116,27 +119,47 @@ class MusicPane extends Component {
       this.itemsPlaying.add(audioIndex)
       this.playQueue.add(audioIndex)
     }
+    if (this.props.smartLooping) {
+      const values = this.relatedItems.get(this.composition[audioIndex].key)
+      values.active = true
+    }
     this.stopLastLoopingItemIfNecessary(audioIndex)
     this.incrementAudioCount()
     this.lastItemLooping = audioIndex
   }
 
   stopItemLooping = audioIndex => {
+    const {smartLooping} = this.props
     this.itemsLooping.delete(audioIndex)
+    if (smartLooping) {
+      this.resetRelatedItems(audioIndex)
+    }
     this.incrementAudioCount()
   }
 
+  stopAllLooping = () => {
+    if (this.props.smartLooping) {
+      this.itemsLooping.forEach(audioIndex => {
+        this.resetRelatedItems(audioIndex)
+      })
+    }
+    this.itemsLooping.clear()
+  }
+
   playAudio = audioIndex => {
-    const sound = this.composition[audioIndex].audio
+    const audioItem = this.composition[audioIndex]
+    const sound = audioItem.audio
     if (sound) {
       // console.log('playing', this.composition[audioIndex].audioName)
       const audioId = sound.play()
-      this.composition[audioIndex].audioId = audioId
+      audioItem.audioId = audioId
+      audioItem.terminationHandled = false
     }
   }
 
   setItemAsStarted = audioIndex => {
-    if (this.isBurstLimitReached()) {
+    const {allowDisabled} = this.state
+    if (!allowDisabled && this.isBurstLimitReached()) {
       return
     }
     this.itemsPlaying.add(audioIndex)
@@ -236,7 +259,8 @@ class MusicPane extends Component {
           console.error(`Error playing ${src} -- ${error}`)
         },
       })
-      const noOp = () => {}
+      const noOp = () => {
+      }
       this.composition[audioInd].audio = audio
     })
     return loadPromise
@@ -332,10 +356,12 @@ class MusicPane extends Component {
       this.clearAudio()
       this.itemsPlaying.clear()
       this.itemsLooping.clear()
+      this.relatedItems.clear()
       this.initializeStatus(compositionData)
       this.clearTimers()
       this.initializeTriggers()
       const audioLoadPromises = this.loadAllAudio()
+      this.addRelatedItemsForLooping()
       Promise.allSettled(audioLoadPromises).then(() => {
         this.setPlayTimer()
         clearTimeout(this.loadingTimer)
@@ -379,9 +405,89 @@ class MusicPane extends Component {
     Howler.unload()
   }
 
+  isSmartLooping = audioIndex => {
+    if (!this.props.smartLooping) {
+      return false
+    }
+    const relatedValues = this.relatedItems.get(this.composition[audioIndex].key)
+    return Boolean(relatedValues.active)
+  }
+
+  getBaseName = audioName => audioName.replace(/ ?\d+\w*$/, '')
+
+  getRelatedItemKey = ({audioName, group}) => {
+    const instrument = this.getBaseName(audioName)
+    const groupName = this.getBaseName(group)
+    return `${instrument}|${groupName}`
+  }
+
+  resetRelatedItems = audioIndex => {
+    const key = this.composition[audioIndex].key
+    const values = this.relatedItems.get(key)
+    values.items = null
+    values.active  = false
+  }
+
+  addAsRelatedItem = audioItem => {
+    const {audioName, audioIndex, key} = audioItem
+    const values = this.relatedItems.get(key)
+    if (!values.sourceItems.find(({name}) => name === audioName)) {
+      values.sourceItems.push({name: audioName, ind: audioIndex})
+    }
+  }
+
+  addRelatedItemsForLooping = () => {
+    this.composition.forEach(audioItem => {
+      const key = this.getRelatedItemKey(audioItem)
+      audioItem.key = key
+      let values = this.relatedItems.get(key)
+      if (!values) {
+        values = {sourceItems: [], items: null, active: false}
+        this.relatedItems.set(key, values)
+      }
+    })
+    this.composition.forEach(audioItem => {
+      this.addAsRelatedItem(audioItem)
+    })
+  }
+
+  getRandomIndex = ({items, audioName}) => {
+    if (items.length === 1) {
+      return 0
+    }
+    let ind = Math.floor(Math.random() * items.length)
+    const itemToLoop = items[ind]
+    if (itemToLoop.name === audioName) {
+      const newItems = [...items]
+      newItems.splice(ind, 1)
+      ind = this.getRandomIndex({items: newItems, audioName})
+    }
+    return ind
+  }
+
+  getRelatedItemToLoop = audioIndex => {
+    const {audioName, key} = this.composition[audioIndex]
+    const values = this.relatedItems.get(key)
+    let {items, sourceItems} = values
+    if (!items) {
+      // Use selected square for smart looping
+      const itemForCurrentInstrument = sourceItems.find(item => item.name === this.composition[audioIndex].audioName)
+      itemForCurrentInstrument.ind = audioIndex
+      // Update by reference
+      items = [...sourceItems]
+      values.items = items
+    } else if (!items.length) {
+      items.push(...sourceItems)
+    }
+    const ind = this.getRandomIndex({items, audioName})
+    const itemToLoopInd = items[ind].ind
+    items.splice(ind, 1)
+    return itemToLoopInd
+  }
+
   updateFinishedAudio = () => {
     this.itemsPlaying.forEach(audioIndex => {
-      const {audio, end, audioId} = this.composition[audioIndex]
+      const {audio, end, audioId, terminationHandled} = this.composition[audioIndex]
       if (!audio) {
         this.itemsPlaying.delete(audioIndex)
         this.itemsLooping.delete(audioIndex)
@@ -389,8 +495,28 @@ class MusicPane extends Component {
       }
       const rawPosition = audio.seek(null, audioId) || null
       const position = Math.ceil(rawPosition)
-      if (typeof position !== 'number' || position >= end) {
+      if (typeof position !== 'number' || (position >= end && !terminationHandled)) {
         if (this.itemsLooping.has(audioIndex)) {
+          if (this.props.smartLooping) {
+            const relatedAudioIndex = this.getRelatedItemToLoop(audioIndex)
+            if (relatedAudioIndex === audioIndex) {
+              this.playQueue.add(audioIndex)
+              return
+            }
+            const relatedItem = this.composition[relatedAudioIndex]
+            // To prevent it from being immediately looped again,
+            // which causes infinite loop
+            if (relatedItem.audio.playing(relatedItem.audioId)) {
+              this.composition[relatedAudioIndex].terminationHandled = true
+            }
+            this.itemsLooping.delete(audioIndex)
+            this.itemsPlaying.delete(audioIndex)
+            this.itemsLooping.add(relatedAudioIndex)
+            this.playQueue.add(relatedAudioIndex)
+            this.itemsPlaying.add(relatedAudioIndex)
+            this.incrementAudioCount()
+            return
+          }
           this.playQueue.add(audioIndex)
         } else {
           this.itemsPlaying.delete(audioIndex)
@@ -591,9 +717,13 @@ class MusicPane extends Component {
   }
 
   startLoopHandler = audioIndex => {
-    if (this.isAudioPlayable(audioIndex) || this.isItemPlaying(audioIndex)) {
-      this.startItemLooping(audioIndex)
+    if (!this.isAudioPlayable(audioIndex) && !this.isItemPlaying(audioIndex)) {
+      return
     }
+    if (this.isSmartLooping(audioIndex)) {
+      return
+    }
+    this.startItemLooping(audioIndex)
   }
 
   onLoopToggle = (audioIndex) => {
@@ -615,4 +745,6 @@ class MusicPane extends Component {
   }
 }
 
-export default MusicPane
+export
+default
+MusicPane

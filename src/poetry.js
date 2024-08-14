@@ -31,8 +31,6 @@ const getPhraseFromAlias = alias => {
   return formatPhrase(text.words)
 }
 
-const getFirst = () => state.lines.first.source[0]
-
 const getPhrase = ({group, fast}) => {
   const {important, first, requiredNextPhrase} = state
   if (first.length) {
