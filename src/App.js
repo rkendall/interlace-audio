@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Sidebar from 'react-sidebar'
 import moment from 'moment'
+import osc from 'osc/dist/osc-browser'
 import TinyGesture from 'tinygesture'
 import ReactResizeDetector from 'react-resize-detector'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
@@ -154,6 +155,16 @@ class App extends Component {
       allowMenuChange: true,
     }
     this.toggleTimer = null
+    console.debug('osc', osc)
+    var oscPort = new osc.WebSocketPort({
+        url: 'ws://localhost:3000', // URL to your Web Socket server.
+        metadata: true
+    });
+    oscPort.open();
+    oscPort.on('message', function (oscMsg) {
+        console.log('An OSC message just arrived!', oscMsg);
+    });
+
   }
 
 

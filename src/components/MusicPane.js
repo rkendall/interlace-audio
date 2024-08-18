@@ -745,6 +745,4 @@ class MusicPane extends Component {
   }
 }
 
-export
-default
-MusicPane
+export default MusicPane

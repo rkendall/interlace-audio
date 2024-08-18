@@ -1,0 +1,11 @@
+{
+    "name": "websocker-server",
+    "main": "index.js",
+    "version": "1.0.0",
+    "dependencies": {
+        "express": "4.17.1",
+        "osc": "2.4.4",
+        "osc-cli": "^0.2.0",
+        "ws": "7.5.3"
+    }
+}
