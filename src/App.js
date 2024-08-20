@@ -6,10 +6,10 @@ import TinyGesture from 'tinygesture'
 import ReactResizeDetector from 'react-resize-detector'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import ChevronRight from '@material-ui/icons/ChevronRight'
-import SidebarContent from './components/Sidebar'
-import MusicPane from './components/MusicPane'
-import Message from './components/Message'
-import ErrorBoundary from './components/ErrorBoundary'
+import SidebarContent from './components/Sidebar.js'
+import MusicPane from './components/MusicPane.js'
+import Message from './components/Message.js'
+import ErrorBoundary from './components/ErrorBoundary.js'
 import './App.css'
 import {isSmallScreen} from './utilities'
 
@@ -43,7 +43,7 @@ import eveningEmbersPoem from './poems/eveningEmbers'
 import twilitBallad from './compositionConfigs/twilitBallad.json'
 import twilitBalladPoem from './poems/twilitBallad.js'
 import elegyForTheDaylight from './compositionConfigs/elegyForTheDaylight.json'
-import elegyForTheDaylightPoem from './poems/elegyForTheDaylight'
+import elegyForTheDaylightPoem from './poems/elegyForTheDaylight.js'
 import midnightBlues from './compositionConfigs/midnightBlues.json'
 
 const compositionData = [
@@ -84,8 +84,7 @@ const poems = {
   twilitBalladPoem,
 }
 
-const timeSlots =
-{
+const timeSlots = {
   waterDreams: 1,
   glassDreams: 2,
   ironDreams: 3,
@@ -153,22 +152,35 @@ class App extends Component {
       height: null,
       showPoetry: false,
       allowMenuChange: true,
+      activeIndex: null,
     }
     this.toggleTimer = null
-    console.debug('osc', osc)
-    var oscPort = new osc.WebSocketPort({
-        url: 'ws://localhost:3000', // URL to your Web Socket server.
-        metadata: true
-    });
-    oscPort.open();
-    oscPort.on('message', function (oscMsg) {
-        console.log('An OSC message just arrived!', oscMsg);
-    });
 
   }
 
-
   componentDidMount() {
+    var oscPort = new osc.WebSocketPort({
+      url: 'ws://localhost:3000', // URL to your Web Socket server.
+      metadata: true
+    });
+    oscPort.open();
+    oscPort.on('message', (oscMsg) => {
+      const {address, args} = oscMsg
+      if (address.startsWith('/lx/modulation/Angles/')) {
+        console.log('oscMsg!', oscMsg);
+        const rawValue = args?.[0]?.value
+        const value = Math.round(rawValue * 50)
+        const hyperboloidInd = Number(address.slice(-1))
+        const adjustedValue = this.getAdjustedValue({value, hyperboloidInd})
+        this.setActiveIndex(adjustedValue)
+      }
+    });
+    setInterval(() => {
+      if (!this.selectCompositionByHash()) {
+        const newCompositionName = this.selectCompositionByTimeOfDay()
+        this.setState(({currentCompositionName}) => newCompositionName !== currentCompositionName ? {currentCompositionName: newCompositionName} : null)
+      }
+    }, 5000)
     window.isTouchDevice = 'ontouchstart' in window
     if (!window.isTouchDevice) {
       return
@@ -210,10 +222,11 @@ class App extends Component {
     if (!isSmallScreen()) {
       mainProps.onClick = this.onInteraction
     }
+    console.log('currentCompositionName', currentCompositionName)
 
     return (
       <div className="main" {...mainProps}>
-        <Message open={messageOpen} onClick={this.closeMessage} titleCount={compositionTitles.length}/>
+        {/* <Message open={messageOpen} onClick={this.closeMessage} titleCount={compositionTitles.length}/> */}
         <Sidebar
           sidebar={<SidebarContent
             toggleSidebar={this.toggleSidebar}
@@ -232,7 +245,8 @@ class App extends Component {
             sidebarOpen={sidebarOpen}
             height={height}
           />}
-          open={sidebarOpen}
+          // open={sidebarOpen}
+          open={true}
           docked={sidebarOpen}
           touchHandleWidth={50}
           dragToggleDistance={10}
@@ -257,6 +271,8 @@ class App extends Component {
                     onPlayStarted={this.onPlayStarted}
                     showPoetry={showPoetry}
                     onPoemInitialized={this.onPoemInitialized}
+                    activeIndex={this.state.activeIndex}
+                    setActiveIndex={this.setActiveIndex}
                   />
                 </ErrorBoundary>
               </ReactResizeDetector>
@@ -273,6 +289,16 @@ class App extends Component {
         </Sidebar>
       </div>
     )
+  }
+
+  getAdjustedValue = ({value, hyperboloidInd}) => {
+    if (hyperboloidInd === 3) {
+      return value
+    }
+    if (hyperboloidInd === 2) {
+      return value + 50
+    }
+    return value + 100
   }
 
   onResize = (width, height) => {
@@ -341,13 +367,14 @@ class App extends Component {
 
   onCompositionSelected = ({value, id}) => {
     const selectedCompositionName = value || id
-    if (selectedCompositionName && selectedCompositionName !== this.state.currentCompositionName) {
-      this.setState({
-        currentCompositionName: selectedCompositionName,
-      })
-    }
+    this.setState(({currentCompositionName}) => {
+      if (selectedCompositionName && selectedCompositionName !== currentCompositionName) {
+        return {
+          currentCompositionName: selectedCompositionName,
+        }
+      }
+    })
   }
-
 
   onSmartLoopingSelected = () => {
     if (!this.state.smartLooping) {
@@ -399,6 +426,12 @@ class App extends Component {
     })
   }
 
+  setActiveIndex = newIndex => {
+    this.setState(({activeIndex}) => 
+      activeIndex !== newIndex ? {activeIndex: newIndex} : null
+    )
+  }
+
   resetStopLooping = () => {
     this.setState({
       stopLooping: false,
@@ -419,7 +452,7 @@ class App extends Component {
 
   selectCompositionByHash = () => {
     const hash = window.location.hash.replace('#', '')
-    return timeSlots[hash] !== null ? hash : null
+    return timeSlots[hash] ? hash : null
   }
 
   selectCompositionByTimeOfDay = () => {
@@ -430,13 +463,14 @@ class App extends Component {
         const nextCompTime = ind === arr.length - 2 ? 24 : timeSlots[nextTimeKey]
         return compTime <= hour && hour < nextCompTime
       }) || Object.keys(timeSlots)[0]
+    // window.location.hash = compositionName
     return compositionName
   }
 
   getSquareCount = (width, height) => {
     const rowSize = Math.floor(width / 80)
     const columnSize = Math.floor(height / 80)
-    const newSquareCount = rowSize * columnSize
+    const newSquareCount = 150 // rowSize * columnSize
     if (newSquareCount !== this.state.squareCount) {
       this.setState({
         squareCount: newSquareCount,

@@ -13,9 +13,11 @@ body {
 }
 
 .content {
+	position: absolute;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	left: 280px;
 	overflow: hidden;
 }
 

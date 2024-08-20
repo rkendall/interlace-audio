@@ -55,7 +55,12 @@ export default class Trigger extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {fadeSquares, disabled, allowDisabled, isPlaying, fadeAllSquares, showAllSquares, isLooping} = this.props
+    const {fadeSquares, disabled, isPlaying, fadeAllSquares, showAllSquares, isLooping, activeIndex, setActiveIndex, audioIndex} = this.props
+    const allowDisabled = true;
+    if (activeIndex === audioIndex) {
+      this.handleInteraction({type: 'mousedown'})
+      setActiveIndex(null)
+    }
     const {isDisplayed} = this.state
     if (!isDisplayed) {
       if (showAllSquares || isPlaying) {
@@ -108,7 +113,7 @@ export default class Trigger extends PureComponent {
     const groupClassName = group.replace(/\d+$/, '')
     const disabledActive = showDisabled || isDisabledAnimating
     const canShowTextHint = !suppressTextHint && !isPoetry && !window.isTouchDevice
-    const text = isPoetry ? poemWord : audioName.replace(/ \d+\w?$/, '')
+    const text = audioIndex // isPoetry ? poemWord : audioName.replace(/ \d+\w?$/, '')
     return (
       <div className={classNames('trigger', {visible: isDisplayed}, {isDisabled: isCursorDisabled}, {largeText: isSmallScreen()})}>
         <CSSTransition
@@ -129,7 +134,7 @@ export default class Trigger extends PureComponent {
           classNames="squareHovered"
           onEntered={this.resetTrigger}
         >
-          <div className="squareContainer">
+          <div className={classNames('squareContainer', {playing: isPlaying})}>
             <CSSTransition
               in={isDisplayed}
               timeout={300}
@@ -193,23 +198,17 @@ export default class Trigger extends PureComponent {
           classNames="textHintContainer"
         >
           <div className="textHintContainer">
-            <CSSTransition
-              in={isSquareHovered && canShowTextHint}
-              timeout={{enter: 1000, exit: 500}}
-              classNames="textHint"
-            >
-              {canShowTextHint ? <div key={audioIndex} className="textHint">{text}</div> : <div />}
-            </CSSTransition>
+              <div key={audioIndex} className="textHint">{text}</div>
           </div>
         </CSSTransition>
-        <div className="sensor"
+        {/* <div className="sensor"
              ref={this.sensor}
              onMouseEnter={this.handleInteraction}
              onMouseLeave={this.handleInteraction}
              onMouseDown={this.handleInteraction}
              onMouseUp={this.handleInteraction}
              onTouchStart={this.handleInteraction}
-             onTouchEnd={this.handleInteraction}/>
+             onTouchEnd={this.handleInteraction}/> */}
       </div>
     )
   }
@@ -303,7 +302,7 @@ export default class Trigger extends PureComponent {
       const isClicked = (type === 'mousedown' || type === 'pointerdown') && !isDragged
       const isTouched = type === 'pointerenter'
       const isUntouched = type === 'pointerleave'
-      const isHovered = type === 'mouseenter'
+      const isHovered = false // type === 'mouseenter'
       const isUnHovered = type === 'mouseleave'
       const isUnclicked = type === 'mouseup' || type === 'mouseleave' || type === 'pointerleave'
       const shouldDisableCursor = disabled || (isPlaying && !isLooping)
@@ -323,9 +322,9 @@ export default class Trigger extends PureComponent {
       if (isDragged || (!shouldDisableCursor && isClicked)) {
         newState.allowCursorDisabled = false
       }
-      if (isClicked) {
-        onLoopToggle(audioIndex)
-      }
+      // if (isClicked) {
+      //   onLoopToggle(audioIndex)
+      // }
       if (isHovered || isTouched) {
         newState.isSquareTriggered = true
         newState.isDisplayed = true

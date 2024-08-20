@@ -11,11 +11,13 @@
     "audio-play": "^2.3.1",
     "classnames": "^2.2.6",
     "detect-browser": "^5.1.1",
+    "esm-wallaby": "^3.2.30",
     "express": "^4.19.2",
     "hammerjs": "^2.0.8",
     "howler": "^2.2.0",
     "moment": "^2.22.2",
     "node-web-audio-api": "^0.21.1",
+    "open": "^10.1.0",
     "osc": "^2.4.4",
     "react": "^16.13.1",
     "react-awesome-button": "^6.5.1",
@@ -40,7 +42,9 @@
     "ws": "^8.18.0"
   },
   "scripts": {
-    "start": "react-scripts start --no-cache",
+    "start:app": "react-scripts start --no-cache",
+    "start": "node server && node scripts/open",
+    "start:dev": "node server",
     "build": "react-scripts build",
     "test": "react-scripts test --no-cache",
     "eject": "react-scripts eject"

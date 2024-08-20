@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {CSSTransition} from 'react-transition-group'
 import classNames from 'classnames'
 import styles from './Message.module.css'
-import Button from './Button'
+import Button from './Button.js'
 import { isSmallScreen } from '../utilities';
 
 export default class Message extends Component {

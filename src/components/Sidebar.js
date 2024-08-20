@@ -7,8 +7,8 @@ import ChevronRight from '@material-ui/icons/ChevronRight'
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import './Sidebar.css'
-import Button from './Button';
-import ToolTip, {hideTooltip} from './ToolTip';
+import Button from './Button.js';
+import ToolTip, {hideTooltip} from './ToolTip.js';
 
 class SideBar extends Component {
   constructor(props) {
@@ -45,7 +45,7 @@ class SideBar extends Component {
     const poetryTooltip = hasPoetry ? poetryAvailableTooltip : 'Sorry, no Word Art for this piece'
     return (
       <Fragment>
-        <div className="rightTab" onClick={() => {
+        {/* <div className="rightTab" onClick={() => {
           toggleSidebar()
         }}>
           <div className="ranges">
@@ -62,9 +62,9 @@ class SideBar extends Component {
           <div className="sidebarChevron">
             <div className="close">{isOpen ? <ChevronLeft/> : <ChevronRight/>}</div>
           </div>
-        </div>
+        </div> */}
         <div className="sidebar">
-          <div className="titleBox">
+          {/* <div className="titleBox">
             <h1 className="box heading">{`${compositionTitles.length} Impromptus`}</h1>
             <div className="box">
               <div className="byline">
@@ -75,7 +75,7 @@ class SideBar extends Component {
               </div>
             </div>
           </div>
-          <div className="box heading">Select an Impromptu</div>
+          <div className="box heading">Select an Impromptu</div> */}
           <button className="up arrow box" onClick={this.selectNextOrPrevious.bind(null, 'previous')}>
             <KeyboardArrowUp /></button>
           <div className="menuWrapper">
@@ -96,11 +96,11 @@ class SideBar extends Component {
           <button className="down arrow box" onClick={this.selectNextOrPrevious.bind(null, 'next')}>
             <KeyboardArrowDown />
           </button>
-          <div className="box controls">
+          {/* <div className="box controls">
             <div className="instructions">Click and hold square to start/stop looping</div>
             <div className="selectOptions">
               <div className="selectOption">
-                {/* div is workaround for Safari to size checkbox correctly */}
+                 div is workaround for Safari to size checkbox correctly
                 <div>
                   <input
                     id="smartLooping"
@@ -119,8 +119,8 @@ class SideBar extends Component {
               >Stop All Looping
               </Button>
             </div>
-          </div>
-          <div className="box controls">
+          </div> */}
+          {/* <div className="box controls">
             <div className="selectOptions">
               <div className="selectOption">
                 <div>
@@ -158,11 +158,11 @@ class SideBar extends Component {
               >{messageOpen ? 'Hide' : 'View'} Help
               </Button>
             </div>
-          </div>
-        </div>
-        <ToolTip id="smartLoopingTip"/>
+          </div>*/}
+        </div> 
+        {/* <ToolTip id="smartLoopingTip"/>
         <ToolTip id="magicTip" disable={window.isTouchDevice}/>
-        <ToolTip id="poetryTip"/>
+        <ToolTip id="poetryTip"/> */}
       </Fragment>
     )
   }

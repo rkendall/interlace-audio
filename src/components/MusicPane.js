@@ -4,7 +4,7 @@ import ReactLoading from 'react-loading'
 import debounce from 'lodash/debounce'
 import memoize from 'lodash/memoize'
 import './MusicPane.css'
-import Trigger from './Trigger'
+import Trigger from './Trigger.js'
 import poetry from '../poetry'
 import {shuffleArray} from '../utilities'
 
@@ -43,8 +43,11 @@ class MusicPane extends Component {
     this.relatedItems = new Map()
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidMount() {
     this.initAudioContext()
+  }
+
+  componentDidUpdate(prevProps) {
     const {squareCount, currentCompositionName, stopLooping} = this.props
     const {initialized} = this.state
     if (!initialized || currentCompositionName !== prevProps.currentCompositionName) {
@@ -66,7 +69,7 @@ class MusicPane extends Component {
 
   render() {
     const {loading, allowDisabled, fadeAllSquares, isPoetry, initialized} = this.state
-    const {squareCount, showAllSquares, vanishSquares, onPlayStarted, showPoetry} = this.props
+    const {squareCount, showAllSquares, vanishSquares, onPlayStarted, showPoetry, activeIndex, setActiveIndex} = this.props
     return !loading && this.composition.length && squareCount ?
       (<Fragment>
           <div className="paneWrapper" onMouseOver={this.handleInactivity} onTouchStart={onPlayStarted}>
@@ -78,6 +81,8 @@ class MusicPane extends Component {
                 const {audioName, group, audioIndex} = audioItem
                 const key = `${audioName}-${audioIndex}`
                 const triggerProps = {
+                  activeIndex,
+                  setActiveIndex,
                   onTrigger: this.onTrigger,
                   onLoopToggle: this.onLoopToggle,
                   onUnclick: this.onUnclick,
@@ -168,13 +173,14 @@ class MusicPane extends Component {
   }
 
   suppressContextMenu = event => {
-    if (process.env.NODE_ENV === 'production') {
-      event.preventDefault()
-    }
+    // if (process.env.NODE_ENV === 'production') {
+    //   event.preventDefault()
+    // }
   }
 
   // Necessary for mobile
   initAudioContext = () => {
+    Howler.autoSuspend = false
     if (Howler.ctx && Howler.ctx.state === 'suspended') {
       Howler.ctx.resume()
     }
