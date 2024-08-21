@@ -34,8 +34,8 @@ If you want to start the server without launching the browser, run
 The app listens for OSC messages with an address that begins with `/lx/modulation/Angles/`. It then parses the last character of the address to determine which hyperboloid has sent the message. The last character should be a digit with a value of 1, 2, or 3. The app assigns the low notes to Hyperboloid 1, the mid-range notes to Hyperboloid 2, and the high notes to Hyperboloid 3. The value of the OSC messages should be a number from 0 to 1. The app converts these values to numbers with the following ranges:
 
 Hyperboloid 1: 0 - 49\
-Hyperboloid 3: 50 - 99\
-Hyperboloid 3 100 - 149
+Hyperboloid 2: 50 - 99\
+Hyperboloid 3: 100 - 149
 
 Each number from 0 to 149 corresponds to a different audio clip, so each OSC message will trigger one of the audio clips.
 
