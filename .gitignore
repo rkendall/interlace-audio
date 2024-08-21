@@ -2,7 +2,6 @@
 
 # dependencies
 node_modules
-node_modulesx
 /.pnp
 .pnp.js
 
@@ -13,7 +12,6 @@ node_modulesx
 /build
 
 # misc
-/public/audio
 .DS_Store
 .env.local
 .env.development.local
@@ -24,6 +22,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-.idea
+.history
 /old
 /notes
