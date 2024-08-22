@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Sidebar from 'react-sidebar'
 import moment from 'moment'
-import osc from 'osc/dist/osc-browser'
+// import osc from 'osc/dist/osc-browser'
 import TinyGesture from 'tinygesture'
 import ReactResizeDetector from 'react-resize-detector'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
@@ -152,29 +152,29 @@ class App extends Component {
       height: null,
       showPoetry: false,
       allowMenuChange: true,
-      activeIndex: null,
+      // activeIndex: null,
     }
     this.toggleTimer = null
 
   }
 
   componentDidMount() {
-    var oscPort = new osc.WebSocketPort({
-      url: 'ws://localhost:3000', // URL to your Web Socket server.
-      metadata: true
-    });
-    oscPort.open();
-    oscPort.on('message', (oscMsg) => {
-      const {address, args} = oscMsg
-      if (address.startsWith('/lx/modulation/Angles/')) {
-        console.log('oscMsg!', oscMsg);
-        const rawValue = args?.[0]?.value
-        const value = Math.round(rawValue * 50)
-        const hyperboloidInd = Number(address.slice(-1))
-        const adjustedValue = this.getAdjustedValue({value, hyperboloidInd})
-        this.setActiveIndex(adjustedValue)
-      }
-    });
+    // var oscPort = new osc.WebSocketPort({
+    //   url: 'ws://localhost:3000', // URL to your Web Socket server.
+    //   metadata: true
+    // });
+    // oscPort.open();
+    // oscPort.on('message', (oscMsg) => {
+    //   const {address, args} = oscMsg
+    //   if (address.startsWith('/lx/modulation/Angles/')) {
+    //     console.log('oscMsg!', oscMsg);
+    //     const rawValue = args?.[0]?.value
+    //     const value = Math.round(rawValue * 50)
+    //     const hyperboloidInd = Number(address.slice(-1))
+    //     const adjustedValue = this.getAdjustedValue({value, hyperboloidInd})
+    //     this.setActiveIndex(adjustedValue)
+    //   }
+    // });
     setInterval(() => {
       if (!this.selectCompositionByHash()) {
         const newCompositionName = this.selectCompositionByTimeOfDay()
@@ -222,7 +222,6 @@ class App extends Component {
     if (!isSmallScreen()) {
       mainProps.onClick = this.onInteraction
     }
-    console.log('currentCompositionName', currentCompositionName)
 
     return (
       <div className="main" {...mainProps}>
@@ -271,8 +270,8 @@ class App extends Component {
                     onPlayStarted={this.onPlayStarted}
                     showPoetry={showPoetry}
                     onPoemInitialized={this.onPoemInitialized}
-                    activeIndex={this.state.activeIndex}
-                    setActiveIndex={this.setActiveIndex}
+                    // activeIndex={this.state.activeIndex}
+                    // setActiveIndex={this.setActiveIndex}
                   />
                 </ErrorBoundary>
               </ReactResizeDetector>
@@ -291,15 +290,15 @@ class App extends Component {
     )
   }
 
-  getAdjustedValue = ({value, hyperboloidInd}) => {
-    if (hyperboloidInd === 3) {
-      return value
-    }
-    if (hyperboloidInd === 2) {
-      return value + 50
-    }
-    return value + 100
-  }
+  // getAdjustedValue = ({value, hyperboloidInd}) => {
+  //   if (hyperboloidInd === 3) {
+  //     return value
+  //   }
+  //   if (hyperboloidInd === 2) {
+  //     return value + 50
+  //   }
+  //   return value + 100
+  // }
 
   onResize = (width, height) => {
     const root = document.documentElement
@@ -426,11 +425,11 @@ class App extends Component {
     })
   }
 
-  setActiveIndex = newIndex => {
-    this.setState(({activeIndex}) => 
-      activeIndex !== newIndex ? {activeIndex: newIndex} : null
-    )
-  }
+  // setActiveIndex = newIndex => {
+  //   this.setState(({activeIndex}) => 
+  //     activeIndex !== newIndex ? {activeIndex: newIndex} : null
+  //   )
+  // }
 
   resetStopLooping = () => {
     this.setState({

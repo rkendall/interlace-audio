@@ -3,6 +3,7 @@ import {Howl, Howler} from 'howler'
 import ReactLoading from 'react-loading'
 import debounce from 'lodash/debounce'
 import memoize from 'lodash/memoize'
+import osc from 'osc/dist/osc-browser'
 import './MusicPane.css'
 import Trigger from './Trigger.js'
 import poetry from '../poetry'
@@ -22,6 +23,7 @@ class MusicPane extends Component {
       // forces rerender when items are started or stopped
       itemsPlayingCount: 0,
       isPoetry: false,
+      activeIndex: null,
     }
     this.composition = []
     this.playTimer = null
@@ -45,6 +47,23 @@ class MusicPane extends Component {
 
   componentDidMount() {
     this.initAudioContext()
+    var oscPort = new osc.WebSocketPort({
+      url: 'ws://localhost:3000', // URL to your Web Socket server.
+      metadata: true
+    });
+    oscPort.open();
+    oscPort.on('message', (oscMsg) => {
+      const {address, args} = oscMsg
+      if (address.startsWith('/lx/modulation/Angles/')) {
+        this.handleInactivity()
+        console.log('oscMsg!', oscMsg);
+        const rawValue = args?.[0]?.value
+        const value = Math.round(rawValue * 50)
+        const hyperboloidInd = Number(address.slice(-1))
+        const adjustedValue = this.getAdjustedValue({value, hyperboloidInd})
+        this.setActiveIndex(adjustedValue)
+      }
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -68,8 +87,8 @@ class MusicPane extends Component {
   }
 
   render() {
-    const {loading, allowDisabled, fadeAllSquares, isPoetry, initialized} = this.state
-    const {squareCount, showAllSquares, vanishSquares, onPlayStarted, showPoetry, activeIndex, setActiveIndex} = this.props
+    const {loading, allowDisabled, fadeAllSquares, isPoetry, initialized, activeIndex} = this.state
+    const {squareCount, showAllSquares, vanishSquares, onPlayStarted, showPoetry} = this.props
     return !loading && this.composition.length && squareCount ?
       (<Fragment>
           <div className="paneWrapper" onMouseOver={this.handleInactivity} onTouchStart={onPlayStarted}>
@@ -82,7 +101,7 @@ class MusicPane extends Component {
                 const key = `${audioName}-${audioIndex}`
                 const triggerProps = {
                   activeIndex,
-                  setActiveIndex,
+                  setActiveIndex: this.setActiveIndex,
                   onTrigger: this.onTrigger,
                   onLoopToggle: this.onLoopToggle,
                   onUnclick: this.onUnclick,
@@ -107,8 +126,23 @@ class MusicPane extends Component {
           </div>
         </Fragment>
       ) : initialized &&
-    <div className="loading" onTouchStart={onPlayStarted}><ReactLoading type="spinningBubbles" color="blue"
-                                                                        delay={300}/></div>
+    <div className="loading" onTouchStart={onPlayStarted}><ReactLoading type="spinningBubbles" color="blue" delay={300}/></div>
+  }
+
+  getAdjustedValue = ({value, hyperboloidInd}) => {
+    if (hyperboloidInd === 3) {
+      return value
+    }
+    if (hyperboloidInd === 2) {
+      return value + 50
+    }
+    return value + 100
+  }
+
+  setActiveIndex = newIndex => {
+    this.setState(({activeIndex}) => 
+      activeIndex !== newIndex ? {activeIndex: newIndex} : null
+    )
   }
 
   stopLastLoopingItemIfNecessary = audioIndex => {
@@ -184,6 +218,23 @@ class MusicPane extends Component {
     if (Howler.ctx && Howler.ctx.state === 'suspended') {
       Howler.ctx.resume()
     }
+    // setInterval(() => {
+    //       // const audioName = this.composition[0].audioName
+    //   // const src = `audio/${currentCompositionName}/${audioName}.mp3`
+
+    //   const src = 'audio/afterCoffee/Basses 1.mp3'
+    //   const silentAudio = new Howl({
+    //     src,
+    //     volume: 0.5,
+    //     onloaderror: (id, error) => {
+    //       console.error(`Error loading ${src} -- ${error}`)
+    //     },
+    //     onplayerror: (id, error) => {
+    //       console.error(`Error playing ${src} -- ${error}`)
+    //     },
+    //   })
+    //   silentAudio.play()   
+    // }, 10000)
   }
 
   formatAudioItems = ({group, audioNames}) => audioNames.map(audioName => ({
@@ -706,7 +757,7 @@ class MusicPane extends Component {
   }
 
   onTrigger = ({audioIndex, isMouseDragged, pointerId}) => {
-    const isDragged = pointerId ? pointerId === this.lastPointerId : isMouseDragged
+    const isDragged = true // pointerId ? pointerId === this.lastPointerId : isMouseDragged
     if (this.isAudioPlayable(audioIndex) && !(isDragged && this.isQueueLockedForDragging)
     ) {
       this.setItemAsStarted(audioIndex)
