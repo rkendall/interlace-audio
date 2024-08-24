@@ -69,6 +69,7 @@ class MusicPane extends Component {
   componentDidUpdate(prevProps) {
     const {squareCount, currentCompositionName, stopLooping} = this.props
     const {initialized} = this.state
+    console.debug('currentCompositionName', currentCompositionName)
     if (!initialized || currentCompositionName !== prevProps.currentCompositionName) {
       if (!initialized) {
         this.setState({initialized: true})

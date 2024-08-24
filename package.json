@@ -6,9 +6,6 @@
   "dependencies": {
     "@material-ui/core": "^3.5.1",
     "@material-ui/icons": "^3.0.1",
-    "@mohayonao/web-audio-api-shim": "^0.3.0",
-    "audio-loader": "^1.0.3",
-    "audio-play": "^2.3.1",
     "classnames": "^2.2.6",
     "detect-browser": "^5.1.1",
     "esm-wallaby": "^3.2.30",
@@ -34,11 +31,9 @@
     "react-tooltip": "^4.2.7",
     "react-transition-group": "^4.4.1",
     "shallowequal": "^1.1.0",
-    "sound-play": "^1.1.0",
     "speaker": "^0.5.5",
     "styled-components": "^5.1.1",
     "tinygesture": "^1.1.4",
-    "web-audio-api": "^0.2.2",
     "ws": "^8.18.0"
   },
   "scripts": {
