@@ -1,9 +1,9 @@
-import React, {PureComponent, createRef} from 'react'
-import {Transition, CSSTransition} from 'react-transition-group'
+import React, { PureComponent, createRef } from 'react'
+import { Transition, CSSTransition } from 'react-transition-group'
 import classNames from 'classnames'
 import './Trigger.css'
 import poetry from '../poetry'
-import {isSmallScreen} from '../utilities';
+import { isSmallScreen } from '../utilities';
 
 export default class Trigger extends PureComponent {
   constructor(props) {
@@ -33,39 +33,39 @@ export default class Trigger extends PureComponent {
   componentDidMount() {
     const sensor = this.sensor.current
     if (sensor && sensor.getBoundingClientRect().top === 0) {
-      this.setState({isTopRow: true})
+      this.setState({ isTopRow: true })
     }
     if (!window.isTouchDevice) {
       return
     }
     // Enables dragging with finger
-    sensor.addEventListener("pointerdown", (event)=> {
+    sensor.addEventListener("pointerdown", (event) => {
       this.sensor.current.releasePointerCapture(event.pointerId)
       this.handleInteraction(event)
     })
-    sensor.addEventListener("pointerup", (event)=> {
+    sensor.addEventListener("pointerup", (event) => {
       this.handleInteraction(event)
     })
-    sensor.addEventListener("pointerenter", (event)=> {
+    sensor.addEventListener("pointerenter", (event) => {
       this.handleInteraction(event)
     })
-    sensor.addEventListener("pointerleave", (event)=> {
+    sensor.addEventListener("pointerleave", (event) => {
       this.handleInteraction(event)
     })
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const {fadeSquares, disabled, allowDisabled, isPlaying, fadeAllSquares, showAllSquares, isLooping} = this.props
-    const {isDisplayed} = this.state
+    const { fadeSquares, disabled, allowDisabled, isPlaying, fadeAllSquares, showAllSquares, isLooping } = this.props
+    const { isDisplayed } = this.state
     if (!isDisplayed) {
       if (showAllSquares || isPlaying) {
-        this.setState({isDisplayed: true})
+        this.setState({ isDisplayed: true })
       } else {
         return
       }
     }
     this.setState(state => {
-      const {allowCursorDisabled} = state
+      const { allowCursorDisabled } = state
       const newState = {
         showDisabled: disabled && allowDisabled,
         isCursorDisabled: allowCursorDisabled && (disabled || isPlaying) && !isLooping,
@@ -100,8 +100,8 @@ export default class Trigger extends PureComponent {
   }
 
   render() {
-    const {audioName, audioIndex, group, isLooping, isPlaying, isPoetry} = this.props
-    const {isTopRow, showDisabled, isDisabledAnimating, isSecondaryActive, isSquareHovered, isSquareTriggered, isGlowActive, isTextAnimating, isLoopingAnimationActive, stopLooping, isDisplayed, suppressTextHint, isCursorDisabled, poemWord, poemStyle} = this.state
+    const { audioName, audioIndex, group, isLooping, isPlaying, isPoetry } = this.props
+    const { isTopRow, showDisabled, isDisabledAnimating, isSecondaryActive, isSquareHovered, isSquareTriggered, isGlowActive, isTextAnimating, isLoopingAnimationActive, stopLooping, isDisplayed, suppressTextHint, isCursorDisabled, poemWord, poemStyle } = this.state
     const doLooping = isLooping && !stopLooping
     const active = (isPlaying || isTextAnimating) && !isLoopingAnimationActive
     const activateSecondary = isSecondaryActive && !isLoopingAnimationActive
@@ -110,7 +110,7 @@ export default class Trigger extends PureComponent {
     const canShowTextHint = !suppressTextHint && !isPoetry && !window.isTouchDevice
     const text = isPoetry ? poemWord : audioName.replace(/ \d+\w?$/, '')
     return (
-      <div className={classNames('trigger', {visible: isDisplayed}, {isDisabled: isCursorDisabled}, {largeText: isSmallScreen()})}>
+      <div className={classNames('trigger', { visible: isDisplayed }, { isDisabled: isCursorDisabled }, { largeText: isSmallScreen() })}>
         <CSSTransition
           in={active}
           timeout={isPoetry ? 10000 : 3000}
@@ -138,10 +138,10 @@ export default class Trigger extends PureComponent {
               <CSSTransition
                 in={isGlowActive}
                 classNames="glow"
-                timeout={{enter: 1500, exit: 0}}
+                timeout={{ enter: 1500, exit: 0 }}
                 onEntered={this.stopGlow}
               >
-                <div className={classNames('square', groupClassName) }>
+                <div className={classNames('square', groupClassName)}>
                   <div className="disabledContainer">
                     <Transition
                       in={disabledActive}
@@ -172,7 +172,7 @@ export default class Trigger extends PureComponent {
         </CSSTransition>
         <CSSTransition
           in={activateSecondary}
-          timeout={{enter: 1000, exit: 0}}
+          timeout={{ enter: 1000, exit: 0 }}
           classNames="secondaryWrapper"
           onEntered={this.stopSecondary}
         >
@@ -183,19 +183,19 @@ export default class Trigger extends PureComponent {
             onExited={this.loopingStopped}
           >
             <div className="secondaryWrapper">
-              <div className={classNames('secondary', groupClassName) }/>
+              <div className={classNames('secondary', groupClassName)} />
             </div>
           </CSSTransition>
         </CSSTransition>
         <CSSTransition
           in={canShowTextHint && !isSquareHovered}
-          timeout={{enter: 1000, exit: 500}}
+          timeout={{ enter: 1000, exit: 500 }}
           classNames="textHintContainer"
         >
           <div className="textHintContainer">
             <CSSTransition
               in={isSquareHovered && canShowTextHint}
-              timeout={{enter: 1000, exit: 500}}
+              timeout={{ enter: 1000, exit: 500 }}
               classNames="textHint"
             >
               {canShowTextHint ? <div key={audioIndex} className="textHint">{text}</div> : <div />}
@@ -203,13 +203,13 @@ export default class Trigger extends PureComponent {
           </div>
         </CSSTransition>
         <div className="sensor"
-             ref={this.sensor}
-             onMouseEnter={this.handleInteraction}
-             onMouseLeave={this.handleInteraction}
-             onMouseDown={this.handleInteraction}
-             onMouseUp={this.handleInteraction}
-             onTouchStart={this.handleInteraction}
-             onTouchEnd={this.handleInteraction}/>
+          ref={this.sensor}
+          onMouseEnter={this.handleInteraction}
+          onMouseLeave={this.handleInteraction}
+          onMouseDown={this.handleInteraction}
+          onMouseUp={this.handleInteraction}
+          onTouchStart={this.handleInteraction}
+          onTouchEnd={this.handleInteraction} />
       </div>
     )
   }
@@ -221,14 +221,14 @@ export default class Trigger extends PureComponent {
   gesture = null
 
   onTextAnimationStarted = () => {
-    const {group, isPoetry, allowDisabled} = this.props
+    const { group, isPoetry, allowDisabled } = this.props
     this.setState(() => {
       const newState = {
         isTextAnimating: true,
         showTextHint: false,
       }
       if (isPoetry) {
-        const { phrase, style } = poetry.get({group, fast: !allowDisabled})
+        const { phrase, style } = poetry.get({ group, fast: !allowDisabled })
         newState.poemWord = phrase
         newState.poemStyle = style
       }
@@ -243,14 +243,14 @@ export default class Trigger extends PureComponent {
   }
 
   resetTrigger = () => {
-    this.setState({isSquareTriggered: false})
+    this.setState({ isSquareTriggered: false })
   }
 
   stopGlow = () => {
-    this.setState({isGlowActive: false})
+    this.setState({ isGlowActive: false })
   }
 
-  stopSecondary = ({animationName}) => {
+  stopSecondary = ({ animationName }) => {
     this.setState({
       isSecondaryActive: false,
     })
@@ -263,7 +263,7 @@ export default class Trigger extends PureComponent {
   }
 
   disabledAnimationStarted = () => {
-    const {isDisabledAnimating} = this.state
+    const { isDisabledAnimating } = this.state
     if (!isDisabledAnimating) {
       this.setState({
         isDisabledAnimating: true,
@@ -272,7 +272,7 @@ export default class Trigger extends PureComponent {
   }
 
   disabledAnimationDone = () => {
-    this.setState(({showDisabled, isDisabledAnimating}) => {
+    this.setState(({ showDisabled, isDisabledAnimating }) => {
       if (!showDisabled && isDisabledAnimating) {
         return {
           isDisabledAnimating: false,
@@ -282,21 +282,21 @@ export default class Trigger extends PureComponent {
   }
 
   handleInteraction = event => {
-    const {onTrigger, audioIndex, fadeAllSquares, isPlaying, disabled, isLooping, onUnclick, onLoopToggle} = this.props
+    const { onTrigger, audioIndex, fadeAllSquares, isPlaying, disabled, isLooping, onUnclick, onLoopToggle } = this.props
     if (fadeAllSquares) {
       return
     }
-    const {type, buttons, pointerId} = event
+    const { type, buttons, pointerId } = event
     // If on a touch device, filter out mouse events
     // const type = window.isTouchDevice && /mouse/.test(receivedType) ? null : receivedType
 
-    this.setState(({showDisabled}) => {
+    this.setState(({ showDisabled }) => {
       const newState = {}
       const isMouseDragged = !window.isTouchDevice ? type === 'mouseenter' && buttons !== 0 : false
       const isTriggered = isMouseDragged || type === 'mousedown' || type === 'pointerenter'
       let isDragged
       if (isTriggered) {
-        isDragged = onTrigger({audioIndex, isMouseDragged, pointerId}).isDragged
+        isDragged = onTrigger({ audioIndex, isMouseDragged, pointerId }).isDragged
       } else {
         isDragged = isMouseDragged
       }
@@ -337,7 +337,7 @@ export default class Trigger extends PureComponent {
       }
       if (isUnclicked) {
         this.disableCursorTimer = setTimeout(() => {
-          this.setState({allowCursorDisabled: true})
+          this.setState({ allowCursorDisabled: true })
         }, 200)
         onUnclick()
       }

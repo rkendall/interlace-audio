@@ -11,6 +11,9 @@
 # production
 /build
 
+# VSCode
+.history
+
 # misc
 /public/audio
 .DS_Store
