@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
-import {Provider as AlertProvider} from 'react-alert'
+import React, { Component } from 'react'
+import { Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
-import App from './App.js'
+import App from './App'
 
 const options = {
   position: 'bottom center',

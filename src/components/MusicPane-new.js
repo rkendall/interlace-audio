@@ -51,7 +51,6 @@ class MusicPane extends Component {
 
   componentDidMount() {
     this.manager.mounted = true
-    this.manager.updateProps(this.props)
     this.manager.parentSetState = this.setState.bind(this)
     if (mode === 'application') {
       return

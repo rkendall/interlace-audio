@@ -8,7 +8,10 @@ import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import './Sidebar.css'
 import Button from './Button.js';
-import ToolTip, {hideTooltip} from './ToolTip.js';
+import ToolTip, {hideTooltip} from './ToolTip.js'
+import mode from '../mode.js'
+
+const isInstallation = mode === 'installation'
 
 class SideBar extends Component {
   constructor(props) {
@@ -45,9 +48,9 @@ class SideBar extends Component {
     const poetryTooltip = hasPoetry ? poetryAvailableTooltip : 'Sorry, no Word Art for this piece'
     return (
       <Fragment>
-        {/* <div className="rightTab" onClick={() => {
-          toggleSidebar()
-        }}>
+        {isInstallation && <div className="rightTab" onClick={() => {
+            toggleSidebar()
+          }}>
           <div className="ranges">
             <div className="rangeItem">
               <div className="rangeLabel">High</div>
@@ -62,20 +65,22 @@ class SideBar extends Component {
           <div className="sidebarChevron">
             <div className="close">{isOpen ? <ChevronLeft/> : <ChevronRight/>}</div>
           </div>
-        </div> */}
+        </div>}
         <div className="sidebar">
-          {/* <div className="titleBox">
-            <h1 className="box heading">{`${compositionTitles.length} Impromptus`}</h1>
-            <div className="box">
-              <div className="byline">
-                <div>By <Button type="link" className="button" href="http://robertkendall.com" target="_blank"
-                                rel="noopener noreferrer" stopPropagation>Robert
-                  Kendall</Button>
+          {isInstallation && <>
+            <div className="titleBox">
+              <h1 className="box heading">{`${compositionTitles.length} Impromptus`}</h1>
+              <div className="box">
+                <div className="byline">
+                  <div>By <Button type="link" className="button" href="http://robertkendall.com" target="_blank"
+                                  rel="noopener noreferrer" stopPropagation>Robert
+                    Kendall</Button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="box heading">Select an Impromptu</div> */}
+            <div className="box heading">Select an Impromptu</div>
+          </>}
           <button className="up arrow box" onClick={this.selectNextOrPrevious.bind(null, 'previous')}>
             <KeyboardArrowUp /></button>
           <div className="menuWrapper">
@@ -96,73 +101,77 @@ class SideBar extends Component {
           <button className="down arrow box" onClick={this.selectNextOrPrevious.bind(null, 'next')}>
             <KeyboardArrowDown />
           </button>
-          {/* <div className="box controls">
-            <div className="instructions">Click and hold square to start/stop looping</div>
-            <div className="selectOptions">
-              <div className="selectOption">
-                 div is workaround for Safari to size checkbox correctly
-                <div>
-                  <input
-                    id="smartLooping"
-                    type="checkbox"
-                    onChange={this.smartLoopingHandler}
-                  />
+          {isInstallation && <>
+            <div className="box controls">
+              <div className="instructions">Click and hold square to start/stop looping</div>
+              <div className="selectOptions">
+                <div className="selectOption">
+                  div is workaround for Safari to size checkbox correctly
+                  <div>
+                    <input
+                      id="smartLooping"
+                      type="checkbox"
+                      onChange={this.smartLoopingHandler}
+                    />
+                  </div>
+                  <label htmlFor="smartLooping" data-tip="Vary the music on each loop" data-for='smartLoopingTip'>Smart
+                    Looping
+                  </label>
                 </div>
-                <label htmlFor="smartLooping" data-tip="Vary the music on each loop" data-for='smartLoopingTip'>Smart
-                  Looping
-                </label>
+              </div>
+              <div className="buttonBar">
+                <Button
+                  onClick={onStopLooping}
+                >Stop All Looping
+                </Button>
+              </div>
+            </div>}
+            <div className="box controls">
+              <div className="selectOptions">
+                <div className="selectOption">
+                  <div>
+                    <input
+                      id="fade"
+                      type="checkbox"
+                      onChange={this.fadeHandler}
+                    />
+                  </div>
+                  <label htmlFor="fade" data-tip="Try it and see" data-for='magicTip'>Magic Vanishing Act
+                  </label>
+                </div>
+                <div className="selectOption">
+                  <div>
+                    <input
+                      id="poetry"
+                      type="checkbox"
+                      onChange={this.poetrySelectionHandler}
+                      disabled={!hasPoetry}
+                    />
+                  </div>
+                  <label htmlFor="poetry" className={hasPoetry ? '' : 'selectionDisabled'} data-tip={poetryTooltip}
+                        data-for='poetryTip'>
+                    {hasPoetry ? 'Word Art' : '(No Word Art for This Piece)'}
+                  </label>
+                </div>
+              </div>
+              <div className="buttonBar">
+                <Button
+                  onClick={onShowAllSquares}
+                >Show All Instruments
+                </Button>
+                <Button
+                  onClick={this.onToggleMessage}
+                >{messageOpen ? 'Hide' : 'View'} Help
+                </Button>
               </div>
             </div>
-            <div className="buttonBar">
-              <Button
-                onClick={onStopLooping}
-              >Stop All Looping
-              </Button>
-            </div>
-          </div> */}
-          {/* <div className="box controls">
-            <div className="selectOptions">
-              <div className="selectOption">
-                <div>
-                  <input
-                    id="fade"
-                    type="checkbox"
-                    onChange={this.fadeHandler}
-                  />
-                </div>
-                <label htmlFor="fade" data-tip="Try it and see" data-for='magicTip'>Magic Vanishing Act
-                </label>
-              </div>
-              <div className="selectOption">
-                <div>
-                  <input
-                    id="poetry"
-                    type="checkbox"
-                    onChange={this.poetrySelectionHandler}
-                    disabled={!hasPoetry}
-                  />
-                </div>
-                <label htmlFor="poetry" className={hasPoetry ? '' : 'selectionDisabled'} data-tip={poetryTooltip}
-                       data-for='poetryTip'>
-                  {hasPoetry ? 'Word Art' : '(No Word Art for This Piece)'}
-                </label>
-              </div>
-            </div>
-            <div className="buttonBar">
-              <Button
-                onClick={onShowAllSquares}
-              >Show All Instruments
-              </Button>
-              <Button
-                onClick={this.onToggleMessage}
-              >{messageOpen ? 'Hide' : 'View'} Help
-              </Button>
-            </div>
-          </div>*/}
+          </>}
         </div> 
-        {/* <ToolTip id="smartLoopingTip"/>
-        <ToolTip id="magicTip" disable={window.isTouchDevice}/>
-        <ToolTip id="poetryTip"/> */}
+        {isInstallation && <>
+          <ToolTip id="smartLoopingTip"/>
+          <ToolTip id="magicTip" disable={window.isTouchDevice}/>
+          <ToolTip id="poetryTip"/>
+        </>}
       </Fragment>
     )
   }

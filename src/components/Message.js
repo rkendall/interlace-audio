@@ -1,41 +1,41 @@
-import React, {Component} from 'react'
-import {CSSTransition} from 'react-transition-group'
+import React, { Component } from 'react'
+import { CSSTransition } from 'react-transition-group'
 import classNames from 'classnames'
 import styles from './Message.module.css'
-import Button from './Button.js'
+import Button from './Button'
 import { isSmallScreen } from '../utilities';
 
 export default class Message extends Component {
   constructor() {
-      super()
-      this.state = ({
-          animateEntry: !isSmallScreen(),
-      })
+    super()
+    this.state = ({
+      animateEntry: !isSmallScreen(),
+    })
   }
 
   componentDidUpdate() {
-    this.setState(({animateEntry}) => animateEntry === false ? {animateEntry: true} : null)
+    this.setState(({ animateEntry }) => animateEntry === false ? { animateEntry: true } : null)
   }
 
   render() {
-    const {onClick, open, titleCount} = this.props
-    const {animateEntry} = this.state
+    const { onClick, open, titleCount } = this.props
+    const { animateEntry } = this.state
     const musicalNotes = String.fromCharCode(55356, 57270)
     return (
-      <div className={classNames(styles.messageWrapper, {[styles.animateEntry]: animateEntry})}>
+      <div className={classNames(styles.messageWrapper, { [styles.animateEntry]: animateEntry })}>
         <CSSTransition
-        in={open}
-        appear
-        timeout={{enter: animateEntry ? 500 : 0, exit: 500}}
-        classNames={{
-          enter: styles['messageContainer-enter'],
-          enterActive: styles['messageContainer-enter-active'],
-          enterDone: styles['messageContainer-enter-done'],
-          exit: styles['messageContainer-exit'],
-          exitActive: styles['messageContainer-exit-active'],
-          exitDone: styles['messageContainer-exit-done'],
-        }}
-      >
+          in={open}
+          appear
+          timeout={{ enter: animateEntry ? 500 : 0, exit: 500 }}
+          classNames={{
+            enter: styles['messageContainer-enter'],
+            enterActive: styles['messageContainer-enter-active'],
+            enterDone: styles['messageContainer-enter-done'],
+            exit: styles['messageContainer-exit'],
+            exitActive: styles['messageContainer-exit-active'],
+            exitDone: styles['messageContainer-exit-done'],
+          }}
+        >
           <div className={styles.messageContainer}>
             <div className={styles.message}>
               <div className={styles.intro}>
@@ -47,7 +47,7 @@ export default class Message extends Component {
                 <div className={classNames(styles.details, styles.subheading)}>
                   <div>Interactive Music</div>
                   <div>By <Button type="link" href="http://robertkendall.com" target="_blank"
-                             rel="noopener noreferrer" stopPropagation>Robert
+                    rel="noopener noreferrer" stopPropagation>Robert
                     Kendall</Button>
                   </div>
                 </div>
@@ -89,8 +89,8 @@ export default class Message extends Component {
               </div>
             </div>
           </div>
-      </CSSTransition>
+        </CSSTransition>
       </div>
-  )
+    )
   }
 }
