@@ -13,12 +13,34 @@
 	position: relative;
 	width: 80px;
 	height: 80px;
-	/* cursor: url(../images/notes.cur), pointer; */
 }
 
-/* .isDisabled {
-	cursor: url(../images/not-allowed.cur), not-allowed;
-} */
+.application {
+	&.trigger {
+		cursor: url(../images/notes.cur), pointer;
+	}
+
+	&.isDisabled {
+		cursor: url(../images/not-allowed.cur), not-allowed;
+	}
+}
+
+.installation {
+	.square {
+		opacity: 0.5;
+	}
+
+	.text {
+		flex-direction: column;
+		opacity: 1;
+	}
+
+	.playing .square {
+		box-shadow: inset 0 0 5px 5px gold, 0 0 15px 5px gold
+	}
+
+}
+
 
 .sensor {
 	width: 80px;
@@ -47,52 +69,51 @@
 	z-index: 5;
 }
 
-.playing .square {
-    box-shadow: inset 0 0 5px 5px gold, 0 0 15px 5px gold }
-
 .squareDisplay-enter {
 	opacity: 0;
-	/* transform: scale(0.25);
-	will-change: opacity, transform; */
+	transform: scale(0.25);
+	will-change: opacity, transform;
 }
 
 .squareDisplay-enter-active {
 	opacity: 0.7;
-	/* transform: scale(1);
-	transition: all 300ms ease-out; */
+	transform: scale(1);
+	transition: all 300ms ease-out;
 }
 
 .squareDisplay-enter-done {
 	opacity: 0.7;
-	/* transform: scale(1); */
+	transform: scale(1);
 }
 
 .squareDisplay-exit {
 	opacity: 0.7;
-	/* transform: scale(1);
-	will-change: opacity, transform; */
+	transform: scale(1);
+	will-change: opacity, transform;
 }
 
 .squareDisplay-exit-active {
 	opacity: 0;
-	/* transform: scale(0.25);
-	transition: all 300ms ease-out; */
+	transform: scale(0.25);
+	transition: all 300ms ease-out;
 }
 
-/* @keyframes glow {
+@keyframes glow {
 	0% {
 		transform: scale(1) rotate(0deg) !important;
 		opacity: 0.7;
 	}
+
 	50% {
 		transform: scale(1.2);
 		opacity: 1;
 	}
+
 	100% {
 		transform: scale(1);
 		opacity: 0.7;
 	}
-} */
+}
 
 .glow-enter-active {
 	animation-name: glow;
@@ -109,80 +130,87 @@
 	height: 100%;
 }
 
-/* @keyframes pulse {
+@keyframes pulse {
 	0% {
 		opacity: 0.4;
 		transform: scale(0.8);
 	}
+
 	5% {
 		opacity: 0.4;
 		transform: scale(0.8);
 	}
+
 	50% {
 		opacity: 0.6;
 		transform: scale(1);
 		animation-timing-function: ease-in-out;
 	}
+
 	95% {
 		opacity: 0.4;
 		transform: scale(0.8);
 		animation-timing-function: ease-in-out;
 	}
+
 	100% {
 		opacity: 0.4;
 		transform: scale(0.8);
 	}
-} */
+}
 
 .disabled {
-	/* width: 50%;
-	height: 50%; */
+	width: 50%;
+	height: 50%;
 	opacity: 0;
 	background: white;
 	box-shadow: 0px 0px 20px 15px white;
 }
 
-/* .disabled.pulse {
+.disabled.pulse {
 	animation-name: pulse;
 	animation-duration: 500ms;
 	animation-iteration-count: infinite;
 	animation-fill-mode: forwards;
-} */
+}
 
-/* @keyframes pulseFade {
+@keyframes pulseFade {
 	0% {
 		opacity: 0.4;
 		transform: scale(0.8);
 	}
+
 	100% {
 		opacity: 0;
 		transform: scale(0.8);
 		animation-timing-function: ease-out;
 	}
-} */
+}
 
-/* .disabled.pulseFade {
+.disabled.pulseFade {
 	animation-name: pulseFade;
 	animation-duration: 500ms;
 	animation-fill-mode: backwards;
-} */
+}
 
-/* @keyframes spinBorder {
+@keyframes spinBorder {
 	0% {
 		transform: scale(1) rotate(0deg);
 		opacity: 0;
 	}
+
 	50% {
 		transform: scale(2) rotate(180deg);
 		opacity: 0.7;
 	}
+
 	100% {
 		transform: scale(4) rotate(360deg);
 		opacity: 0;
 	}
-} */
+}
 
-/* .secondaryWrapper {
+.secondaryWrapper {
 	position: absolute;
 	width: 80px;
 	height: 80px;
@@ -195,12 +223,13 @@
 	animation-duration: 1000ms;
 	animation-timing-function: linear;
 	z-index: 20;
-} */
+}
 
-/* @keyframes loop {
+@keyframes loop {
 	0% {
 		transform: rotate(0deg)
 	}
+
 	100% {
 		transform: rotate(-360deg)
 	}
@@ -210,22 +239,24 @@
 	0% {
 		opacity: 0.7
 	}
+
 	100% {
 		opacity: 0.7;
 		transform: rotate(0deg);
 		animation-timing-function: ease-in
 	}
-} */
+}
 
-/* .looping-enter-active {
+.looping-enter-active {
 	opacity: 0.7;
 	transition: opacity 300ms ease-in;
 	animation: loop 1000ms linear infinite;
-} */
+}
 
 /* Need to specify animation in .looping-exit or transitions are terminated */
 
-/* .looping-enter-done, .looping-exit {
+.looping-enter-done,
+.looping-exit {
 	opacity: 0.7;
 	animation: loop 1000ms linear infinite;
 }
@@ -246,9 +277,10 @@
 	height: 80px;
 	opacity: 1;
 	transform: scale(0.99);
-} */
+}
 
-.str .disabled.pulse, .str2 .disabled.pulse {
+.str .disabled.pulse,
+.str2 .disabled.pulse {
 	animation-delay: 50ms;
 }
 
@@ -264,7 +296,9 @@
 	animation-delay: 200ms;
 }
 
-.pia .disabled.pulse, .vib .disabled.pulse, .tuned .disabled.pulse {
+.pia .disabled.pulse,
+.vib .disabled.pulse,
+.tuned .disabled.pulse {
 	animation-delay: 250ms;
 }
 
@@ -280,7 +314,8 @@
 	background: linear-gradient(120deg, #d68e76 0%, #ae0a87 100%);
 }
 
-.bas, .pizz {
+.bas,
+.pizz {
 	background: linear-gradient(120deg, #cc544e 0%, #910408 100%);
 }
 
@@ -304,11 +339,13 @@
 	background: linear-gradient(120deg, #ffcccc 0%, #603006 100%);
 }
 
-.drums, .effects {
+.drums,
+.effects {
 	background: linear-gradient(120deg, #fff1d9 0%, #d2a094 100%);
 }
 
-.rhythm, .glass {
+.rhythm,
+.glass {
 	background: linear-gradient(120deg, #fff6ce 0%, #d66b42 100%);
 }
 
@@ -316,7 +353,8 @@
 	background: linear-gradient(120deg, #fffff5 0%, #9ac783);
 }
 
-.guitar, .plucked {
+.guitar,
+.plucked {
 	/*background: linear-gradient(120deg, #83ca7e 0%, #008d0c 100%);*/
 	background: linear-gradient(120deg, #a1e1a5 0%, #3d6501 100%);
 }
@@ -334,12 +372,15 @@
 	0% {
 		opacity: 0;
 	}
+
 	100% {
 		opacity: 1;
 	}
 }
 
-.text, .poetry, .textHint {
+.text,
+.poetry,
+.textHint {
 	position: absolute;
 	display: flex;
 	justify-content: center;
@@ -348,7 +389,7 @@
 	padding: 0 5px;
 	box-sizing: border-box;
 	font-size: 12px;
-	opacity: 1;
+	opacity: 0;
 	text-align: center;
 	user-select: none;
 	z-index: 25;
@@ -379,36 +420,39 @@
 
 .text-enter {
 	opacity: 1;
-	/* will-change: transform; */
+	will-change: transform;
 }
 
-/* .text-enter-active {
+.text-enter-active {
 	transform: translateY(-100vh);
 	transition: transform 3s ease-in;
-} */
+}
 
-/* .text-enter-done {
+.text-enter-done {
 	position: absolute;
 	top: -100vh;
-} */
+}
 
 .poetry-enter {
 	animation: fadePoetryIn 300ms ease-in;
 	animation-fill-mode: forwards;
 	will-change: transform;
 }
+
 .poetry-enter-active .lowerRow {
 	animation: fadePoetryIn 300ms ease-in;
 	animation-fill-mode: forwards;
 	transform: translateY(-100vh);
 	transition: transform 10s ease-in;
 }
-.poetry-enter-active .topRow  {
+
+.poetry-enter-active .topRow {
 	animation: fadePoetryIn 300ms ease-in;
 	animation-fill-mode: forwards;
 	transform: translateY(-100vh);
 	transition: transform 18s ease-in;
 }
+
 .poetry-enter-done {
 	animation: fadePoetryIn 300ms ease-in;
 	animation-fill-mode: forwards;
@@ -416,7 +460,8 @@
 	top: -100vh;
 }
 
-.textHintContainer, .textHint {
+.textHintContainer,
+.textHint {
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -427,14 +472,15 @@
 	opacity: 1;
 }
 
-/* .textHintContainer-enter,
+.textHintContainer-enter,
 .textHintContainer-enter-active,
 .textHintContainer-enter-done {
 	animation: fadeTextOut 500ms ease-in;
 	animation-fill-mode: forwards;
-} */
+}
 
-.textHintContainer-exit, .textHintContainer-exit-active {
+.textHintContainer-exit,
+.textHintContainer-exit-active {
 	opacity: 1;
 }
 
@@ -443,16 +489,19 @@
 	animation: none;
 }
 
-/* @keyframes fadeTextIn {
+@keyframes fadeTextIn {
 	0% {
 		opacity: 0;
 	}
+
 	25% {
 		opacity: 0;
 	}
+
 	50% {
 		opacity: 1;
 	}
+
 	100% {
 		opacity: 1;
 	}
@@ -462,10 +511,11 @@
 	0% {
 		opacity: 1;
 	}
+
 	100% {
 		opacity: 0;
 	}
-} */
+}
 
 .textHint-enter {
 	animation: fadeTextIn 1000ms ease-in;
@@ -483,7 +533,8 @@
 	animation-fill-mode: forwards;
 }
 
-.textHint-exit, .textHint-exit-active {
+.textHint-exit,
+.textHint-exit-active {
 	animation: fadeTextIn 1000ms ease-in;
 	animation-fill-mode: forwards;
 	animation-play-state: paused;
@@ -493,4 +544,3 @@
 	animation: none;
 	opacity: 0;
 }
-

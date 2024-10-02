@@ -1,6 +1,6 @@
-import React, {Component, Fragment, createRef} from 'react'
+import React, { Component, Fragment, createRef } from 'react'
 import classNames from 'classnames'
-import {Element, scroller} from 'react-scroll'
+import { Element, scroller } from 'react-scroll'
 import Hammer from 'hammerjs'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import ChevronRight from '@material-ui/icons/ChevronRight'
@@ -8,24 +8,24 @@ import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import './Sidebar.css'
 import Button from './Button.js';
-import ToolTip, {hideTooltip} from './ToolTip.js'
+import ToolTip, { hideTooltip } from './ToolTip.js'
 import mode from '../mode.js'
 
-const isInstallation = mode === 'installation'
+const isApplication = mode === 'application'
 
 class SideBar extends Component {
   constructor(props) {
     super(props)
-    const {compositionTitles, initialSelectedValue} = props
+    const { compositionTitles, initialSelectedValue } = props
     this.menu = createRef()
-    const initialInd = compositionTitles.findIndex(({name}) => name === initialSelectedValue)
-    const {hasPoetry} = compositionTitles[initialInd]
-    this.state = {selectedInd: initialInd, poetrySelected: false, hasPoetry, isOpen: true}
+    const initialInd = compositionTitles.findIndex(({ name }) => name === initialSelectedValue)
+    const { hasPoetry } = compositionTitles[initialInd]
+    this.state = { selectedInd: initialInd, poetrySelected: false, hasPoetry, isOpen: true }
   }
 
   componentDidMount() {
-    const {selectedInd} = this.state
-    this.scrollToSelection({selectedInd})
+    const { selectedInd } = this.state
+    this.scrollToSelection({ selectedInd })
     const options = [...this.menu.current.children]
     options.forEach((child, ind) => {
       this.addTouchListeners(child, ind)
@@ -33,24 +33,24 @@ class SideBar extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {height, sidebarOpen} = this.props
+    const { height, sidebarOpen } = this.props
     if (height !== prevProps.height) {
-      const {selectedInd} = this.state
-      this.scrollToSelection({selectedInd})
+      const { selectedInd } = this.state
+      this.scrollToSelection({ selectedInd })
     }
-    this.setState(({isOpen}) => sidebarOpen !== isOpen ? {isOpen: sidebarOpen} : null)
+    this.setState(({ isOpen }) => sidebarOpen !== isOpen ? { isOpen: sidebarOpen } : null)
   }
 
   render() {
-    const {onShowAllSquares, onStopLooping, toggleSidebar, compositionTitles, messageOpen} = this.props
-    const {selectedInd, poetrySelected, hasPoetry, isOpen} = this.state
+    const { onShowAllSquares, onStopLooping, toggleSidebar, compositionTitles, messageOpen } = this.props
+    const { selectedInd, poetrySelected, hasPoetry, isOpen } = this.state
     const poetryAvailableTooltip = poetrySelected ? 'Turn Word Art off' : 'Add Word Art to the piece'
     const poetryTooltip = hasPoetry ? poetryAvailableTooltip : 'Sorry, no Word Art for this piece'
     return (
       <Fragment>
-        {isInstallation && <div className="rightTab" onClick={() => {
-            toggleSidebar()
-          }}>
+        {isApplication && <div className="rightTab" onClick={() => {
+          toggleSidebar()
+        }}>
           <div className="ranges">
             <div className="rangeItem">
               <div className="rangeLabel">High</div>
@@ -63,17 +63,17 @@ class SideBar extends Component {
             </div>
           </div>
           <div className="sidebarChevron">
-            <div className="close">{isOpen ? <ChevronLeft/> : <ChevronRight/>}</div>
+            <div className="close">{isOpen ? <ChevronLeft /> : <ChevronRight />}</div>
           </div>
         </div>}
         <div className="sidebar">
-          {isInstallation && <>
+          {isApplication && <>
             <div className="titleBox">
               <h1 className="box heading">{`${compositionTitles.length} Impromptus`}</h1>
               <div className="box">
                 <div className="byline">
                   <div>By <Button type="link" className="button" href="http://robertkendall.com" target="_blank"
-                                  rel="noopener noreferrer" stopPropagation>Robert
+                    rel="noopener noreferrer" stopPropagation>Robert
                     Kendall</Button>
                   </div>
                 </div>
@@ -85,9 +85,9 @@ class SideBar extends Component {
             <KeyboardArrowUp /></button>
           <div className="menuWrapper">
             <div id="menu" className="box menu" ref={this.menu}>
-              {compositionTitles.map(({name, title}, ind) => (
-                <div className={classNames('menuOption', {selected: ind === selectedInd})}
-                     onMouseDown={this.onChange.bind(null, ind)} key={name}>
+              {compositionTitles.map(({ name, title }, ind) => (
+                <div className={classNames('menuOption', { selected: ind === selectedInd })}
+                  onMouseDown={this.onChange.bind(null, ind)} key={name}>
                   <Element name={name} key={name}>
                     <div className="optionText">
                       <div className="time">{this.getTimeForComposition(name)}</div>
@@ -101,7 +101,7 @@ class SideBar extends Component {
           <button className="down arrow box" onClick={this.selectNextOrPrevious.bind(null, 'next')}>
             <KeyboardArrowDown />
           </button>
-          {isInstallation && <>
+          {isApplication && <>
             <div className="box controls">
               <div className="instructions">Click and hold square to start/stop looping</div>
               <div className="selectOptions">
@@ -149,7 +149,7 @@ class SideBar extends Component {
                     />
                   </div>
                   <label htmlFor="poetry" className={hasPoetry ? '' : 'selectionDisabled'} data-tip={poetryTooltip}
-                        data-for='poetryTip'>
+                    data-for='poetryTip'>
                     {hasPoetry ? 'Word Art' : '(No Word Art for This Piece)'}
                   </label>
                 </div>
@@ -166,11 +166,11 @@ class SideBar extends Component {
               </div>
             </div>
           </>}
-        </div> 
-        {isInstallation && <>
-          <ToolTip id="smartLoopingTip"/>
-          <ToolTip id="magicTip" disable={window.isTouchDevice}/>
-          <ToolTip id="poetryTip"/>
+        </div>
+        {isApplication && <>
+          <ToolTip id="smartLoopingTip" />
+          <ToolTip id="magicTip" disable={window.isTouchDevice} />
+          <ToolTip id="poetryTip" />
         </>}
       </Fragment>
     )
@@ -179,29 +179,29 @@ class SideBar extends Component {
   addTouchListeners = (el, ind) => {
     const menuGestures = new Hammer(el);
     menuGestures.get('swipe').recognizeWith('tap').recognizeWith('press')
-    menuGestures.get('press').set({time: 100}).requireFailure('swipe')
+    menuGestures.get('press').set({ time: 100 }).requireFailure('swipe')
     menuGestures.get('tap').requireFailure('swipe')
     menuGestures.on('tap press swipe', event => {
       this.onChange(ind)
     })
   }
 
-  scrollToSelection({selectedInd, animate = false}) {
+  scrollToSelection({ selectedInd, animate = false }) {
     const options = animate ? {
       containerId: 'menu',
       smooth: 'easeInQuad',
       duration: 300,
       delay: 0,
       offset: -20,
-    } : {smooth: false}
+    } : { smooth: false }
     options.containerId = 'menu'
-    const {compositionTitles} = this.props
+    const { compositionTitles } = this.props
     const name = compositionTitles[selectedInd].name
     scroller.scrollTo(name, options)
   }
 
   getTimeForComposition = name => {
-    const {timeSlots} = this.props
+    const { timeSlots } = this.props
     const timeSlot = timeSlots[name]
     let time = timeSlot
     if (timeSlot > 12) {
@@ -213,42 +213,42 @@ class SideBar extends Component {
   }
 
   onChange = ind => {
-    const {onChange, compositionTitles, allowMenuChange} = this.props
-    this.setState(({selectedInd}) => {
+    const { onChange, compositionTitles, allowMenuChange } = this.props
+    this.setState(({ selectedInd }) => {
       if (ind !== selectedInd && allowMenuChange) {
-        const {name, hasPoetry} = compositionTitles[ind]
-        onChange({id: name})
+        const { name, hasPoetry } = compositionTitles[ind]
+        onChange({ id: name })
         window.location.hash = name
         // eslint-disable-next-line no-undef
-        gtag('config', 'UA-173542609-1', {'page_path': `${window.location.pathname}${window.location.hash}`});
-        return {selectedInd: ind, hasPoetry, isOpen: false}
+        gtag('config', 'UA-173542609-1', { 'page_path': `${window.location.pathname}${window.location.hash}` });
+        return { selectedInd: ind, hasPoetry, isOpen: false }
       }
       return null
     })
   }
 
   smartLoopingHandler = () => {
-    const {onSmartLoopingSelected} = this.props
+    const { onSmartLoopingSelected } = this.props
     onSmartLoopingSelected()
     hideTooltip()
   }
 
   fadeHandler = () => {
-    const {onFadeSelected} = this.props
+    const { onFadeSelected } = this.props
     onFadeSelected()
     hideTooltip()
   }
 
   poetrySelectionHandler = () => {
-    const {onPoetrySelected} = this.props
-    this.setState(({poetrySelected}) => ({poetrySelected: !poetrySelected}))
+    const { onPoetrySelected } = this.props
+    this.setState(({ poetrySelected }) => ({ poetrySelected: !poetrySelected }))
     onPoetrySelected()
     hideTooltip()
   }
 
   selectNextOrPrevious = type => {
-    const {selectedInd: currentInd} = this.state
-    const {compositionTitles} = this.props
+    const { selectedInd: currentInd } = this.state
+    const { compositionTitles } = this.props
     const lastInd = compositionTitles.length - 1
     const getPrevious = () => {
       const newInd = currentInd - 1
@@ -259,13 +259,13 @@ class SideBar extends Component {
       return newInd <= lastInd ? newInd : 0
     }
     const selectedInd = type === 'previous' ? getPrevious() : getNext()
-    this.scrollToSelection({selectedInd, animate: true})
+    this.scrollToSelection({ selectedInd, animate: true })
     this.onChange(selectedInd)
   }
 
   onToggleMessage = (event) => {
     event.stopPropagation()
-    const {toggleMessageHandler} = this.props
+    const { toggleMessageHandler } = this.props
     toggleMessageHandler()
   }
 

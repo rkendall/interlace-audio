@@ -7,12 +7,16 @@ import memoize from 'lodash/memoize'
 import '../components/MusicPane'
 // import Trigger from './Trigger'
 import poetry from '../poetry'
-import { shuffleArray } from '../utilities'
+import { getSizedAudioItemsArray } from './helpers'
 import mode from '../mode'
+import config from '../config'
+
+const { fastSpeedThreshold, loudnessThreshold, activitySensitivity } = config
+
+const isInstallation = mode === 'installation'
 
 class AudioManager {
     constructor(props) {
-        console.debug('props', props)
         this.props = props
         this.state = {
             initialized: false,
@@ -44,7 +48,9 @@ class AudioManager {
         }
         this.mounted = false
         this.composition = []
+        this.audioCategories = {}
         this.playTimer = null
+        this.activityTimer = null
         this.allowCallTimer = null
         this.loadingTimer = null
         this.changeCompositionTimer = null
@@ -61,15 +67,61 @@ class AudioManager {
         this.lastItemLooping = null
         this.lastPointerId = null
         this.relatedItems = new Map()
+        this.playStats = {}
+        this.ensembleSections = {}
     }
-    getAdjustedValue = ({ value, hyperboloidInd }) => {
-        if (hyperboloidInd === 3) {
-            return value
+
+    getIsLoud = audioIndex => /bra|drums/i.test(this.getGroupForAudioIndex(audioIndex))
+
+    getRandomIntInclusive = (min, max) => {
+        const minCeiled = Math.ceil(min);
+        const maxFloored = Math.floor(max);
+        return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled)
+    }
+
+    randomlySelectItem = arr => {
+        const ind = this.getRandomIntInclusive(0, arr.length - 1)
+        return arr[ind]
+    }
+
+    manageInput = ({ value, rangeInd }) => {
+        const direction = value > 50 ? 'right' : 'left'
+        const ranges = ['low', 'medium', 'high']
+        const range = ranges[rangeInd - 1]
+        const playStatusForRange = this.playStatus[range]
+        const speed = playStatusForRange.speed
+        const activity = playStatusForRange.activity
+        const maxAllowed = speed < fastSpeedThreshold ? 1 : Math.ceil(activity / activitySensitivity)
+        playStatusForRange.activity += 1
+        playStatusForRange.speedBuffer += 1
+        const allowLoud = maxAllowed >= loudnessThreshold
+        const playableIndexesInRange = this.audioCategories[range].filter(audioIndex => {
+            if (!allowLoud && this.getIsLoud(audioIndex)) {
+                return false
+            }
+            return this.isAudioPlayable(audioIndex)
+        })
+        const itemsPlayingInRange = this.getRangeActiveCount(range)
+        if (itemsPlayingInRange >= maxAllowed) {
+            return null
         }
-        if (hyperboloidInd === 2) {
-            return value + 50
-        }
-        return value + 100
+        // console.debug('---------------')
+        // console.debug('---------------')
+        // console.debug('range', range)
+        // console.debug('direction', direction)
+        // console.debug('activity', activity)
+        // console.debug('speed', speed)
+        // console.debug('speed', speed)
+        // console.debug('maxAllowed', maxAllowed)
+        // console.debug('allowLoud', allowLoud)
+        const filteredForGroup = playableIndexesInRange.filter(audioInd => this.groupsForDirection[audioInd] === direction)
+        const preferredDurationForLessActivity = 'short'
+        const filteredForDuration = maxAllowed <= 2 ? filteredForGroup.filter(audioInd => this.relativeDurations[audioInd] === preferredDurationForLessActivity) : filteredForGroup
+        const selectedIndexes = filteredForDuration.length ? filteredForDuration : playableIndexesInRange
+        const audioItemToPlay = this.randomlySelectItem(selectedIndexes)
+        // console.debug('isLoud', this.getIsLoud(audioItemToPlay))
+        // console.debug('name', this.composition[audioItemToPlay].audioName)
+        this.setActiveIndex(audioItemToPlay)
     }
 
     changeCompositionUnwrapped = () => {
@@ -92,9 +144,13 @@ class AudioManager {
     }
 
     setActiveIndex = newIndex => {
-        this.setState(({ activeIndex }) =>
-            activeIndex !== newIndex ? { activeIndex: newIndex } : null
-        )
+        if (!newIndex) {
+            this.setState({ activeIndex: null })
+        } else {
+            this.setState(({ activeIndex }) =>
+                activeIndex !== newIndex ? { activeIndex: newIndex } : null
+            )
+        }
     }
 
     stopLastLoopingItemIfNecessary = audioIndex => {
@@ -141,7 +197,8 @@ class AudioManager {
         const audioItem = this.composition[audioIndex]
         const sound = audioItem.audio
         if (sound) {
-            // console.log('playing', this.composition[audioIndex].audioName)
+            // console.debug('playing relativeDuration', this.composition[audioIndex].audioName)
+            // console.debug('relativeDuration', this.composition[audioIndex].relativeDuration)
             const audioId = sound.play()
             audioItem.audioId = audioId
             audioItem.terminationHandled = false
@@ -159,14 +216,14 @@ class AudioManager {
     }
 
     suppressContextMenu = event => {
-        if (process.env.NODE_ENV === 'production' && mode === 'application') {
+        if (process.env.NODE_ENV === 'production' && !isInstallation) {
             event.preventDefault()
         }
     }
 
     // Necessary for mobile
     initAudioContext = () => {
-        if (mode === 'installation') {
+        if (isInstallation) {
             Howler.autoSuspend = false
         }
         if (Howler.ctx && Howler.ctx.state === 'suspended') {
@@ -174,16 +231,15 @@ class AudioManager {
         }
     }
 
-    formatAudioItems = ({ group, audioNames }) => audioNames.map(audioName => ({
+    formatAudioItems = ({ group, range, audioNames }) => audioNames.map(audioName => ({
         audioName,
         group,
+        range,
     }))
-
-    flattenAudioItems = audioItemsByRange => Object.values(audioItemsByRange).reduce((flattenedItems, items) => [...flattenedItems, ...items], [])
 
     getAudioItemsByRange = groupsObj => Object.entries(groupsObj).reduce((items, [group, { instruments }]) => {
         Object.entries(instruments).forEach(([range, audioNames]) => {
-            const itemsForGroup = this.formatAudioItems({ group, audioNames })
+            const itemsForGroup = this.formatAudioItems({ group, range, audioNames })
             items[range].push(...itemsForGroup)
         })
         return { ...items }
@@ -205,30 +261,6 @@ class AudioManager {
             return this.createAudioItem(ind)
         })
         return audioPromises
-    }
-
-    getCumulativeLength = audioItemsByRange => Object.values(audioItemsByRange).reduce((count, values) => count + values.length, 0)
-
-    getSizedAudioItemsArray = squareCount => {
-        const originalItems = this.audioItemsByRange
-        const audioItems = { high: [], medium: [], low: [] }
-        let indexes = { high: 0, medium: 0, low: 0 }
-        while (this.getCumulativeLength(audioItems) < squareCount) {
-            Object.entries(originalItems).forEach(([range, items]) => {
-                if (!items.length) {
-                    return
-                }
-                const ind = indexes[range]
-                indexes[range] = ind < items.length - 1 ? ind + 1 : 0
-                const audioItem = items[indexes[range]]
-                audioItems[range].push(audioItem)
-            })
-        }
-        Object.entries(audioItems).forEach(([range, arr]) => {
-            audioItems[range] = shuffleArray(arr)
-        })
-        const duplicatedAudioItems = this.flattenAudioItems(audioItems)
-        return duplicatedAudioItems.slice(0, squareCount)
     }
 
     createAudioItem = audioInd => {
@@ -262,7 +294,8 @@ class AudioManager {
 
     initializeTriggers = () => {
         const { squareCount } = this.props
-        const sizedItemsArray = this.getSizedAudioItemsArray(squareCount)
+        const { audioItems: sizedItemsArray, audioCategories } = getSizedAudioItemsArray({ squareCount, audioItemsByRange: this.audioItemsByRange })
+        this.audioCategories = audioCategories
         this.composition = sizedItemsArray.map((item, ind) => {
             return {
                 ...item,
@@ -275,6 +308,7 @@ class AudioManager {
     clearTimers = () => {
         clearTimeout(this.changeCompositionTimer)
         clearTimeout(this.playTimer)
+        clearTimeout(this.activityTimer)
         clearTimeout(this.allowDisabledTimer)
         clearTimeout(this.loadingTimer)
         clearTimeout(this.loopStartTimer)
@@ -321,8 +355,40 @@ class AudioManager {
         return initTimeout
     }
 
+    addRelativeDurations = () => {
+        this.relativeDurations = {}
+        this.composition.forEach(item => {
+            const { audioIndex, end } = item
+            const relativeDuration = end <= 4 ? 'short' : 'long'
+            this.relativeDurations[audioIndex] = relativeDuration
+            item.relativeDuration = relativeDuration
+        })
+
+    }
+
+    addGroupsForDirection = () => {
+        const left = ['str', 'win', 'pia', 'guitar', 'glass', 'voice']
+        // const right = ['bra', 'per', 'drums', 'tuned', 'plucked', 'pizz']
+        this.groupsForDirection = {}
+        this.composition.forEach(item => {
+            const { group, audioIndex } = item
+            const direction = left.some(searchStr => {
+                // console.debug('group', group)
+                // console.debug('searchStr', searchStr)
+                return (group.toLowerCase()).includes(searchStr)
+            }) ? 'left' : 'right'
+            // console.debug('direction', direction)
+            this.groupsForDirection[audioIndex] = direction
+        })
+    }
+
     initializeComposition = () => {
         const { rawCompositions, currentCompositionName } = this.props
+        this.playStatus = {
+            high: { activity: 0, speedBuffer: 0, speed: 0 },
+            medium: { activity: 0, speedBuffer: 0, speed: 0 },
+            low: { activity: 0, speedBuffer: 0, speed: 0 }
+        }
         const compositionData = rawCompositions[currentCompositionName]
         this.audioItemsByRange = this.getAudioItemsByRange(compositionData.groups)
         const isPoetry = poetry.init(compositionData.poem)
@@ -334,15 +400,20 @@ class AudioManager {
             this.relatedItems.clear()
             this.initializeStatus(compositionData)
             this.clearTimers()
+            this.isGroupDisabledMemoized.cache.clear()
             this.initializeTriggers()
+            this.addGroupsForDirection()
             const audioLoadPromises = this.loadAllAudio()
             this.addRelatedItemsForLooping()
             Promise.allSettled(audioLoadPromises).then(() => {
+                this.addRelativeDurations()
                 this.setPlayTimer()
+                this.setActivityTimer()
                 clearTimeout(this.loadingTimer)
                 this.setState({ loading: false })
                 this.allowCompositionChange = true
             })
+            // console.debug('this.groupsForDirection', this.groupsForDirection)
         })
     }
 
@@ -369,6 +440,7 @@ class AudioManager {
             this.itemsLooping.clear()
             this.superGroups = superGroupCollection
             this.setState({
+                defaultMaxSoundCount: maxSoundCount,
                 maxSoundCount,
                 maxBurstCount: maxBurstCount || maxSoundCount,
                 groupLimits,
@@ -552,6 +624,7 @@ class AudioManager {
                 }
                 if (count >= 20) {
                     this.setState({ paused: true })
+                    this.onInactivity()
                 } else {
                     runPlayTimer()
                 }
@@ -559,6 +632,40 @@ class AudioManager {
         }
 
         runPlayTimer()
+    }
+
+    setActivityTimer = () => {
+        let timeout = 1000
+        const activityDecrement = 10
+        const runActivityTimer = () => {
+            this.activityTimer = setTimeout(() => {
+                Object.entries(this.playStatus).forEach(([range, { activity }]) => {
+                    const speed = this.playStatus[range].speedBuffer
+                    this.playStatus[range].speedBuffer = 0
+                    this.playStatus[range].speed = speed
+                    const newActivity = speed === 0 ? 0 : Math.max(activity - activityDecrement, 0)
+                    this.playStatus[range].activity = newActivity
+                    // this.playStatus[range].maxAllowed = Math.max(Math.ceil(newActivity / 50), 1)
+                })
+                runActivityTimer()
+            }, timeout)
+            // console.debug('activity high', this.playStatus.high.activity)
+            // console.debug('speed high', this.playStatus.high.speed)
+            // console.debug('speedBuffer high', this.playStatus.high.speedBuffer)
+            // console.debug('activity medium', this.playStatus.medium.activity)
+            // console.debug('speed medium', this.playStatus.medium.speed)
+            // console.debug('speedBuffer medium', this.playStatus.medium.speedBuffer)
+            // console.debug('activity low', this.playStatus.low.activity)
+            // console.debug('speed low', this.playStatus.low.speed)
+            // console.debug('speedBuffer low', this.playStatus.low.speedBuffer)
+            // console.debug('------------')
+        }
+
+        runActivityTimer()
+    }
+
+    onInactivity = () => {
+        this.isGroupDisabledMemoized.cache.clear()
     }
 
     initializeItemsPlaying = () => {
@@ -608,6 +715,8 @@ class AudioManager {
     getGroupActiveCount = groupToCheck => this.composition.filter(({ audioIndex, group }) => group === groupToCheck && this.isItemPlaying(audioIndex)).length
 
     getActiveSuperGroupCount = superGroup => this.superGroupContent[superGroup].reduce((count, groupName) => count + this.getGroupActiveCount(groupName), 0)
+
+    getRangeActiveCount = rangeToCheck => this.composition.filter(({ audioIndex, range }) => range === rangeToCheck && this.isItemPlaying(audioIndex)).length
 
     isGroupFull = groupToCheck => {
         const groupCount = this.getGroupActiveCount(groupToCheck)
@@ -675,12 +784,15 @@ class AudioManager {
     }
 
     onTrigger = ({ audioIndex, isMouseDragged, pointerId }) => {
-        let isDragged
-        if (mode === 'application') {
-            isDragged = pointerId ? pointerId === this.lastPointerId : isMouseDragged
-        } else {
-            isDragged = true
+        if (isInstallation) {
+            if (this.isAudioPlayable(audioIndex)) {
+                this.setItemAsStarted(audioIndex)
+            }
+            return {
+                isDragged: false
+            }
         }
+        const isDragged = pointerId ? pointerId === this.lastPointerId : isMouseDragged
         if (this.isAudioPlayable(audioIndex) && !(isDragged && this.isQueueLockedForDragging)
         ) {
             this.setItemAsStarted(audioIndex)

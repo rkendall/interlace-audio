@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react'
+import classNames from 'classnames'
 import { Howl, Howler } from 'howler'
 import ReactLoading from 'react-loading'
 import debounce from 'lodash/debounce'
 import memoize from 'lodash/memoize'
 import osc from 'osc/dist/osc-browser'
-import './MusicPane.css'
+import './MusicPane.scss'
 import Trigger from './Trigger'
 import poetry from '../poetry'
 import { shuffleArray } from '../utilities'
@@ -27,7 +28,6 @@ class MusicPane extends Component {
     //   isPoetry: false,
     //   activeIndex: null,
     // }
-    console.debug('this.props', this.props)
     this.manager = new AudioManager(this.props)
     // this.manager.composition = []
     // this.manager.playTimer = null
@@ -66,12 +66,11 @@ class MusicPane extends Component {
       const { address, args } = oscMsg
       if (address.startsWith('/lx/modulation/Angles/')) {
         this.manager.handleInactivity()
-        console.log('oscMsg!', oscMsg);
         const rawValue = args?.[0]?.value
-        const value = Math.round(rawValue * 50)
-        const hyperboloidInd = Number(address.slice(-1))
-        const adjustedValue = this.manager.getAdjustedValue({ value, hyperboloidInd })
-        this.manager.setActiveIndex(adjustedValue)
+        const value = Math.round(rawValue * 100)
+        const rangeInd = Number(address.slice(-1))
+        // console.log('oscMsg!', value, rangeInd);
+        this.manager.manageInput({ value, rangeInd })
       }
     });
   }
@@ -83,7 +82,6 @@ class MusicPane extends Component {
     }
     const { squareCount, currentCompositionName, stopLooping } = this.props
     const { initialized } = this.manager.state
-    console.debug('currentCompositionName', currentCompositionName)
     if (!initialized || currentCompositionName !== prevProps.currentCompositionName) {
       if (!initialized) {
         this.manager.setState({ initialized: true })
@@ -108,7 +106,7 @@ class MusicPane extends Component {
     return !loading && this.manager.composition.length && squareCount ?
       (<div className="paneWrapper" onMouseOver={this.manager.handleInactivity} onTouchStart={onPlayStarted}>
         <div
-          className="pane"
+          className={classNames('pane', { installation: mode === 'installation' })}
           onContextMenu={this.manager.suppressContextMenu}
         >
           {this.manager.composition.map(audioItem => {

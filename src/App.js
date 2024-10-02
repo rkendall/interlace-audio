@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
+import classNames from 'classnames'
 import Sidebar from 'react-sidebar'
 import moment from 'moment'
 import TinyGesture from 'tinygesture'
@@ -9,8 +10,8 @@ import SidebarContent from './components/Sidebar'
 import MusicPane from './components/MusicPane'
 import Message from './components/Message'
 import ErrorBoundary from './components/ErrorBoundary'
-import './App.css'
-import {isSmallScreen} from './utilities'
+import './App.scss'
+import { isSmallScreen } from './utilities'
 import mode from './mode'
 
 import waterDreams from './compositionConfigs/waterDreams.json'
@@ -47,30 +48,30 @@ import elegyForTheDaylightPoem from './poems/elegyForTheDaylight'
 import midnightBlues from './compositionConfigs/midnightBlues.json'
 
 const compositionData = [
-  {waterDreams},
-  {glassDreams},
-  {ironDreams},
-  {bumpsInTheNight},
-  {dreamlandRushHour},
-  {aubade},
-  {afterCoffee},
-  {treadmillToccata},
-  {commuterProcessional},
-  {downToBusiness},
-  {reverie},
-  {tableMusic},
-  {danceOfTheAfternoonShadows},
-  {siesta},
-  {fiesta},
-  {teatime},
-  {rushHour},
-  {tunesOnTap},
-  {apollosExitAria},
-  {eveningEmbers},
-  {twilitBallad},
-  {elegyForTheDaylight},
-  {nocturne},
-  {midnightBlues},
+  { waterDreams },
+  { glassDreams },
+  { ironDreams },
+  { bumpsInTheNight },
+  { dreamlandRushHour },
+  { aubade },
+  { afterCoffee },
+  { treadmillToccata },
+  { commuterProcessional },
+  { downToBusiness },
+  { reverie },
+  { tableMusic },
+  { danceOfTheAfternoonShadows },
+  { siesta },
+  { fiesta },
+  { teatime },
+  { rushHour },
+  { tunesOnTap },
+  { apollosExitAria },
+  { eveningEmbers },
+  { twilitBallad },
+  { elegyForTheDaylight },
+  { nocturne },
+  { midnightBlues },
 ]
 
 const poems = {
@@ -127,7 +128,7 @@ const rawCompositions = rawCompositionTemp
 
 const compositionTitles = compositionData.map(data => {
   const name = Object.keys(data)[0]
-  const {title, poem} = rawCompositions[name]
+  const { title, poem } = rawCompositions[name]
   return {
     name,
     title,
@@ -162,7 +163,7 @@ class App extends Component {
       setInterval(() => {
         if (!this.selectCompositionByHash()) {
           const newCompositionName = this.selectCompositionByTimeOfDay()
-          this.setState(({currentCompositionName}) => newCompositionName !== currentCompositionName ? {currentCompositionName: newCompositionName} : null)
+          this.setState(({ currentCompositionName }) => newCompositionName !== currentCompositionName ? { currentCompositionName: newCompositionName } : null)
         }
       }, 5000)
     }
@@ -176,7 +177,7 @@ class App extends Component {
       disregardVelocityThreshold: () => 1,
     })
     gesture.on('panmove', event => {
-      const {sidebarOpen} = this.state
+      const { sidebarOpen } = this.state
       if (!sidebarOpen) {
         this.toggleSidebar(true)
       }
@@ -187,7 +188,7 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    const {stopLooping, showAllSquares, allowMenuChange} = this.state
+    const { stopLooping, showAllSquares, allowMenuChange } = this.state
     if (stopLooping) {
       this.resetStopLooping()
     }
@@ -196,13 +197,13 @@ class App extends Component {
     }
     if (!allowMenuChange) {
       this.toggleTimer = setTimeout(() => {
-        this.setState({allowMenuChange: true})
+        this.setState({ allowMenuChange: true })
       }, 300)
     }
   }
 
   render() {
-    const {currentCompositionName, squareCount, showAllSquares, vanishSquares, showPoetry, smartLooping, sidebarOpen, messageOpen, stopLooping, height, allowMenuChange} = this.state
+    const { currentCompositionName, squareCount, showAllSquares, vanishSquares, showPoetry, smartLooping, sidebarOpen, messageOpen, stopLooping, height, allowMenuChange } = this.state
     const mainProps = {}
     if (!isSmallScreen()) {
       mainProps.onClick = this.onInteraction
@@ -210,7 +211,7 @@ class App extends Component {
 
     return (
       <div className="main" {...mainProps}>
-        {mode === 'application' && <Message open={messageOpen} onClick={this.closeMessage} titleCount={compositionTitles.length}/>}
+        {mode === 'application' && <Message open={messageOpen} onClick={this.closeMessage} titleCount={compositionTitles.length} />}
         <Sidebar
           sidebar={<SidebarContent
             toggleSidebar={this.toggleSidebar}
@@ -238,10 +239,10 @@ class App extends Component {
           sidebarClassName="reactSidebar"
           contentClassName="sidebarContent"
         >
-          <div className="content">
+          <div className={classNames('content', { installation: mode === 'installation' })}>
             <div ref={this.musicPaneRef} className="musicPaneContainer">
               <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} refreshMode="debounce"
-                                   refreshRate={500}>
+                refreshRate={500}>
                 <ErrorBoundary>
                   <MusicPane
                     currentCompositionName={currentCompositionName}
@@ -259,11 +260,11 @@ class App extends Component {
               </ReactResizeDetector>
             </div>
             <div className="scrollers">
-              <div className="scroller"><ChevronLeft/> <ChevronLeft/>
+              <div className="scroller"><ChevronLeft /> <ChevronLeft />
                 <div className="swipe">Swipe left for more instruments</div>
               </div>
               <div className="scroller">
-                <div className="swipe">Swipe right for more instruments</div><ChevronRight/> <ChevronRight/>
+                <div className="swipe">Swipe right for more instruments</div><ChevronRight /> <ChevronRight />
               </div>
             </div>
           </div>
@@ -276,7 +277,7 @@ class App extends Component {
     const root = document.documentElement
     root.style.setProperty('--windowHeight', `${height}px`);
     this.getSquareCount(width, height)
-    this.setState({height})
+    this.setState({ height })
   }
 
   onPlayStarted = () => {
@@ -292,7 +293,7 @@ class App extends Component {
   }
 
   closeMessage = () => {
-    this.setState(({initialized, messageOpen}) => {
+    this.setState(({ initialized, messageOpen }) => {
       const newState = {}
       if (messageOpen) {
         newState.messageOpen = false
@@ -306,7 +307,7 @@ class App extends Component {
   }
 
   toggleMessage = () => {
-    this.setState(({messageOpen}) => {
+    this.setState(({ messageOpen }) => {
       if (!messageOpen) {
         // eslint-disable-next-line
         gtag('event', 'view_help', {
@@ -322,7 +323,7 @@ class App extends Component {
 
   toggleSidebar = sidebarState => {
     clearTimeout(this.toggleTimer)
-    this.setState(({sidebarOpen}) => {
+    this.setState(({ sidebarOpen }) => {
       let newState = null
       if (sidebarState === undefined) {
         newState = !sidebarOpen
@@ -336,9 +337,9 @@ class App extends Component {
     })
   }
 
-  onCompositionSelected = ({value, id}) => {
+  onCompositionSelected = ({ value, id }) => {
     const selectedCompositionName = value || id
-    this.setState(({currentCompositionName}) => {
+    this.setState(({ currentCompositionName }) => {
       if (selectedCompositionName && selectedCompositionName !== currentCompositionName) {
         return {
           currentCompositionName: selectedCompositionName,
@@ -423,11 +424,11 @@ class App extends Component {
   selectCompositionByTimeOfDay = () => {
     const hour = moment().hour()
     const compositionName = Object.keys(timeSlots).find((name, ind, arr) => {
-        const compTime = timeSlots[name]
-        const nextTimeKey = arr[ind + 1] || arr[0]
-        const nextCompTime = ind === arr.length - 2 ? 24 : timeSlots[nextTimeKey]
-        return compTime <= hour && hour < nextCompTime
-      }) || Object.keys(timeSlots)[0]
+      const compTime = timeSlots[name]
+      const nextTimeKey = arr[ind + 1] || arr[0]
+      const nextCompTime = ind === arr.length - 2 ? 24 : timeSlots[nextTimeKey]
+      return compTime <= hour && hour < nextCompTime
+    }) || Object.keys(timeSlots)[0]
     if (mode === 'application') {
       window.location.hash = compositionName
     }
