@@ -1,17 +1,18 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
+import classNames from 'classnames'
 import Sidebar from 'react-sidebar'
 import moment from 'moment'
-// import osc from 'osc/dist/osc-browser'
 import TinyGesture from 'tinygesture'
 import ReactResizeDetector from 'react-resize-detector'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import ChevronRight from '@material-ui/icons/ChevronRight'
-import SidebarContent from './components/Sidebar.js'
-import MusicPane from './components/MusicPane.js'
-import Message from './components/Message.js'
-import ErrorBoundary from './components/ErrorBoundary.js'
-import './App.css'
-import {isSmallScreen} from './utilities'
+import SidebarContent from './components/Sidebar'
+import MusicPane from './components/MusicPane'
+import Message from './components/Message'
+import ErrorBoundary from './components/ErrorBoundary'
+import './App.scss'
+import { isSmallScreen } from './utilities'
+import mode from './mode'
 
 import waterDreams from './compositionConfigs/waterDreams.json'
 import glassDreams from './compositionConfigs/glassDreams.json'
@@ -41,36 +42,36 @@ import apollosExitAria from './compositionConfigs/apollosExitAria.json'
 import eveningEmbers from './compositionConfigs/eveningEmbers.json'
 import eveningEmbersPoem from './poems/eveningEmbers'
 import twilitBallad from './compositionConfigs/twilitBallad.json'
-import twilitBalladPoem from './poems/twilitBallad.js'
+import twilitBalladPoem from './poems/twilitBallad'
 import elegyForTheDaylight from './compositionConfigs/elegyForTheDaylight.json'
-import elegyForTheDaylightPoem from './poems/elegyForTheDaylight.js'
+import elegyForTheDaylightPoem from './poems/elegyForTheDaylight'
 import midnightBlues from './compositionConfigs/midnightBlues.json'
 
 const compositionData = [
-  {waterDreams},
-  {glassDreams},
-  {ironDreams},
-  {bumpsInTheNight},
-  {dreamlandRushHour},
-  {aubade},
-  {afterCoffee},
-  {treadmillToccata},
-  {commuterProcessional},
-  {downToBusiness},
-  {reverie},
-  {tableMusic},
-  {danceOfTheAfternoonShadows},
-  {siesta},
-  {fiesta},
-  {teatime},
-  {rushHour},
-  {tunesOnTap},
-  {apollosExitAria},
-  {eveningEmbers},
-  {twilitBallad},
-  {elegyForTheDaylight},
-  {nocturne},
-  {midnightBlues},
+  { waterDreams },
+  { glassDreams },
+  { ironDreams },
+  { bumpsInTheNight },
+  { dreamlandRushHour },
+  { aubade },
+  { afterCoffee },
+  { treadmillToccata },
+  { commuterProcessional },
+  { downToBusiness },
+  { reverie },
+  { tableMusic },
+  { danceOfTheAfternoonShadows },
+  { siesta },
+  { fiesta },
+  { teatime },
+  { rushHour },
+  { tunesOnTap },
+  { apollosExitAria },
+  { eveningEmbers },
+  { twilitBallad },
+  { elegyForTheDaylight },
+  { nocturne },
+  { midnightBlues },
 ]
 
 const poems = {
@@ -127,7 +128,7 @@ const rawCompositions = rawCompositionTemp
 
 const compositionTitles = compositionData.map(data => {
   const name = Object.keys(data)[0]
-  const {title, poem} = rawCompositions[name]
+  const { title, poem } = rawCompositions[name]
   return {
     name,
     title,
@@ -152,35 +153,20 @@ class App extends Component {
       height: null,
       showPoetry: false,
       allowMenuChange: true,
-      // activeIndex: null,
     }
     this.toggleTimer = null
 
   }
 
   componentDidMount() {
-    // var oscPort = new osc.WebSocketPort({
-    //   url: 'ws://localhost:3000', // URL to your Web Socket server.
-    //   metadata: true
-    // });
-    // oscPort.open();
-    // oscPort.on('message', (oscMsg) => {
-    //   const {address, args} = oscMsg
-    //   if (address.startsWith('/lx/modulation/Angles/')) {
-    //     console.log('oscMsg!', oscMsg);
-    //     const rawValue = args?.[0]?.value
-    //     const value = Math.round(rawValue * 50)
-    //     const hyperboloidInd = Number(address.slice(-1))
-    //     const adjustedValue = this.getAdjustedValue({value, hyperboloidInd})
-    //     this.setActiveIndex(adjustedValue)
-    //   }
-    // });
-    setInterval(() => {
-      if (!this.selectCompositionByHash()) {
-        const newCompositionName = this.selectCompositionByTimeOfDay()
-        this.setState(({currentCompositionName}) => newCompositionName !== currentCompositionName ? {currentCompositionName: newCompositionName} : null)
-      }
-    }, 5000)
+    if (mode === 'installation') {
+      setInterval(() => {
+        if (!this.selectCompositionByHash()) {
+          const newCompositionName = this.selectCompositionByTimeOfDay()
+          this.setState(({ currentCompositionName }) => newCompositionName !== currentCompositionName ? { currentCompositionName: newCompositionName } : null)
+        }
+      }, 5000)
+    }
     window.isTouchDevice = 'ontouchstart' in window
     if (!window.isTouchDevice) {
       return
@@ -191,7 +177,7 @@ class App extends Component {
       disregardVelocityThreshold: () => 1,
     })
     gesture.on('panmove', event => {
-      const {sidebarOpen} = this.state
+      const { sidebarOpen } = this.state
       if (!sidebarOpen) {
         this.toggleSidebar(true)
       }
@@ -202,7 +188,7 @@ class App extends Component {
   }
 
   componentDidUpdate() {
-    const {stopLooping, showAllSquares, allowMenuChange} = this.state
+    const { stopLooping, showAllSquares, allowMenuChange } = this.state
     if (stopLooping) {
       this.resetStopLooping()
     }
@@ -211,13 +197,13 @@ class App extends Component {
     }
     if (!allowMenuChange) {
       this.toggleTimer = setTimeout(() => {
-        this.setState({allowMenuChange: true})
+        this.setState({ allowMenuChange: true })
       }, 300)
     }
   }
 
   render() {
-    const {currentCompositionName, squareCount, showAllSquares, vanishSquares, showPoetry, smartLooping, sidebarOpen, messageOpen, stopLooping, height, allowMenuChange} = this.state
+    const { currentCompositionName, squareCount, showAllSquares, vanishSquares, showPoetry, smartLooping, sidebarOpen, messageOpen, stopLooping, height, allowMenuChange } = this.state
     const mainProps = {}
     if (!isSmallScreen()) {
       mainProps.onClick = this.onInteraction
@@ -225,7 +211,7 @@ class App extends Component {
 
     return (
       <div className="main" {...mainProps}>
-        {/* <Message open={messageOpen} onClick={this.closeMessage} titleCount={compositionTitles.length}/> */}
+        {mode === 'application' && <Message open={messageOpen} onClick={this.closeMessage} titleCount={compositionTitles.length} />}
         <Sidebar
           sidebar={<SidebarContent
             toggleSidebar={this.toggleSidebar}
@@ -244,8 +230,7 @@ class App extends Component {
             sidebarOpen={sidebarOpen}
             height={height}
           />}
-          // open={sidebarOpen}
-          open={true}
+          open={mode === 'application' ? sidebarOpen : true}
           docked={sidebarOpen}
           touchHandleWidth={50}
           dragToggleDistance={10}
@@ -254,10 +239,10 @@ class App extends Component {
           sidebarClassName="reactSidebar"
           contentClassName="sidebarContent"
         >
-          <div className="content">
+          <div className={classNames('content', { installation: mode === 'installation' })}>
             <div ref={this.musicPaneRef} className="musicPaneContainer">
               <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} refreshMode="debounce"
-                                   refreshRate={500}>
+                refreshRate={500}>
                 <ErrorBoundary>
                   <MusicPane
                     currentCompositionName={currentCompositionName}
@@ -270,18 +255,16 @@ class App extends Component {
                     onPlayStarted={this.onPlayStarted}
                     showPoetry={showPoetry}
                     onPoemInitialized={this.onPoemInitialized}
-                    // activeIndex={this.state.activeIndex}
-                    // setActiveIndex={this.setActiveIndex}
                   />
                 </ErrorBoundary>
               </ReactResizeDetector>
             </div>
             <div className="scrollers">
-              <div className="scroller"><ChevronLeft/> <ChevronLeft/>
+              <div className="scroller"><ChevronLeft /> <ChevronLeft />
                 <div className="swipe">Swipe left for more instruments</div>
               </div>
               <div className="scroller">
-                <div className="swipe">Swipe right for more instruments</div><ChevronRight/> <ChevronRight/>
+                <div className="swipe">Swipe right for more instruments</div><ChevronRight /> <ChevronRight />
               </div>
             </div>
           </div>
@@ -290,21 +273,11 @@ class App extends Component {
     )
   }
 
-  // getAdjustedValue = ({value, hyperboloidInd}) => {
-  //   if (hyperboloidInd === 3) {
-  //     return value
-  //   }
-  //   if (hyperboloidInd === 2) {
-  //     return value + 50
-  //   }
-  //   return value + 100
-  // }
-
   onResize = (width, height) => {
     const root = document.documentElement
     root.style.setProperty('--windowHeight', `${height}px`);
     this.getSquareCount(width, height)
-    this.setState({height})
+    this.setState({ height })
   }
 
   onPlayStarted = () => {
@@ -320,7 +293,7 @@ class App extends Component {
   }
 
   closeMessage = () => {
-    this.setState(({initialized, messageOpen}) => {
+    this.setState(({ initialized, messageOpen }) => {
       const newState = {}
       if (messageOpen) {
         newState.messageOpen = false
@@ -334,7 +307,7 @@ class App extends Component {
   }
 
   toggleMessage = () => {
-    this.setState(({messageOpen}) => {
+    this.setState(({ messageOpen }) => {
       if (!messageOpen) {
         // eslint-disable-next-line
         gtag('event', 'view_help', {
@@ -350,7 +323,7 @@ class App extends Component {
 
   toggleSidebar = sidebarState => {
     clearTimeout(this.toggleTimer)
-    this.setState(({sidebarOpen}) => {
+    this.setState(({ sidebarOpen }) => {
       let newState = null
       if (sidebarState === undefined) {
         newState = !sidebarOpen
@@ -364,9 +337,9 @@ class App extends Component {
     })
   }
 
-  onCompositionSelected = ({value, id}) => {
+  onCompositionSelected = ({ value, id }) => {
     const selectedCompositionName = value || id
-    this.setState(({currentCompositionName}) => {
+    this.setState(({ currentCompositionName }) => {
       if (selectedCompositionName && selectedCompositionName !== currentCompositionName) {
         return {
           currentCompositionName: selectedCompositionName,
@@ -425,12 +398,6 @@ class App extends Component {
     })
   }
 
-  // setActiveIndex = newIndex => {
-  //   this.setState(({activeIndex}) => 
-  //     activeIndex !== newIndex ? {activeIndex: newIndex} : null
-  //   )
-  // }
-
   resetStopLooping = () => {
     this.setState({
       stopLooping: false,
@@ -457,19 +424,21 @@ class App extends Component {
   selectCompositionByTimeOfDay = () => {
     const hour = moment().hour()
     const compositionName = Object.keys(timeSlots).find((name, ind, arr) => {
-        const compTime = timeSlots[name]
-        const nextTimeKey = arr[ind + 1] || arr[0]
-        const nextCompTime = ind === arr.length - 2 ? 24 : timeSlots[nextTimeKey]
-        return compTime <= hour && hour < nextCompTime
-      }) || Object.keys(timeSlots)[0]
-    // window.location.hash = compositionName
+      const compTime = timeSlots[name]
+      const nextTimeKey = arr[ind + 1] || arr[0]
+      const nextCompTime = ind === arr.length - 2 ? 24 : timeSlots[nextTimeKey]
+      return compTime <= hour && hour < nextCompTime
+    }) || Object.keys(timeSlots)[0]
+    if (mode === 'application') {
+      window.location.hash = compositionName
+    }
     return compositionName
   }
 
   getSquareCount = (width, height) => {
     const rowSize = Math.floor(width / 80)
     const columnSize = Math.floor(height / 80)
-    const newSquareCount = 150 // rowSize * columnSize
+    const newSquareCount = mode === 'application' ? rowSize * columnSize : 150
     if (newSquareCount !== this.state.squareCount) {
       this.setState({
         squareCount: newSquareCount,

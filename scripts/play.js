@@ -1,4 +1,4 @@
-const {Howl, Howler} = require('howler')
+const { Howl, Howler } = require('howler')
 const { resolve } = require('node:path')
 // const  { AudioContext: context } = require('node-web-audio-api')
 // global.AudioContext = context
@@ -21,8 +21,7 @@ require("@mohayonao/web-audio-api-shim")
 // }
 // console.debug('ContextClass', ContextClass.toString())
 // global.AudioContext = ContextClass
-global.document = {addEventListener: () => {}}
-console.debug('playing')
+global.document = { addEventListener: () => { } }
 // Howler.cxt = new ContextClass()
 
 const filepath = resolve(process.cwd(), 'scripts/test.mp3')
@@ -37,6 +36,5 @@ const sound = new Howl({
     console.error(...error)
   }
 })
-console.debug('filepath', filepath)
-  
+
 sound.play()

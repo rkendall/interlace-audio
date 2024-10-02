@@ -6,6 +6,12 @@
 .pane {
 	display: flex;
 	flex-wrap: wrap;
+
+	&.installation {
+		margin-left: 280px;
+		// Two rows for each hyperboloid
+		width: calc(25* 80px);
+	}
 }
 
 .loading {

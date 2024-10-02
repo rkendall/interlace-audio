@@ -13,11 +13,9 @@ body {
 }
 
 .content {
-	position: absolute;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-	left: 280px;
 	overflow: hidden;
 }
 
@@ -46,7 +44,8 @@ body {
 	overflow: hidden;
 }
 
-.scrollers, .scroller {
+.scrollers,
+.scroller {
 	display: none;
 }
 
@@ -59,12 +58,14 @@ body {
 		width: 200vw;
 		overflow-x: scroll;
 	}
+
 	.scrollers {
 		display: flex;
 		justify-content: space-between;
 		margin-left: 5vw;
 		margin-right: 2vw;
 	}
+
 	.scroller {
 		display: flex;
 		align-items: center;
