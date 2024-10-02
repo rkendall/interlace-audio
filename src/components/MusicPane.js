@@ -15,38 +15,7 @@ import AudioManager from '../audioManagement/audioManager'
 class MusicPane extends Component {
   constructor() {
     super()
-    // this.state = {
-    //   initialized: false,
-    //   loading: true,
-    //   allowDisabled: true,
-    //   fadeAllSquares: false,
-    //   // Prevents too many sounds from being started at once
-    //   maxBurstCount: null,
-    //   paused: false,
-    //   // forces rerender when items are started or stopped
-    //   itemsPlayingCount: 0,
-    //   isPoetry: false,
-    //   activeIndex: null,
-    // }
     this.manager = new AudioManager(this.props)
-    // this.manager.composition = []
-    // this.manager.playTimer = null
-    // this.manager.allowCallTimer = null
-    // this.manager.loadingTimer = null
-    // this.manager.changeCompositionTimer = null
-    // this.manager.loopStartTimer = null
-    // this.manager.allowDisabledTimer = null
-    // this.manager.nextPlayTime = 0
-    // this.manager.allowCompositionChange = true
-    // this.manager.allowCompositionChangeTimeout = 0
-    // this.manager.itemsPlaying = new Set()
-    // this.manager.superGroups = {}
-    // this.manager.activeAudioCounts = {}
-    // this.manager.playQueue = new Set()
-    // this.manager.itemsLooping = new Set()
-    // this.manager.lastItemLooping = null
-    // this.manager.lastPointerId = null
-    // this.manager.relatedItems = new Map()
   }
 
   componentDidMount() {

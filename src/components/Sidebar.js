@@ -11,7 +11,7 @@ import Button from './Button.js';
 import ToolTip, { hideTooltip } from './ToolTip.js'
 import mode from '../mode.js'
 
-const isApplication = mode === 'application'
+const isInstallation = mode === 'installation'
 
 class SideBar extends Component {
   constructor(props) {
@@ -48,7 +48,7 @@ class SideBar extends Component {
     const poetryTooltip = hasPoetry ? poetryAvailableTooltip : 'Sorry, no Word Art for this piece'
     return (
       <Fragment>
-        {isApplication && <div className="rightTab" onClick={() => {
+        {!isInstallation && <div className="rightTab" onClick={() => {
           toggleSidebar()
         }}>
           <div className="ranges">
@@ -67,7 +67,7 @@ class SideBar extends Component {
           </div>
         </div>}
         <div className="sidebar">
-          {isApplication && <>
+          {!isInstallation && <>
             <div className="titleBox">
               <h1 className="box heading">{`${compositionTitles.length} Impromptus`}</h1>
               <div className="box">
@@ -101,7 +101,7 @@ class SideBar extends Component {
           <button className="down arrow box" onClick={this.selectNextOrPrevious.bind(null, 'next')}>
             <KeyboardArrowDown />
           </button>
-          {isApplication && <>
+          {!isInstallation && <>
             <div className="box controls">
               <div className="instructions">Click and hold square to start/stop looping</div>
               <div className="selectOptions">
@@ -167,7 +167,7 @@ class SideBar extends Component {
             </div>
           </>}
         </div>
-        {isApplication && <>
+        {!isInstallation && <>
           <ToolTip id="smartLoopingTip" />
           <ToolTip id="magicTip" disable={window.isTouchDevice} />
           <ToolTip id="poetryTip" />
@@ -177,13 +177,15 @@ class SideBar extends Component {
   }
 
   addTouchListeners = (el, ind) => {
-    const menuGestures = new Hammer(el);
-    menuGestures.get('swipe').recognizeWith('tap').recognizeWith('press')
-    menuGestures.get('press').set({ time: 100 }).requireFailure('swipe')
-    menuGestures.get('tap').requireFailure('swipe')
-    menuGestures.on('tap press swipe', event => {
-      this.onChange(ind)
-    })
+    if (!isInstallation) {
+      const menuGestures = new Hammer(el);
+      menuGestures.get('swipe').recognizeWith('tap').recognizeWith('press')
+      menuGestures.get('press').set({ time: 100 }).requireFailure('swipe')
+      menuGestures.get('tap').requireFailure('swipe')
+      menuGestures.on('tap press swipe', event => {
+        this.onChange(ind)
+      })
+    }
   }
 
   scrollToSelection({ selectedInd, animate = false }) {

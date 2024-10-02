@@ -34,27 +34,29 @@ export default class Trigger extends PureComponent {
   }
 
   componentDidMount() {
-    const sensor = this.sensor.current
-    if (sensor && sensor.getBoundingClientRect().top === 0) {
-      this.setState({ isTopRow: true })
+    if (!isInstallation) {
+      const sensor = this.sensor.current
+      if (sensor && sensor.getBoundingClientRect().top === 0) {
+        this.setState({ isTopRow: true })
+      }
+      if (!window.isTouchDevice) {
+        return
+      }
+      // Enables dragging with finger
+      sensor.addEventListener("pointerdown", (event) => {
+        this.sensor.current.releasePointerCapture(event.pointerId)
+        this.handleInteraction(event)
+      })
+      sensor.addEventListener("pointerup", (event) => {
+        this.handleInteraction(event)
+      })
+      sensor.addEventListener("pointerenter", (event) => {
+        this.handleInteraction(event)
+      })
+      sensor.addEventListener("pointerleave", (event) => {
+        this.handleInteraction(event)
+      })
     }
-    if (!window.isTouchDevice) {
-      return
-    }
-    // Enables dragging with finger
-    sensor.addEventListener("pointerdown", (event) => {
-      this.sensor.current.releasePointerCapture(event.pointerId)
-      this.handleInteraction(event)
-    })
-    sensor.addEventListener("pointerup", (event) => {
-      this.handleInteraction(event)
-    })
-    sensor.addEventListener("pointerenter", (event) => {
-      this.handleInteraction(event)
-    })
-    sensor.addEventListener("pointerleave", (event) => {
-      this.handleInteraction(event)
-    })
   }
 
   componentDidUpdate(prevProps, prevState) {

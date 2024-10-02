@@ -6,9 +6,16 @@ const config = {
     fastSpeedThreshold: 20,
     // This determines how much speed and activity is required to bring brass and drums into the mix.
     // The higher the number, the more activity required to bring in these louder instruments.
-    loudnessThreshold: 3,
-    // The higher this value, the less activity (motion of the wheel) is required to affect the musical output.
-    activitySensitivity: 50
+    loudnessThreshold: 4,
+    // The higher this value, the more activity (motion of the wheel) is required to affect the musical output.
+    activityResistance: 150,
+    // If the number of angle changes per second falls below this value, the input will be considered inactive
+    inactivityThreshold: 5,
+    preferredDurationForActivity: 'short',
+    // Amount of activity required before the preferred duration for clips is applied
+    durationThreshold: 3,
+    // Amount of activity required before instruments are not filtered depending on the direction the wheel was initially turned
+    instrumentFilterThreshold: 8
 }
 
 export default config
