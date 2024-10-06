@@ -4,176 +4,112 @@
   "maxBurstCount": 3,
   "superGroups": {
     "percussion": {
-      "groups": [
-        "tuned2",
-        "effects"
-      ],
+      "groups": ["tuned2", "effects"],
       "maxActive": 1
     }
   },
   "groups": {
     "str1": {
       "instruments": {
-        "high": [
-          "Violin 1",
-          "Violin 2",
-          "Violin 3"
-        ],
-        "medium": [
-        ],
+        "high": ["Violin 1", "Violin 2", "Violin 3"],
+        "medium": [],
         "low": []
       },
       "maxActive": 2
     },
     "str2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Cello 1"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Cello 1"]
       },
       "maxActive": 1
     },
     "str3": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Bass 1"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Bass 1"]
       },
       "maxActive": 1
     },
     "win1": {
       "instruments": {
-        "high": [
-          "Flute 1"
-        ],
-        "medium": [
-        ],
+        "high": ["Flute 1"],
+        "medium": [],
         "low": []
       },
       "maxActive": 1
     },
     "win2": {
       "instruments": {
-        "high": [
-          "Oboe 1"
-        ],
-        "medium": [
-          "Bassoon 1"
-        ],
+        "high": ["Oboe 1"],
+        "medium": ["Bassoon 1"],
         "low": []
       },
       "maxActive": 1
     },
     "glass1": {
       "instruments": {
-        "high": [
-          "Musical Glasses 1",
-          "Musical Glasses 2"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
+        "high": ["Musical Glasses 1", "Musical Glasses 2"],
+        "medium": [],
+        "low": []
       },
       "maxActive": 1
     },
     "bra1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Trombones 1",
-          "Trombones 2"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Trombones 1", "Trombones 2"]
       },
       "maxActive": 1
     },
     "bra2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Horn 1"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Horn 1"]
       },
       "maxActive": 1
     },
     "effects": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Door Hinge 1"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Door Hinge 1"],
+        "low": []
       },
       "maxActive": 1
     },
     "per1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Field Drum 1",
-          "Field Drum 2",
-          "Field Drum 3"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Field Drum 1", "Field Drum 2", "Field Drum 3"]
       },
       "maxActive": 1
     },
     "pia": {
       "instruments": {
-        "high": [
-          "Celesta 1",
-          "Celesta 2"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
+        "high": ["Celesta 1", "Celesta 2"],
+        "medium": [],
+        "low": []
       },
       "maxActive": 1
     },
     "tuned1": {
       "instruments": {
-        "high": [
-          "Vibes 3"
-        ],
-        "medium": [
-          "Vibes 1",
-          "Vibes 2",
-          "Vibes 4"
-        ],
-        "low": [
-        ]
+        "high": ["Vibes 3"],
+        "medium": ["Vibes 1", "Vibes 2", "Vibes 4"],
+        "low": []
       },
       "maxActive": 1
     },
     "tuned2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Tubular Bells 1",
-          "Tubular Bells 2"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Tubular Bells 1", "Tubular Bells 2"],
+        "low": []
       },
       "maxActive": 1
     }

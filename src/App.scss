@@ -1,75 +1,75 @@
 @import 'variables.css';
 
 body {
-	margin: 0;
-	font-size: 15px;
-	user-select: none;
-	touch-action: none;
+  margin: 0;
+  font-size: 15px;
+  user-select: none;
+  touch-action: none;
 }
 
 .main {
-	width: 100vw;
-	height: var(--windowHeight);
+  width: 100vw;
+  height: var(--windowHeight);
 }
 
 .content {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-	overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 .musicPaneContainer {
-	width: 100%;
-	height: 100%;
-	overflow: visible;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
 .reactSidebar {
-	position: fixed !important;
-	width: var(--sidebarWidth);
-	left: var(--sidebarTabOffset) !important;
-	box-shadow: rgba(0, 0, 0, 0.1) 2px 6px 8px 2px !important;
-	overflow: visible !important;
-	background: white;
-	z-index: 100 !important;
+  position: fixed !important;
+  width: var(--sidebarWidth);
+  left: var(--sidebarTabOffset) !important;
+  box-shadow: rgba(0, 0, 0, 0.1) 2px 6px 8px 2px !important;
+  overflow: visible !important;
+  background: white;
+  z-index: 100 !important;
 }
 
 .sidebarContent {
-	left: 0 !important;
-	margin-left: var(--sidebarTabOffset);
+  left: 0 !important;
+  margin-left: var(--sidebarTabOffset);
 }
 
 .closed {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 .scrollers,
 .scroller {
-	display: none;
+  display: none;
 }
 
 .swipe {
-	margin-left: 5px;
+  margin-left: 5px;
 }
 
 @media screen and (max-width: 767px) {
-	.content {
-		width: 200vw;
-		overflow-x: scroll;
-	}
+  .content {
+    width: 200vw;
+    overflow-x: scroll;
+  }
 
-	.scrollers {
-		display: flex;
-		justify-content: space-between;
-		margin-left: 5vw;
-		margin-right: 2vw;
-	}
+  .scrollers {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 5vw;
+    margin-right: 2vw;
+  }
 
-	.scroller {
-		display: flex;
-		align-items: center;
-		height: 50px;
-		background: transparent;
-	}
+  .scroller {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    background: transparent;
+  }
 }

@@ -4,143 +4,84 @@
   "maxBurstCount": 4,
   "superGroups": {
     "strings": {
-      "groups": [
-        "primaryStrings1",
-        "str1"
-      ],
+      "groups": ["primaryStrings1", "str1"],
       "maxActive": 3
     },
     "winds": {
-      "groups": [
-        "primaryWinds1",
-        "win1"
-      ],
+      "groups": ["primaryWinds1", "win1"],
       "maxActive": 3
     }
   },
   "groups": {
     "primaryStrings1": {
       "instruments": {
-        "high": [
-          "Violins 3"
-        ],
-        "medium": [
-          "Violins 1",
-          "Violins 2"
-        ]
+        "high": ["Violins 3"],
+        "medium": ["Violins 1", "Violins 2"]
       },
       "maxActive": 3
     },
     "str1": {
       "instruments": {
-        "high": [
-          "Violins 4",
-          "Violins 5"
-        ],
-        "medium": [
-          "Violas 1",
-          "Violas 2",
-          "Violas 3",
-          "Violas 4"
-        ]
+        "high": ["Violins 4", "Violins 5"],
+        "medium": ["Violas 1", "Violas 2", "Violas 3", "Violas 4"]
       },
       "maxActive": 3
     },
     "str2": {
       "instruments": {
-        "low": [
-          "Cellos 1",
-          "Basses 1"
-        ]
+        "low": ["Cellos 1", "Basses 1"]
       },
       "maxActive": 2
     },
     "primaryWinds1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Oboe 1",
-          "Clarinet 1"
-        ]
+        "high": [],
+        "medium": ["Oboe 1", "Clarinet 1"]
       },
       "maxActive": 3
     },
     "win1": {
       "instruments": {
-        "high": [
-          "Flutes 2",
-          "Piccolo 1"
-        ],
-        "medium": [
-          "Flutes 1"
-        ]
+        "high": ["Flutes 2", "Piccolo 1"],
+        "medium": ["Flutes 1"]
       },
       "maxActive": 3
     },
     "bra": {
       "instruments": {
-        "high": [
-          "Trumpets 1",
-          "Trumpets 2",
-          "Trumpets 3"
-        ],
-        "medium": [
-          "Horns 1"
-        ],
-        "low": [
-          "Trombones 1"
-        ]
+        "high": ["Trumpets 1", "Trumpets 2", "Trumpets 3"],
+        "medium": ["Horns 1"],
+        "low": ["Trombones 1"]
       },
       "maxActive": 2
     },
     "plucked": {
       "instruments": {
-        "medium": [
-          "Harp 1"
-        ]
+        "medium": ["Harp 1"]
       },
       "maxActive": 1
     },
     "tuned1": {
       "instruments": {
-        "high": [
-          "Xylophone 1",
-          "Xylophone 2"
-        ],
-        "medium": [
-          "Marimba 1",
-          "Marimba 2",
-          "Bells 1",
-          "Bells 2"
-        ],
-        "low": [
-        ]
+        "high": ["Xylophone 1", "Xylophone 2"],
+        "medium": ["Marimba 1", "Marimba 2", "Bells 1", "Bells 2"],
+        "low": []
       },
       "maxActive": 3
     },
     "per1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Tympani 1",
-          "Tympani 2"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Tympani 1", "Tympani 2"]
       },
       "maxActive": 1
     },
     "per2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Gong 1"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Gong 1"]
       },
       "maxActive": 1
     }

@@ -1,14 +1,12 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
 export default class InstrumentList extends Component {
   constructor() {
-    super();
-    this.state = ({
+    super()
+    this.state = {
       instruments: [],
-    })
+    }
   }
 
-  render() {
-    
-  }
+  render() {}
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactTooltip from 'react-tooltip'
 
-export default props => (
+export default (props) => (
   <ReactTooltip
     {...props}
     place="right"
@@ -13,10 +13,9 @@ export default props => (
     textColor="black"
     borderColor="gray"
     border
-  />)
+  />
+)
 
 const hideTooltip = ReactTooltip.hide
 
-export {
-    hideTooltip,
-}
+export { hideTooltip }

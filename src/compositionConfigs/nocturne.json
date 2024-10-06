@@ -5,46 +5,25 @@
   "groups": {
     "primaryWinds1": {
       "instruments": {
-        "high": [
-
-        ],
-        "medium": [
-          "Flute 2",
-          "Flute 3"
-        ],
+        "high": [],
+        "medium": ["Flute 2", "Flute 3"],
         "low": []
       },
       "maxActive": 1
     },
     "win1": {
       "instruments": {
-        "high": [
-          "Clarinet 2",
-          "Flute 1",
-          "Flute 4",
-          "Flute 6"
-
-        ],
-        "medium": [
-          "Clarinet 1",
-          "Flute 3",
-          "Oboe 1",
-          "Flute 2",
-          "Flute 5"
-        ],
+        "high": ["Clarinet 2", "Flute 1", "Flute 4", "Flute 6"],
+        "medium": ["Clarinet 1", "Flute 3", "Oboe 1", "Flute 2", "Flute 5"],
         "low": []
       },
       "maxActive": 3
     },
     "win2": {
       "instruments": {
-        "high": [
-        ],
+        "high": [],
         "medium": [],
-        "low": [
-          "Bassoon 1",
-          "Bassoon 2"
-        ]
+        "low": ["Bassoon 1", "Bassoon 2"]
       },
       "maxActive": 1
     },
@@ -66,136 +45,87 @@
           "Vibes 1",
           "Tubular Bells 3"
         ],
-        "low": [
-        ]
+        "low": []
       },
       "maxActive": 3
     },
     "per1": {
       "instruments": {
-        "high": [
-          "Temple Blocks 2"
-        ],
-        "medium": [
-          "Temple Blocks 1"
-        ],
-        "low": [
-        ]
+        "high": ["Temple Blocks 2"],
+        "medium": ["Temple Blocks 1"],
+        "low": []
       },
       "maxActive": 1
     },
     "per2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Taiko Drums 1"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Taiko Drums 1"],
+        "low": []
       },
       "maxActive": 1
     },
     "per3": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Taiko Drums 2",
-          "Log Drums 1"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Taiko Drums 2", "Log Drums 1"]
       },
       "maxActive": 1
     },
     "primaryStrings1": {
       "instruments": {
-        "high": [
-          "Violin 4",
-          "Violin 5"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
+        "high": ["Violin 4", "Violin 5"],
+        "medium": [],
+        "low": []
       },
       "maxActive": 1
     },
     "str1": {
       "instruments": {
-        "high": [
-          "Violin 6"
-        ],
-        "medium": [
-          "Violin 3",
-          "Violin 1",
-          "Violin 9",
-          "Violin 7",
-          "Violin 8"
-        ],
-        "low": [
-          "Violin 2"
-        ]
+        "high": ["Violin 6"],
+        "medium": ["Violin 3", "Violin 1", "Violin 9", "Violin 7", "Violin 8"],
+        "low": ["Violin 2"]
       },
       "maxActive": 2
     },
     "str2": {
       "instruments": {
-        "high": [
-        ],
+        "high": [],
         "medium": [],
-        "low": [
-          "Cello 1",
-          "Cello 2",
-          "Cello 3",
-          "Cello 4"
-        ]
+        "low": ["Cello 1", "Cello 2", "Cello 3", "Cello 4"]
       },
       "maxActive": 1
     },
     "pizz": {
       "instruments": {
-        "high": [
-        ],
+        "high": [],
         "medium": [],
-        "low": [
-          "String Bass 1"
-        ]
+        "low": ["String Bass 1"]
       },
       "maxActive": 1
     },
     "bra": {
       "instruments": {
         "high": [],
-        "medium": [
-          "Horns 1",
-          "Horns 2"
-        ],
+        "medium": ["Horns 1", "Horns 2"],
         "low": []
       },
       "maxActive": 3
     },
     "pia": {
       "instruments": {
-        "high": [
-          "Piano 2"
-        ],
+        "high": ["Piano 2"],
         "medium": [],
-        "low": [
-          "Piano 1"
-        ]
+        "low": ["Piano 1"]
       },
       "maxActive": 2
     },
     "plucked1": {
       "instruments": {
-        "high": [
-          "Harp 1"
-        ],
+        "high": ["Harp 1"],
         "medium": [],
-        "low": [
-        ]
+        "low": []
       },
       "maxActive": 1
     }

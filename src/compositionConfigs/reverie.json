@@ -4,136 +4,79 @@
   "maxBurstCount": 3,
   "superGroups": {
     "mel": {
-      "groups": [
-        "primaryWinds1",
-        "bra",
-        "pia1"
-      ],
+      "groups": ["primaryWinds1", "bra", "pia1"],
       "maxActive": 1
     },
     "mel2": {
-      "groups": [
-        "win1",
-        "primaryWinds2",
-        "pia2"
-      ],
+      "groups": ["win1", "primaryWinds2", "pia2"],
       "maxActive": 2
     },
     "piano": {
-      "groups": [
-        "pia1",
-        "pia2",
-        "pia3",
-        "pia4"
-      ],
+      "groups": ["pia1", "pia2", "pia3", "pia4"],
       "maxActive": 1
     }
   },
   "groups": {
     "str1": {
       "instruments": {
-        "high": [
-          "Violin 7",
-          "Violin 9"
-        ],
-        "medium": [
-          "Violin 1",
-          "Violin 5",
-          "Violin 6",
-          "Violin 8"
-        ],
-        "low": [
-        ]
+        "high": ["Violin 7", "Violin 9"],
+        "medium": ["Violin 1", "Violin 5", "Violin 6", "Violin 8"],
+        "low": []
       },
       "maxActive": 2
     },
     "str2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Violin 2",
-          "Violin 3",
-          "Violin 4"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Violin 2", "Violin 3", "Violin 4"]
       },
       "maxActive": 1
     },
     "tuned1": {
       "instruments": {
-        "high": [
-          "Celesta 1",
-          "Celesta 2",
-          "Celesta 3"
-        ],
-        "medium": [
-        ],
+        "high": ["Celesta 1", "Celesta 2", "Celesta 3"],
+        "medium": [],
         "low": []
       },
       "maxActive": 1
     },
     "tuned2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Vibes 1",
-          "Vibes 2",
-          "Vibes 3",
-          "Vibes 4"
-        ],
+        "high": [],
+        "medium": ["Vibes 1", "Vibes 2", "Vibes 3", "Vibes 4"],
         "low": []
       },
       "maxActive": 1
     },
     "primaryWinds1": {
       "instruments": {
-        "high": [
-          "Flute 1",
-          "Flute 3",
-          "Flute 4",
-          "Oboe 1"
-        ],
-        "medium": [
-        ],
+        "high": ["Flute 1", "Flute 3", "Flute 4", "Oboe 1"],
+        "medium": [],
         "low": []
       },
       "maxActive": 1
     },
     "primaryWinds2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Flute 2"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Flute 2"],
+        "low": []
       },
       "maxActive": 1
     },
     "win1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Flute 5",
-          "Oboe 2"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Flute 5", "Oboe 2"],
+        "low": []
       },
       "maxActive": 1
     },
     "bra": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Horn 1"
-        ],
+        "high": [],
+        "medium": ["Horn 1"],
         "low": []
       },
       "maxActive": 1
@@ -141,82 +84,49 @@
 
     "pia1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Piano 10",
-          "Piano 11"
-        ],
+        "high": [],
+        "medium": ["Piano 10", "Piano 11"],
         "low": []
       },
       "maxActive": 1
     },
     "pia2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Piano 12"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Piano 12"]
       },
       "maxActive": 1
     },
     "pia3": {
       "instruments": {
-        "high": [
-          "Piano 5"
-        ],
-        "medium": [
-          "Piano 2",
-          "Piano 4",
-          "Piano 6"
-        ],
-        "low": [
-        ]
+        "high": ["Piano 5"],
+        "medium": ["Piano 2", "Piano 4", "Piano 6"],
+        "low": []
       },
       "maxActive": 1
     },
     "pia4": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Piano 1",
-          "Piano 9",
-          "Piano 8",
-          "Piano 7",
-          "Piano 3"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Piano 1", "Piano 9", "Piano 8", "Piano 7", "Piano 3"]
       },
       "maxActive": 1
     },
     "plucked1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Harp 1",
-          "Harp 2"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Harp 1", "Harp 2"],
+        "low": []
       },
       "maxActive": 1
     },
     "str3": {
       "instruments": {
-        "high": [
-        ],
+        "high": [],
         "medium": [],
-        "low": [
-          "Cello 1",
-          "Cello 2",
-          "Cello 3"
-        ]
+        "low": ["Cello 1", "Cello 2", "Cello 3"]
       },
       "maxActive": 1
     }

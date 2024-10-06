@@ -15,29 +15,16 @@
           "Erhu 5",
           "Erhu 6"
         ],
-        "medium": [
-        ],
-        "low": [
-        ]
+        "medium": [],
+        "low": []
       },
       "maxActive": 2
     },
     "voice": {
       "instruments": {
-        "high": [
-          "Sopranos 1",
-          "Sopranos 2",
-          "Sopranos 3"
-        ],
-        "medium": [
-          "Sopranos 4"
-        ],
-        "low": [
-          "Basses 1",
-          "Basses 2",
-          "Basses 3",
-          "Basses 4"
-        ]
+        "high": ["Sopranos 1", "Sopranos 2", "Sopranos 3"],
+        "medium": ["Sopranos 4"],
+        "low": ["Basses 1", "Basses 2", "Basses 3", "Basses 4"]
       },
       "maxActive": 5
     },
@@ -52,109 +39,64 @@
           "Waterphone 1",
           "Waterphone 2"
         ],
-        "medium": [
-          "Musical Glasses 3",
-          "Verophone 1",
-          "Waterphone 3"
-        ],
-        "low": [
-        ]
+        "medium": ["Musical Glasses 3", "Verophone 1", "Waterphone 3"],
+        "low": []
       },
       "maxActive": 5
     },
     "plucked1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Sitar 1",
-          "Sitar 2"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Sitar 1", "Sitar 2"],
+        "low": []
       },
       "maxActive": 1
     },
     "plucked2": {
       "instruments": {
-        "high": [
-          "Guzheng 3"
-        ],
-        "medium": [
-          "Guzheng 2"
-        ],
-        "low": [
-          "Guzheng 1"
-        ]
+        "high": ["Guzheng 3"],
+        "medium": ["Guzheng 2"],
+        "low": ["Guzheng 1"]
       },
       "maxActive": 1
     },
     "per1": {
       "instruments": {
-        "high": [
-          "Singing Bowls 1",
-          "Singing Bowls 2"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
+        "high": ["Singing Bowls 1", "Singing Bowls 2"],
+        "medium": [],
+        "low": []
       },
       "maxActive": 1
     },
     "per2": {
       "instruments": {
-        "high": [
-          "Crotales 1",
-          "Crotales 2"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
+        "high": ["Crotales 1", "Crotales 2"],
+        "medium": [],
+        "low": []
       },
       "maxActive": 1
     },
     "per3": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Tablas 1"
-        ],
-        "low": [
-          "Ocean Drum 1"
-        ]
+        "high": [],
+        "medium": ["Tablas 1"],
+        "low": ["Ocean Drum 1"]
       },
       "maxActive": 3
     },
     "pia1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Vibes 1",
-          "Vibes 2"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Vibes 1", "Vibes 2"]
       },
       "maxActive": 1
     },
     "pia2": {
       "instruments": {
-        "high": [
-          "Lithophone 1"
-        ],
-        "medium": [
-          "Lithophone 2",
-          "Lithophone 3"
-        ],
-        "low": [
-          "Lithophone 4",
-          "Lithophone 5",
-          "Lithophone 6"
-        ]
+        "high": ["Lithophone 1"],
+        "medium": ["Lithophone 2", "Lithophone 3"],
+        "low": ["Lithophone 4", "Lithophone 5", "Lithophone 6"]
       },
       "maxActive": 1
     }
