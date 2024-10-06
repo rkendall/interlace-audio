@@ -11,7 +11,7 @@ Make sure yarn and node are installed. From the root run
 
 run
 
-`yarn start`
+`yarn start:both`
 
 In the terminal you should see a message saying something like:
 
@@ -27,7 +27,7 @@ NOTE: If you can't install yarn, you might be able to use npm instead.
 
 If you want to start the server without launching the browser, run
 
-`yarn start:dev`
+`yarn start`
 
 ## How the App Works
 
