@@ -1,204 +1,204 @@
 @import '../variables.css';
 
 .messageWrapper {
-	height: 100%;
+  height: 100%;
 }
 
 .messageContainer {
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	opacity: 0;
-	background: white;
-	transition: opacity 0ms ease-out;
-	cursor: pointer;
-	z-index: 50;
-	overflow: auto;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background: white;
+  transition: opacity 0ms ease-out;
+  cursor: pointer;
+  z-index: 50;
+  overflow: auto;
 }
 
 .animateEntry .messageContainer {
-	transition: opacity 500ms ease-out;
+  transition: opacity 500ms ease-out;
 }
 
 .message {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-	text-align: center;
-	background: white;
-	margin-left: calc(var(--sidebarWidth) + var(--sidebarTabOffset));
-	font-size: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: white;
+  margin-left: calc(var(--sidebarWidth) + var(--sidebarTabOffset));
+  font-size: 1.1rem;
 }
 
 .desktop {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 ul li.desktop {
-	display: list-item;
+  display: list-item;
 }
 
 .welcome {
-	margin: 10px 0 20px 0;
-	padding-top: 10px;
-	font-size: 1.8rem;
-	font-weight: bold;
-	color: #3b3b3b;
+  margin: 10px 0 20px 0;
+  padding-top: 10px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #3b3b3b;
 }
 
 .mobile {
-	display: none;
+  display: none;
 }
 
 .body {
-	width: 40%;
-	height: 100%;
+  width: 40%;
+  height: 100%;
 }
 
 .mobileMessage p {
-	margin: 20px;
+  margin: 20px;
 }
 
 ul {
-	text-align: left;
+  text-align: left;
 }
 
 .messageContainer-enter {
-	display: flex;
+  display: flex;
 }
 .messageContainer-enter-active {
-	opacity: 1;
-	transition: opacity 500ms ease-out;
+  opacity: 1;
+  transition: opacity 500ms ease-out;
 }
 .messageContainer-enter-done {
-	opacity: 1;
-	display: flex;
+  opacity: 1;
+  display: flex;
 }
 
 .messageContainer-exit {
-	display: flex;
-	opacity: 1;
-	transition: opacity 500ms ease-out;
+  display: flex;
+  opacity: 1;
+  transition: opacity 500ms ease-out;
 }
 .messageContainer-exit-active {
-	opacity: 0;
-	transition: opacity 500ms ease-out;
+  opacity: 0;
+  transition: opacity 500ms ease-out;
 }
 .messageContainer-exit-done {
-	opacity: 0;
-	display: none;
+  opacity: 0;
+  display: none;
 }
 
 .intro {
-	width: clamp(40%, 500px, 80%);
+  width: clamp(40%, 500px, 80%);
 }
 
 .heading {
-	position: relative;
-	display: flex;
-	justify-content: space-evenly;
-	width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
 }
 
 .title {
-	margin: 15px 0 15px 0;
-	text-align: center;
-	font-size: 1.8rem;
-	font-weight: bold;
-	color: darkgreen;
+  margin: 15px 0 15px 0;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: darkgreen;
 }
 
 .notes {
-	position: absolute;
-	top: 30px;
-	font-size: 2rem;
+  position: absolute;
+  top: 30px;
+  font-size: 2rem;
 }
 
 .notes.left {
-	left: 10%;
+  left: 10%;
 }
 
 .notes.right {
-	right: 10%;
+  right: 10%;
 }
 
 .instructions {
-	text-align: left;
+  text-align: left;
 }
 
 ul {
-	margin: 5px 0 5px -10px;
+  margin: 5px 0 5px -10px;
 }
 
 .instructions {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-top: 10px;
-	padding: 10px;
-	border: solid lightgray 1px;
-	box-shadow: lightgrey 1px 2px 4px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px;
+  border: solid lightgray 1px;
+  box-shadow: lightgrey 1px 2px 4px 0;
 }
 
 .prompt {
-	margin: 10px 0 10px 0;
-	font-size: 1.6rem;
-	font-weight: bold;
-	color: var(--buttonColor);
+  margin: 10px 0 10px 0;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--buttonColor);
 }
 
 .advanced {
-	margin: 5px 0 0 0;
-	text-align: center;
-	font-weight: bold;
+  margin: 5px 0 0 0;
+  text-align: center;
+  font-weight: bold;
 }
 
 .mobile {
-	display: none;
+  display: none;
 }
 
 @media screen and (max-width: 767px) {
-	.message .desktop {
-		display: none;
-	}
-	.mobile{
-		display: block;
-	}
-	.messageContainer {
-		overflow: scroll;
-		z-index: 200;
-	}
-	.message {
-		font-size: 1rem;
-		right: 0;
-		left: 0;
-		width: 100%;
-		margin: 0;
-	}
-	.intro {
-		display: block;
-		width: 90%;
-	}
-	.title {
-		font-size: 1.2rem;
-	}
-	.welcome {
-		margin: 10px 0 10px 0;
-		font-size: 1.2rem;
-		border-top: solid black 1px;
-	}
-	.desktop {
-		display: none;
-	}
-	.mobile {
-		display: block;
-	}
-	ul li.mobile {
-		display: list-item;
-	}
+  .message .desktop {
+    display: none;
+  }
+  .mobile {
+    display: block;
+  }
+  .messageContainer {
+    overflow: scroll;
+    z-index: 200;
+  }
+  .message {
+    font-size: 1rem;
+    right: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+  }
+  .intro {
+    display: block;
+    width: 90%;
+  }
+  .title {
+    font-size: 1.2rem;
+  }
+  .welcome {
+    margin: 10px 0 10px 0;
+    font-size: 1.2rem;
+    border-top: solid black 1px;
+  }
+  .desktop {
+    display: none;
+  }
+  .mobile {
+    display: block;
+  }
+  ul li.mobile {
+    display: list-item;
+  }
 }

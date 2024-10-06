@@ -1,251 +1,251 @@
 @import '../variables.css';
 
 .sidebar {
-	position: fixed;
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-	/* justify-content: space-around; */
-	width: var(--sidebarWidth);
-	margin-left: calc(-1 * var(--sidebarTabOffset));
-	overflow-y: hidden;
-	overflow-x: hidden;
-	font-size: .75rem;
-	background: white;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* justify-content: space-around; */
+  width: var(--sidebarWidth);
+  margin-left: calc(-1 * var(--sidebarTabOffset));
+  overflow-y: hidden;
+  overflow-x: hidden;
+  font-size: 0.75rem;
+  background: white;
 }
 
 .rightTab {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .sidebarChevron {
-	position: fixed;
-	height: 100%;
-	right: 25px;
-	flex-shrink: 1;
+  position: fixed;
+  height: 100%;
+  right: 25px;
+  flex-shrink: 1;
 }
 
 .ranges {
-	position: fixed;
-	display: flex;
-	flex-direction: column;
-	width: 30px;
-	height: 100%;
-	justify-content: space-around;
-	align-items: flex-end;
-	right: 0;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  width: 30px;
+  height: 100%;
+  justify-content: space-around;
+  align-items: flex-end;
+  right: 0;
 }
 
 .rangeItem {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 26px;
-	height: 32%;
-	background: var(--peach);
-	box-shadow: lightgray 1px 2px 4px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 32%;
+  background: var(--peach);
+  box-shadow: lightgray 1px 2px 4px 0;
 }
 
 .rangeLabel {
-	transform: rotate(-90deg);
-	white-space: nowrap;
+  transform: rotate(-90deg);
+  white-space: nowrap;
 }
 
 h1.box.heading {
-	font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
 .byline {
-	margin: 5px 0 0 0;
-	font-size: .9rem;
-	text-align: center;
+  margin: 5px 0 0 0;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 .instructions {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .close {
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100%;
 }
 
 .close svg {
-	transform: scale(1.5);
+  transform: scale(1.5);
 }
 
 p {
-	margin: 0 0 10px 0;
-	padding: 0;
+  margin: 0 0 10px 0;
+  padding: 0;
 }
 .box {
-	margin: 8px 10px 0 5px;
-	padding: 10px;
-	border: solid lightgray 1px;
-	background: white;
-	box-shadow: lightgrey 1px 2px 4px 0px;
+  margin: 8px 10px 0 5px;
+  padding: 10px;
+  border: solid lightgray 1px;
+  background: white;
+  box-shadow: lightgrey 1px 2px 4px 0px;
 }
 .box.controls:last-of-type {
-	margin-bottom: 8px;;
+  margin-bottom: 8px;
 }
 
 .box.heading {
-	margin-bottom: -10px;
-	padding: 10px;
-	text-align: center;
-	border-bottom: 0;
-	font-size: .9rem;
-	background: var(--peach);
+  margin-bottom: -10px;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 0;
+  font-size: 0.9rem;
+  background: var(--peach);
 }
 /* .menuWrapper is necessary workaround for Safari z-index bug
  that causes problem with drop shadow on down arrow */
-.menuWrapper, .menu {
-	display: flex;
-	flex-direction: column;
-	flex-shrink: 3;
-	overflow-x: hidden;
-	margin-top: 0;
-	margin-bottom: 0;
-	padding: 0;
+.menuWrapper,
+.menu {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 3;
+  overflow-x: hidden;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
 }
 
 .menuWrapper {
-	overflow-y: hidden;
+  overflow-y: hidden;
 }
 
 .menu {
-	overflow-y: scroll;
-	/* To prevent hammerjs from blocking scrolling */
-	touch-action: pan-y !important;
+  overflow-y: scroll;
+  /* To prevent hammerjs from blocking scrolling */
+  touch-action: pan-y !important;
 }
 
 .menuOption {
-	padding: 5px 5px 5px 0;
-	margin: 0;
-	font-size: .85rem;
-	background: white;
-	cursor: pointer;
-	/* To prevent hammerjs from blocking scrolling */
-	touch-action: pan-y !important;
+  padding: 5px 5px 5px 0;
+  margin: 0;
+  font-size: 0.85rem;
+  background: white;
+  cursor: pointer;
+  /* To prevent hammerjs from blocking scrolling */
+  touch-action: pan-y !important;
 }
 
-.menuOption.selected, .menuOption.selected:hover {
-	background: var(--buttonColor);
-	color: white;
-	font-weight: bold;
+.menuOption.selected,
+.menuOption.selected:hover {
+  background: var(--buttonColor);
+  color: white;
+  font-weight: bold;
 }
 
 .menuOption:hover {
-	background: #fff1d9;
+  background: #fff1d9;
 }
 
 .optionText {
-	display: flex;
+  display: flex;
 }
 
 .optionText .time {
-	width: 30%;
-	text-align: right;
+  width: 30%;
+  text-align: right;
 }
 
 .optionText .title {
-	width: 70%;
-	margin-left: 10px;
+  width: 70%;
+  margin-left: 10px;
 }
 
 .arrow {
-	padding: 0;
-	background: white;
-	outline: none;
-	cursor: pointer;
-	transition: background 500ms;
+  padding: 0;
+  background: white;
+  outline: none;
+  cursor: pointer;
+  transition: background 500ms;
 }
 
 .arrow:hover {
-	background: #fff1d9;
-	transition: background 500ms;
+  background: #fff1d9;
+  transition: background 500ms;
 }
 
 .up.arrow {
-	margin-bottom: 0;
-	border-bottom: none;
+  margin-bottom: 0;
+  border-bottom: none;
 }
 
 .down.arrow {
-	margin-top: 0;
-	border-top: none;
+  margin-top: 0;
+  border-top: none;
 }
 
 .buttonBar {
-	display: inline-flex;
-	flex-direction: column;
+  display: inline-flex;
+  flex-direction: column;
 }
 
 .selectOptions {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
 }
 
 .selectOptions * {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .selectOption {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .selectOptions .selectionDisabled {
-	color: gray;
+  color: gray;
 }
 
 .help {
-	font-size: .9rem;
+  font-size: 0.9rem;
 }
 
 .selectOptions label {
-	margin-left: 5px;
+  margin-left: 5px;
 }
 
 @media screen and (max-width: 767px) {
+  .box {
+    margin-left: 5px;
+    padding-left: 5px;
+  }
 
-	.box {
-		margin-left: 5px;
-		padding-left: 5px;
-	}
+  .sidebar .titleBox {
+    display: none;
+  }
 
-	.sidebar .titleBox{
-		display: none;;
-	}
+  .box.heading {
+    padding: 4px;
+  }
 
-	.box.heading {
-		padding: 4px;
-	}
+  .selectOptions input {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
 
-	.selectOptions input {
-		width: 1.4rem;
-		height: 1.4rem;
-	}
+  .selectOptions label {
+    margin: 5px 0 5px 5px;
+  }
 
-	.selectOptions label {
-		margin: 5px 0 5px 5px;
-	}
-
-	.button {
-		margin-bottom: 5px;
-	}
-	.menuOption:hover {
-		background: none;
-	}
-
+  .button {
+    margin-bottom: 5px;
+  }
+  .menuOption:hover {
+    background: none;
+  }
 }
 
 @media screen and (max-width: 767px) and (orientation: landscape) {
-	.heading {
-		display: none
-	}
+  .heading {
+    display: none;
+  }
 }

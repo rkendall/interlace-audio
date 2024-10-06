@@ -4,13 +4,11 @@ const text = {
   fast: `departure haze vague formlessness indistinct dark drained eviscerated fading expired passed=on ended colorless emptiness unnamed anonymous murky dim shades tenebrous gloom dusk charcoal impenetrable bottomless unnavigable somber sunless opacity obscurity`,
 }
 
-const aliases = [
-  [['primaryStrings1'], 'primary'],
-]
+const aliases = [[['primaryStrings1'], 'primary']]
 
 const important = ['primary']
 
-const styles = {primary: 'emphasized'}
+const styles = { primary: 'emphasized' }
 
 export default {
   text,

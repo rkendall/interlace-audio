@@ -3,83 +3,54 @@
   "maxSoundCount": 5,
   "superGroups": {
     "mel": {
-      "groups": [
-        "primaryStrings",
-        "str1",
-        "primaryWinds"
-      ],
+      "groups": ["primaryStrings", "str1", "primaryWinds"],
       "maxActive": 3
     }
   },
   "groups": {
     "voice": {
       "instruments": {
-        "high": [
-          "Soprano 1",
-          "Soprano 2",
-          "Soprano 3"
-        ],
-        "medium": [
-        ],
+        "high": ["Soprano 1", "Soprano 2", "Soprano 3"],
+        "medium": [],
         "low": []
       },
       "maxActive": 1
     },
     "plucked1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Harp 1",
-          "Harp 2"
-        ],
+        "high": [],
+        "medium": ["Harp 1", "Harp 2"],
         "low": []
       },
       "maxActive": 1
     },
     "plucked2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Guitar 1",
-          "Guitar 2",
-          "Guitar 3"
-        ],
+        "high": [],
+        "medium": ["Guitar 1", "Guitar 2", "Guitar 3"],
         "low": []
       },
       "maxActive": 1
     },
     "primaryStrings": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Violin 11",
-          "Violin 12",
-          "Violin 13"
-        ],
+        "high": [],
+        "medium": ["Violin 11", "Violin 12", "Violin 13"],
         "low": []
       },
       "maxActive": 2
     },
     "str1": {
       "instruments": {
-        "high": [
-          "Violin 1",
-          "Violin 2"
-        ],
-        "medium": [
-          "Violin 10"
-        ],
+        "high": ["Violin 1", "Violin 2"],
+        "medium": ["Violin 10"],
         "low": []
       },
       "maxActive": 2
     },
     "primaryWinds": {
       "instruments": {
-        "high": [
-        ],
+        "high": [],
         "medium": [
           "Clarinet 1",
           "Clarinet 2",
@@ -93,70 +64,41 @@
     },
     "win1": {
       "instruments": {
-        "high": [
-          "Flute 1",
-          "Flute 2",
-          "Flute 3",
-          "Flute 4",
-          "Flute 5"
-        ],
-        "medium": [
-        ],
+        "high": ["Flute 1", "Flute 2", "Flute 3", "Flute 4", "Flute 5"],
+        "medium": [],
         "low": []
       },
       "maxActive": 1
     },
     "win2": {
       "instruments": {
-        "high": [
-        ],
+        "high": [],
         "medium": [],
-        "low": [
-          "Bassoon 1",
-          "Bassoon 2"
-        ]
+        "low": ["Bassoon 1", "Bassoon 2"]
       },
       "maxActive": 1
     },
     "bra": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Horn 1",
-          "Horn 2"
-        ],
-        "low": [
-          "Trombone 1",
-          "Trombone 2",
-          "Tuba 1"
-        ]
+        "high": [],
+        "medium": ["Horn 1", "Horn 2"],
+        "low": ["Trombone 1", "Trombone 2", "Tuba 1"]
       },
       "maxActive": 1
     },
     "tuned": {
       "instruments": {
-        "high": [
-          "Glockenspiel 1",
-          "Glockenspiel 2"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
+        "high": ["Glockenspiel 1", "Glockenspiel 2"],
+        "medium": [],
+        "low": []
       },
       "maxActive": 1
     },
     "per": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Tambourine 1",
-          "Congas 1"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Tambourine 1", "Congas 1"],
+        "low": []
       },
       "maxActive": 2
     }

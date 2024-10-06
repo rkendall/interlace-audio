@@ -43,6 +43,7 @@
     "start:client": "node scripts/open",
     "start:both": "node server -o",
     "build": "react-scripts build",
+    "build:start": "react-scripts build && node server",
     "test": "react-scripts test --no-cache",
     "eject": "react-scripts eject"
   },

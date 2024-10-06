@@ -44,6 +44,11 @@ udpPort.on("ready", function () {
 
 udpPort.open();
 
+udpPort.on('error', (error) => {
+    console.error('OSC error', error)
+})
+
+
 // Create an Express-based Web Socket server to which OSC messages will be relayed.
 const appResources = resolve('build')
 const app = express()

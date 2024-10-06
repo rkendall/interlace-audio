@@ -4,11 +4,9 @@ const text = {
   fast: `lugubrious affectionate devoted intense romantic amorous charming erotic dreamy fanciful exotic tender passionate maudlin whimsical bathetic chivalrous enchanting fond loving sweet poetic starry-eyed syrupy emotional infatuated lustful yearning ardent faithful possessive jealous thoughtful fervid fervent doleful ecstatic`,
 }
 
-const aliases = [
-  [['primaryWinds', 'win', 'bra'], 'primary'],
-]
+const aliases = [[['primaryWinds', 'win', 'bra'], 'primary']]
 
-const styles = {primary: 'emphasized'}
+const styles = { primary: 'emphasized' }
 
 export default {
   text,

@@ -9,7 +9,7 @@ const aliases = [
   [['voice', 'primaryStrings', 'str', 'primaryWinds', 'win'], 'story'],
 ]
 
-const styles = {story: 'emphasized'}
+const styles = { story: 'emphasized' }
 
 export default {
   text,

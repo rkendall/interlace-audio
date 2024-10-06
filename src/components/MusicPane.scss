@@ -1,29 +1,29 @@
 .paneWrapper {
-	display: flex;
-	justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .pane {
-	display: flex;
-	flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 
-	&.installation {
-		margin-left: 280px;
-		// Two rows for each hyperboloid
-		width: calc(25* 80px);
-	}
+  &.installation {
+    margin-left: 280px;
+    // Two rows for each hyperboloid
+    width: calc(25 * 80px);
+  }
 }
 
 .loading {
-	position: fixed;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100vw;
-	height: 80vh;
-	font-size: 1rem;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 80vh;
+  font-size: 1rem;
 }
 
 .sensor {
-	touch-action: none;
+  touch-action: none;
 }

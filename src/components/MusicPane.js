@@ -14,50 +14,51 @@ class MusicPane extends Component {
     super()
     this.manager = new AudioManager(this.props)
     this.lastReceived = { 1: null, 2: null, 3: null }
-
   }
 
   componentDidMount() {
     this.manager.mounted = true
     this.manager.updateProps(this.props)
     this.manager.parentSetState = this.setState.bind(this)
-    if (mode === 'application') {
+    if (!isInstallation) {
       return
     }
     this.manager.initAudioContext()
     var oscPort = new osc.WebSocketPort({
       url: 'ws://localhost:3000', // URL to your Web Socket server.
-      metadata: true
-    });
-    oscPort.open();
+      metadata: true,
+    })
+    oscPort.open()
     oscPort.on('message', (oscMsg) => {
       const { address, args } = oscMsg
       if (address.startsWith('/lx/modulation/Angles/')) {
         const time = performance.now()
-        this.manager.handleInactivity()
         const value = args?.[0]?.value
-        // const value = Math.round(rawValue * 100)
         const rangeInd = Number(address.slice(-1))
         if (value === this.lastReceived[rangeInd]) {
           return
         }
-        const previousValue = this.lastReceived[rangeInd]
-        const direction = previousValue < value ? 'right' : 'left'
         this.lastReceived[rangeInd] = value
         // console.log('oscMsg!', value, rangeInd);
-        this.manager.manageInput({ value, rangeInd, direction, time })
+        this.manager.manageInput({ value, rangeInd, time })
       }
-    });
+    })
+    oscPort.on('error', (error) => {
+      console.error('OSC error', error)
+    })
   }
 
   componentDidUpdate(prevProps) {
     this.manager.updateProps(this.props)
-    if (mode === 'application') {
+    if (!isInstallation) {
       this.manager.initAudioContext()
     }
     const { squareCount, currentCompositionName, stopLooping } = this.props
     const { initialized } = this.manager.state
-    if (!initialized || currentCompositionName !== prevProps.currentCompositionName) {
+    if (
+      !initialized ||
+      currentCompositionName !== prevProps.currentCompositionName
+    ) {
       if (!initialized) {
         this.manager.setState({ initialized: true })
       }
@@ -76,20 +77,37 @@ class MusicPane extends Component {
   }
 
   render() {
-    const { loading, allowDisabled, fadeAllSquares, isPoetry, initialized, activeIndex } = this.manager.state
-    const { squareCount, showAllSquares, vanishSquares, onPlayStarted, showPoetry } = this.props
-    const props = {
+    const {
+      loading,
+      allowDisabled,
+      fadeAllSquares,
+      isPoetry,
+      initialized,
+      activeIndex,
+    } = this.manager.state
+    const {
+      squareCount,
+      showAllSquares,
+      vanishSquares,
+      onPlayStarted,
+      showPoetry,
+    } = this.props
+    const parentProps = {
+      className: "paneWrapper"
+    }
+    const childProps = {
       className: classNames('pane', { installation: mode === 'installation' }),
     }
     if (!isInstallation) {
-      props.onContextMenu = this.manager.suppressContextMenu
+      parentProps.onMouseOver = this.manager.handleInactivity
+      parentProps.onTouchStart = onPlayStarted
+      childProps.onContextMenu = this.manager.suppressContextMenu
     }
-    return !loading && this.manager.composition.length && squareCount ?
-      (<div className="paneWrapper" onMouseOver={this.manager.handleInactivity} onTouchStart={onPlayStarted}>
-        <div
-          {...props}
-        >
-          {this.manager.composition.map(audioItem => {
+    return !loading && this.manager.composition.length && squareCount ? (
+      <div {...parentProps}
+      >
+        <div {...childProps}>
+          {this.manager.composition.map((audioItem) => {
             const { audioName, group, audioIndex } = audioItem
             const key = `${audioName}-${audioIndex}`
             const triggerProps = {
@@ -111,16 +129,18 @@ class MusicPane extends Component {
               showAllSquares,
               isPoetry: isPoetry && showPoetry,
             }
-            return (
-              <Trigger {...triggerProps} />
-            )
+            return <Trigger {...triggerProps} />
           })}
         </div>
       </div>
-      ) : initialized &&
-      <div className="loading" onTouchStart={onPlayStarted}><ReactLoading type="spinningBubbles" color="blue" delay={300} /></div>
+    ) : (
+      initialized && (
+        <div className="loading" onTouchStart={onPlayStarted}>
+          <ReactLoading type="spinningBubbles" color="blue" delay={300} />
+        </div>
+      )
+    )
   }
-
 }
 
 export default MusicPane

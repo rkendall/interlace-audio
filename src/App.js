@@ -115,7 +115,7 @@ const timeSlots = {
 }
 
 let rawCompositionTemp = {}
-compositionData.forEach(async data => {
+compositionData.forEach((data) => {
   const [name, value] = Object.entries(data)[0]
   const poem = poems[`${name}Poem`] || null
   if (poem) {
@@ -128,7 +128,7 @@ compositionData.forEach(async data => {
 })
 const rawCompositions = rawCompositionTemp
 
-const compositionTitles = compositionData.map(data => {
+const compositionTitles = compositionData.map((data) => {
   const name = Object.keys(data)[0]
   const { title, poem } = rawCompositions[name]
   return {
@@ -138,14 +138,14 @@ const compositionTitles = compositionData.map(data => {
   }
 })
 
-
 class App extends Component {
   constructor() {
     super()
     this.musicPaneRef = React.createRef()
     this.state = {
       initialized: false,
-      currentCompositionName: this.selectCompositionByHash() || this.selectCompositionByTimeOfDay(),
+      currentCompositionName:
+        this.selectCompositionByHash() || this.selectCompositionByTimeOfDay(),
       sidebarOpen: true,
       messageOpen: true,
       squareCount: 0,
@@ -157,7 +157,6 @@ class App extends Component {
       allowMenuChange: true,
     }
     this.toggleTimer = null
-
   }
 
   componentDidMount() {
@@ -165,7 +164,11 @@ class App extends Component {
       setInterval(() => {
         if (!this.selectCompositionByHash()) {
           const newCompositionName = this.selectCompositionByTimeOfDay()
-          this.setState(({ currentCompositionName }) => newCompositionName !== currentCompositionName ? { currentCompositionName: newCompositionName } : null)
+          this.setState(({ currentCompositionName }) =>
+            newCompositionName !== currentCompositionName
+              ? { currentCompositionName: newCompositionName }
+              : null,
+          )
         }
       }, 5000)
     }
@@ -179,13 +182,13 @@ class App extends Component {
         velocityThreshold: 1,
         disregardVelocityThreshold: () => 1,
       })
-      gesture.on('panmove', event => {
+      gesture.on('panmove', (event) => {
         const { sidebarOpen } = this.state
         if (!sidebarOpen) {
           this.toggleSidebar(true)
         }
       })
-      gesture.on('swipeleft', event => {
+      gesture.on('swipeleft', (event) => {
         this.toggleSidebar(false)
       })
     }
@@ -207,7 +210,19 @@ class App extends Component {
   }
 
   render() {
-    const { currentCompositionName, squareCount, showAllSquares, vanishSquares, showPoetry, smartLooping, sidebarOpen, messageOpen, stopLooping, height, allowMenuChange } = this.state
+    const {
+      currentCompositionName,
+      squareCount,
+      showAllSquares,
+      vanishSquares,
+      showPoetry,
+      smartLooping,
+      sidebarOpen,
+      messageOpen,
+      stopLooping,
+      height,
+      allowMenuChange,
+    } = this.state
     const mainProps = {}
     if (!isSmallScreen()) {
       mainProps.onClick = this.onInteraction
@@ -215,25 +230,33 @@ class App extends Component {
 
     return (
       <div className="main" {...mainProps}>
-        {!isInstallation && <Message open={messageOpen} onClick={this.closeMessage} titleCount={compositionTitles.length} />}
+        {!isInstallation && (
+          <Message
+            open={messageOpen}
+            onClick={this.closeMessage}
+            titleCount={compositionTitles.length}
+          />
+        )}
         <Sidebar
-          sidebar={<SidebarContent
-            toggleSidebar={this.toggleSidebar}
-            compositionTitles={compositionTitles}
-            timeSlots={timeSlots}
-            allowMenuChange={allowMenuChange}
-            onChange={this.onCompositionSelected}
-            onSmartLoopingSelected={this.onSmartLoopingSelected}
-            onFadeSelected={this.onFadeSelected}
-            onPoetrySelected={this.onPoetrySelected}
-            onStopLooping={this.onStopLooping}
-            onShowAllSquares={this.onShowAllSquares}
-            toggleMessageHandler={this.toggleMessage}
-            messageOpen={messageOpen}
-            initialSelectedValue={currentCompositionName}
-            sidebarOpen={sidebarOpen}
-            height={height}
-          />}
+          sidebar={
+            <SidebarContent
+              toggleSidebar={this.toggleSidebar}
+              compositionTitles={compositionTitles}
+              timeSlots={timeSlots}
+              allowMenuChange={allowMenuChange}
+              onChange={this.onCompositionSelected}
+              onSmartLoopingSelected={this.onSmartLoopingSelected}
+              onFadeSelected={this.onFadeSelected}
+              onPoetrySelected={this.onPoetrySelected}
+              onStopLooping={this.onStopLooping}
+              onShowAllSquares={this.onShowAllSquares}
+              toggleMessageHandler={this.toggleMessage}
+              messageOpen={messageOpen}
+              initialSelectedValue={currentCompositionName}
+              sidebarOpen={sidebarOpen}
+              height={height}
+            />
+          }
           open={mode === 'application' ? sidebarOpen : true}
           docked={sidebarOpen}
           touchHandleWidth={50}
@@ -243,10 +266,19 @@ class App extends Component {
           sidebarClassName="reactSidebar"
           contentClassName="sidebarContent"
         >
-          <div className={classNames('content', { installation: mode === 'installation' })}>
+          <div
+            className={classNames('content', {
+              installation: mode === 'installation',
+            })}
+          >
             <div ref={this.musicPaneRef} className="musicPaneContainer">
-              <ReactResizeDetector handleWidth handleHeight onResize={this.onResize} refreshMode="debounce"
-                refreshRate={500}>
+              <ReactResizeDetector
+                handleWidth
+                handleHeight
+                onResize={this.onResize}
+                refreshMode="debounce"
+                refreshRate={500}
+              >
                 <ErrorBoundary>
                   <MusicPane
                     currentCompositionName={currentCompositionName}
@@ -264,11 +296,13 @@ class App extends Component {
               </ReactResizeDetector>
             </div>
             <div className="scrollers">
-              <div className="scroller"><ChevronLeft /> <ChevronLeft />
+              <div className="scroller">
+                <ChevronLeft /> <ChevronLeft />
                 <div className="swipe">Swipe left for more instruments</div>
               </div>
               <div className="scroller">
-                <div className="swipe">Swipe right for more instruments</div><ChevronRight /> <ChevronRight />
+                <div className="swipe">Swipe right for more instruments</div>
+                <ChevronRight /> <ChevronRight />
               </div>
             </div>
           </div>
@@ -279,7 +313,7 @@ class App extends Component {
 
   onResize = (width, height) => {
     const root = document.documentElement
-    root.style.setProperty('--windowHeight', `${height}px`);
+    root.style.setProperty('--windowHeight', `${height}px`)
     this.getSquareCount(width, height)
     this.setState({ height })
   }
@@ -315,8 +349,8 @@ class App extends Component {
       if (!messageOpen) {
         // eslint-disable-next-line
         gtag('event', 'view_help', {
-          'event_label': 'View help',
-          'event_category': 'help',
+          event_label: 'View help',
+          event_category: 'help',
         })
       }
       return {
@@ -325,7 +359,7 @@ class App extends Component {
     })
   }
 
-  toggleSidebar = sidebarState => {
+  toggleSidebar = (sidebarState) => {
     clearTimeout(this.toggleTimer)
     this.setState(({ sidebarOpen }) => {
       let newState = null
@@ -334,17 +368,22 @@ class App extends Component {
       } else if (sidebarOpen !== sidebarState) {
         newState = sidebarState
       }
-      return newState !== null ? {
-        sidebarOpen: newState,
-        allowMenuChange: false
-      } : null
+      return newState !== null
+        ? {
+          sidebarOpen: newState,
+          allowMenuChange: false,
+        }
+        : null
     })
   }
 
   onCompositionSelected = ({ value, id }) => {
     const selectedCompositionName = value || id
     this.setState(({ currentCompositionName }) => {
-      if (selectedCompositionName && selectedCompositionName !== currentCompositionName) {
+      if (
+        selectedCompositionName &&
+        selectedCompositionName !== currentCompositionName
+      ) {
         return {
           currentCompositionName: selectedCompositionName,
         }
@@ -356,8 +395,8 @@ class App extends Component {
     if (!this.state.smartLooping) {
       // eslint-disable-next-line
       gtag('event', 'enable_smart_looping', {
-        'event_label': 'Enable Smart Looping',
-        'event_category': 'set_option',
+        event_label: 'Enable Smart Looping',
+        event_category: 'set_option',
       })
     }
     this.setState({
@@ -369,8 +408,8 @@ class App extends Component {
     if (!this.state.vanishSquares) {
       // eslint-disable-next-line
       gtag('event', 'enable_fade', {
-        'event_label': 'Enable Magic Vanishing Act',
-        'event_category': 'set_option',
+        event_label: 'Enable Magic Vanishing Act',
+        event_category: 'set_option',
       })
     }
     this.setState({
@@ -382,8 +421,8 @@ class App extends Component {
     if (!this.state.showPoetry) {
       // eslint-disable-next-line
       gtag('event', 'enable_poetry', {
-        'event_label': 'Enable poetry',
-        'event_category': 'set_option',
+        event_label: 'Enable poetry',
+        event_category: 'set_option',
       })
     }
     this.setState({
@@ -394,8 +433,8 @@ class App extends Component {
   onStopLooping = () => {
     // eslint-disable-next-line
     gtag('event', 'stop_all_looping', {
-      'event_label': 'Stop all looping',
-      'event_category': 'looping',
+      event_label: 'Stop all looping',
+      event_category: 'looping',
     })
     this.setState({
       stopLooping: true,
@@ -408,7 +447,7 @@ class App extends Component {
     })
   }
 
-  onShowAllSquares = event => {
+  onShowAllSquares = (event) => {
     this.setState({
       showAllSquares: true,
     })
@@ -427,13 +466,15 @@ class App extends Component {
 
   selectCompositionByTimeOfDay = () => {
     const hour = moment().hour()
-    const compositionName = Object.keys(timeSlots).find((name, ind, arr) => {
-      const compTime = timeSlots[name]
-      const nextTimeKey = arr[ind + 1] || arr[0]
-      const nextCompTime = ind === arr.length - 2 ? 24 : timeSlots[nextTimeKey]
-      return compTime <= hour && hour < nextCompTime
-    }) || Object.keys(timeSlots)[0]
-    if (mode === 'application') {
+    const compositionName =
+      Object.keys(timeSlots).find((name, ind, arr) => {
+        const compTime = timeSlots[name]
+        const nextTimeKey = arr[ind + 1] || arr[0]
+        const nextCompTime =
+          ind === arr.length - 2 ? 24 : timeSlots[nextTimeKey]
+        return compTime <= hour && hour < nextCompTime
+      }) || Object.keys(timeSlots)[0]
+    if (!isInstallation) {
       window.location.hash = compositionName
     }
     return compositionName
@@ -442,14 +483,13 @@ class App extends Component {
   getSquareCount = (width, height) => {
     const rowSize = Math.floor(width / 80)
     const columnSize = Math.floor(height / 80)
-    const newSquareCount = mode === 'application' ? rowSize * columnSize : 150
+    const newSquareCount = !isInstallation ? rowSize * columnSize : 150
     if (newSquareCount !== this.state.squareCount) {
       this.setState({
         squareCount: newSquareCount,
       })
     }
   }
-
 }
 
 export default App

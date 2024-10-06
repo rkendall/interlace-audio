@@ -4,11 +4,9 @@ const text = {
   fast: `dark frothy cold honey=toned amber pale brown hoppy golden on=tap bottled canned with=pretzels with=chips with=vodka with=hot=dogs with=steak with=chicken malted with=steak=and=kidney=pie with=fried=shrimp`,
 }
 
-const aliases = [
-  [['primaryWinds', 'primaryStrings', 'bra', 'pia'], 'primary'],
-]
+const aliases = [[['primaryWinds', 'primaryStrings', 'bra', 'pia'], 'primary']]
 
-const styles = {primary: 'emphasized'}
+const styles = { primary: 'emphasized' }
 
 export default {
   text,

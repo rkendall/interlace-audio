@@ -4,184 +4,112 @@
   "maxBurstCount": 2,
   "superGroups": {
     "mel": {
-      "groups": [
-        "primaryPlucked1",
-        "bra",
-        "primaryWinds1",
-        "pia1"
-      ],
+      "groups": ["primaryPlucked1", "bra", "primaryWinds1", "pia1"],
       "maxActive": 2
     }
   },
   "groups": {
     "per1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Cymbal 1"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Cymbal 1"],
+        "low": []
       },
       "maxActive": 2
     },
-      "per2": {
-        "instruments": {
-          "high": [
-          ],
-          "medium": [
-          ],
-          "low": [
-            "Snare Drum 1"
-          ]
-        },
-        "maxActive": 1
-      },
-      "per3": {
+    "per2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Congas 1"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Snare Drum 1"]
+      },
+      "maxActive": 1
+    },
+    "per3": {
+      "instruments": {
+        "high": [],
+        "medium": ["Congas 1"],
+        "low": []
       },
       "maxActive": 1
     },
     "per4": {
       "instruments": {
-        "high": [
-          "Tambourine 1",
-          "Tambourine 2"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
+        "high": ["Tambourine 1", "Tambourine 2"],
+        "medium": [],
+        "low": []
       },
       "maxActive": 1
     },
     "per5": {
       "instruments": {
-        "high": [
-          "Cowbell 1"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
+        "high": ["Cowbell 1"],
+        "medium": [],
+        "low": []
       },
       "maxActive": 1
     },
     "drums": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Drum Kit 1",
-          "Drum Kit 2"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Drum Kit 1", "Drum Kit 2"],
+        "low": []
       },
       "maxActive": 1
     },
     "pia1": {
       "instruments": {
-        "high": [
-          "Piano 6"
-        ],
-        "medium": [
-          "Piano 2",
-          "Piano 3",
-          "Piano 4",
-          "Piano 5"
-        ],
-        "low": [
-        ]
+        "high": ["Piano 6"],
+        "medium": ["Piano 2", "Piano 3", "Piano 4", "Piano 5"],
+        "low": []
       },
       "maxActive": 1
     },
     "primaryPlucked1": {
       "instruments": {
-        "high": [
-          "Electric Guitar 1",
-          "Electric Guitar 2",
-          "Electric Guitar 3"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
+        "high": ["Electric Guitar 1", "Electric Guitar 2", "Electric Guitar 3"],
+        "medium": [],
+        "low": []
       },
       "maxActive": 1
     },
     "plucked1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Electric Guitar 4",
-          "Electric Guitar 5"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Electric Guitar 4", "Electric Guitar 5"],
+        "low": []
       },
       "maxActive": 1
     },
     "bra": {
       "instruments": {
-        "high": [
-          "Trumpet 1",
-          "Trumpet 2",
-          "Trumpet 3"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
+        "high": ["Trumpet 1", "Trumpet 2", "Trumpet 3"],
+        "medium": [],
+        "low": []
       },
       "maxActive": 1
     },
     "primaryWinds1": {
       "instruments": {
-        "high": [
-          "Alto Sax 1",
-          "Alto Sax 2"
-        ],
-        "medium": [
-          "Tenor Sax 1",
-          "Tenor Sax 2"
-        ],
-        "low": [
-        ]
+        "high": ["Alto Sax 1", "Alto Sax 2"],
+        "medium": ["Tenor Sax 1", "Tenor Sax 2"],
+        "low": []
       },
       "maxActive": 1
     },
     "win1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Baritone Sax 1"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Baritone Sax 1"]
       },
       "maxActive": 1
     },
     "pizz1": {
       "instruments": {
-        "high": [
-        ],
+        "high": [],
         "medium": [],
-        "low": [
-          "String Bass 1",
-          "String Bass 2",
-          "String Bass 3"
-        ]
+        "low": ["String Bass 1", "String Bass 2", "String Bass 3"]
       },
       "maxActive": 1
     }

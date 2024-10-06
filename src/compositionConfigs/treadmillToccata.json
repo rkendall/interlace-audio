@@ -3,217 +3,136 @@
   "maxSoundCount": 5,
   "superGroups": {
     "bass": {
-      "groups": [
-        "str2",
-        "pia3",
-        "pizz1"
-      ],
+      "groups": ["str2", "pia3", "pizz1"],
       "maxActive": 1
     }
   },
   "groups": {
     "primaryStrings": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Violin 1",
-          "Violin 2"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Violin 1", "Violin 2"],
+        "low": []
       },
       "maxActive": 1
     },
     "str1": {
       "instruments": {
-        "high": [
-          "Violin 5",
-          "Violin 6"
-        ],
-        "medium": [
-          "Violin 3",
-          "Violin 4"
-        ],
-        "low": [
-        ]
+        "high": ["Violin 5", "Violin 6"],
+        "medium": ["Violin 3", "Violin 4"],
+        "low": []
       },
       "maxActive": 1
     },
     "str2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Cello 1",
-          "Cello 2"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Cello 1", "Cello 2"]
       },
       "maxActive": 1
     },
     "pizz1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "String Bass 1"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["String Bass 1"]
       },
       "maxActive": 1
     },
     "primaryWinds1": {
       "instruments": {
-        "high": [
-          "Flute 1",
-          "Flute 2"
-        ],
-        "medium": [
-        ],
+        "high": ["Flute 1", "Flute 2"],
+        "medium": [],
         "low": []
       },
       "maxActive": 1
     },
     "win1": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Oboe 1",
-          "Oboe 2"
-        ],
+        "high": [],
+        "medium": ["Oboe 1", "Oboe 2"],
         "low": []
       },
       "maxActive": 1
     },
     "win2": {
       "instruments": {
-        "high": [
-          "Flute 5",
-          "Flute 6"
-        ],
-        "medium": [
-          "Flute 3",
-          "Flute 4"
-        ],
+        "high": ["Flute 5", "Flute 6"],
+        "medium": ["Flute 3", "Flute 4"],
         "low": []
       },
       "maxActive": 1
     },
     "pia1": {
       "instruments": {
-        "high": [
-          "Piano 6"
-        ],
-        "medium": [
-        ],
+        "high": ["Piano 6"],
+        "medium": [],
         "low": []
       },
       "maxActive": 2
     },
     "pia2": {
       "instruments": {
-        "high": [
-          "Piano 7"
-        ],
-        "medium": [
-          "Piano 1",
-          "Piano 2",
-          "Piano 3",
-          "Piano 8",
-          "Piano 9"
-        ],
+        "high": ["Piano 7"],
+        "medium": ["Piano 1", "Piano 2", "Piano 3", "Piano 8", "Piano 9"],
         "low": []
       },
       "maxActive": 2
     },
     "pia3": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Piano 4",
-          "Piano 5"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Piano 4", "Piano 5"]
       },
       "maxActive": 1
     },
     "tuned1": {
       "instruments": {
-        "high": [
-          "Marimba 1"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
+        "high": ["Marimba 1"],
+        "medium": [],
+        "low": []
       },
       "maxActive": 1
     },
     "tuned2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Marimba 2"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Marimba 2"]
       },
       "maxActive": 1
     },
     "tuned3": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Marimba 3",
-          "Marimba 4"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Marimba 3", "Marimba 4"],
+        "low": []
       },
       "maxActive": 1
     },
     "per1": {
       "instruments": {
-        "high": [
-          "Wood Blocks 1",
-          "Wood Blocks 2"
-        ],
-        "medium": [
-        ],
-        "low": [
-        ]
+        "high": ["Wood Blocks 1", "Wood Blocks 2"],
+        "medium": [],
+        "low": []
       },
       "maxActive": 1
     },
     "per2": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-          "Taiko Drums 1"
-        ],
-        "low": [
-        ]
+        "high": [],
+        "medium": ["Taiko Drums 1"],
+        "low": []
       },
       "maxActive": 1
     },
     "per3": {
       "instruments": {
-        "high": [
-        ],
-        "medium": [
-        ],
-        "low": [
-          "Congas 1"
-        ]
+        "high": [],
+        "medium": [],
+        "low": ["Congas 1"]
       },
       "maxActive": 1
     }

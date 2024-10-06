@@ -4,11 +4,9 @@ const text = {
   fast: `diaphanous creamy light feathery airy white lavender winking pale pastel faint hazy gentle distant muted delicate mild blurred hushed murmuring pianissimo quiet smooth whispered subdued indistinct latent covert secluded veiled shrouded barely=discernible surreptitious`,
 }
 
-const aliases = [
-  [['primaryWinds', 'win', 'bra', 'str'], 'primary'],
-]
+const aliases = [[['primaryWinds', 'win', 'bra', 'str'], 'primary']]
 
-const styles = {primary: 'emphasized'}
+const styles = { primary: 'emphasized' }
 
 export default {
   text,

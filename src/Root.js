@@ -7,11 +7,11 @@ const options = {
   position: 'bottom center',
   timeout: 5000,
   offset: '30px',
-  transition: 'scale'
+  transition: 'scale',
 }
 
 export default () => (
-  <AlertProvider template={AlertTemplate} {...options} >
+  <AlertProvider template={AlertTemplate} {...options}>
     <App />
   </AlertProvider>
 )
