@@ -1,21 +1,20 @@
 import React, { Component, Fragment } from 'react'
 import classNames from 'classnames'
-import { Howl, Howler } from 'howler'
 import ReactLoading from 'react-loading'
-import debounce from 'lodash/debounce'
-import memoize from 'lodash/memoize'
 import osc from 'osc/dist/osc-browser'
 import './MusicPane.scss'
 import Trigger from './Trigger'
-import poetry from '../poetry'
-import { shuffleArray } from '../utilities'
 import mode from '../mode'
 import AudioManager from '../audioManagement/audioManager'
+
+const isInstallation = mode === 'installation'
 
 class MusicPane extends Component {
   constructor() {
     super()
     this.manager = new AudioManager(this.props)
+    this.lastReceived = { 1: null, 2: null, 3: null }
+
   }
 
   componentDidMount() {
@@ -34,12 +33,19 @@ class MusicPane extends Component {
     oscPort.on('message', (oscMsg) => {
       const { address, args } = oscMsg
       if (address.startsWith('/lx/modulation/Angles/')) {
+        const time = performance.now()
         this.manager.handleInactivity()
-        const rawValue = args?.[0]?.value
-        const value = Math.round(rawValue * 100)
+        const value = args?.[0]?.value
+        // const value = Math.round(rawValue * 100)
         const rangeInd = Number(address.slice(-1))
+        if (value === this.lastReceived[rangeInd]) {
+          return
+        }
+        const previousValue = this.lastReceived[rangeInd]
+        const direction = previousValue < value ? 'right' : 'left'
+        this.lastReceived[rangeInd] = value
         // console.log('oscMsg!', value, rangeInd);
-        this.manager.manageInput({ value, rangeInd })
+        this.manager.manageInput({ value, rangeInd, direction, time })
       }
     });
   }
@@ -72,11 +78,16 @@ class MusicPane extends Component {
   render() {
     const { loading, allowDisabled, fadeAllSquares, isPoetry, initialized, activeIndex } = this.manager.state
     const { squareCount, showAllSquares, vanishSquares, onPlayStarted, showPoetry } = this.props
+    const props = {
+      className: classNames('pane', { installation: mode === 'installation' }),
+    }
+    if (!isInstallation) {
+      props.onContextMenu = this.manager.suppressContextMenu
+    }
     return !loading && this.manager.composition.length && squareCount ?
       (<div className="paneWrapper" onMouseOver={this.manager.handleInactivity} onTouchStart={onPlayStarted}>
         <div
-          className={classNames('pane', { installation: mode === 'installation' })}
-          onContextMenu={this.manager.suppressContextMenu}
+          {...props}
         >
           {this.manager.composition.map(audioItem => {
             const { audioName, group, audioIndex } = audioItem

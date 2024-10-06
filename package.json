@@ -39,8 +39,9 @@
   },
   "scripts": {
     "start:app": "react-scripts start --no-cache",
-    "start": "node server && node scripts/open",
-    "start:dev": "node server",
+    "start": "node server",
+    "start:client": "node scripts/open",
+    "start:both": "node server -o",
     "build": "react-scripts build",
     "test": "react-scripts test --no-cache",
     "eject": "react-scripts eject"

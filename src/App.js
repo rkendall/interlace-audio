@@ -47,6 +47,8 @@ import elegyForTheDaylight from './compositionConfigs/elegyForTheDaylight.json'
 import elegyForTheDaylightPoem from './poems/elegyForTheDaylight'
 import midnightBlues from './compositionConfigs/midnightBlues.json'
 
+const isInstallation = mode === 'installation'
+
 const compositionData = [
   { waterDreams },
   { glassDreams },
@@ -167,24 +169,26 @@ class App extends Component {
         }
       }, 5000)
     }
-    window.isTouchDevice = 'ontouchstart' in window
-    if (!window.isTouchDevice) {
-      return
-    }
-    const gesture = new TinyGesture(document.getElementById('sidebar'), {
-      threshold: () => 1,
-      velocityThreshold: 1,
-      disregardVelocityThreshold: () => 1,
-    })
-    gesture.on('panmove', event => {
-      const { sidebarOpen } = this.state
-      if (!sidebarOpen) {
-        this.toggleSidebar(true)
+    if (!isInstallation) {
+      window.isTouchDevice = 'ontouchstart' in window
+      if (!window.isTouchDevice) {
+        return
       }
-    })
-    gesture.on('swipeleft', event => {
-      this.toggleSidebar(false)
-    })
+      const gesture = new TinyGesture(document.getElementById('sidebar'), {
+        threshold: () => 1,
+        velocityThreshold: 1,
+        disregardVelocityThreshold: () => 1,
+      })
+      gesture.on('panmove', event => {
+        const { sidebarOpen } = this.state
+        if (!sidebarOpen) {
+          this.toggleSidebar(true)
+        }
+      })
+      gesture.on('swipeleft', event => {
+        this.toggleSidebar(false)
+      })
+    }
   }
 
   componentDidUpdate() {
@@ -211,7 +215,7 @@ class App extends Component {
 
     return (
       <div className="main" {...mainProps}>
-        {mode === 'application' && <Message open={messageOpen} onClick={this.closeMessage} titleCount={compositionTitles.length} />}
+        {!isInstallation && <Message open={messageOpen} onClick={this.closeMessage} titleCount={compositionTitles.length} />}
         <Sidebar
           sidebar={<SidebarContent
             toggleSidebar={this.toggleSidebar}

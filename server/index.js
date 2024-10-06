@@ -5,6 +5,8 @@ import express from 'express'
 import WebSocket from 'ws'
 import os from 'os'
 
+const openBrowser = process.argv[2] === '-o'
+
 var getIPAddresses = function () {
     const interfaces = os.networkInterfaces()
     const ipAddresses = []
@@ -34,8 +36,10 @@ udpPort.on("ready", function () {
     ipAddresses.forEach(function (address) {
         console.log(" Host:", address + ", Port:", udpPort.options.localPort);
     });
-    open('http://localhost:3000')
-    console.log("The application should open in your default browser at http://localhost:3000.");
+    if (openBrowser) {
+        open('http://localhost:3000')
+        console.log("The application should open in your default browser at http://localhost:3000.");
+    }
 });
 
 udpPort.open();

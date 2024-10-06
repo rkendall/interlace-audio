@@ -10,8 +10,9 @@ import poetry from '../poetry'
 import { getSizedAudioItemsArray } from './helpers'
 import mode from '../mode'
 import config from '../config'
+import { NoSim } from '@material-ui/icons'
 
-const { fastSpeedThreshold, loudnessThreshold, activityResistance, inactivityThreshold, preferredDurationForActivity, durationThreshold, instrumentFilterThreshold } = config
+const { mediumActivityThreshold, fastSpeedThreshold, loudnessThreshold, activityResistance, inactivityThreshold, directionAssignments, preferredDurationForActivity, durationThreshold, instrumentFilterThreshold } = config
 
 const isInstallation = mode === 'installation'
 
@@ -68,7 +69,6 @@ class AudioManager {
         this.lastPointerId = null
         this.relatedItems = new Map()
         this.ensembleSections = {}
-        this.lastPlayed = { high: null, medium: null, low: null }
     }
 
     getIsLoud = audioIndex => /bra|drums/i.test(this.getGroupForAudioIndex(audioIndex))
@@ -87,31 +87,67 @@ class AudioManager {
         return arr[ind]
     }
 
-    manageInput = ({ value, rangeInd }) => {
+    getMaxInstrumentsAllowed = ({ speed, activityLevel }) => {
+        if (speed <= 1 || activityLevel < mediumActivityThreshold) {
+            return 1
+        }
+        if (speed <= 2) {
+            return Math.min(2, activityLevel)
+        }
+        return activityLevel
+    }
+
+    getSpeed = (distance) => {
+        if (distance < 8) {
+            return 1
+        }
+        if (distance < 15) {
+            return 2
+        }
+        return 3
+    }
+
+    getAverage = (array) =>
+        array.reduce((sum, currentValue) => sum + currentValue, 0) / array.length
+
+    manageInput = ({ value, rangeInd, time }) => {
         const ranges = ['low', 'medium', 'high']
         const range = ranges[rangeInd - 1]
         const playStatusForRange = this.playStatus[range]
-        const direction = value > 50 ? 'right' : 'left'
-        let startDirection = null
-        if (!playStatusForRange.startDirection) {
-            startDirection = direction
-            playStatusForRange.startDirection = startDirection
+        const previousValue = playStatusForRange.lastOscValue
+        const direction = previousValue < value ? 'right' : 'left'
+        const interval = time - playStatusForRange.lastTime
+        if (interval > 3000) {
+            playStatusForRange.activity = 0
+            playStatusForRange.startDirection = direction
         } else {
-            startDirection = playStatusForRange.startDirection
+            playStatusForRange.activity += 1
         }
-        const speed = playStatusForRange.speed
-        playStatusForRange.activity += 1
-        playStatusForRange.speedBuffer += 1
-        const activity = playStatusForRange.activity
-        const activityLevel = Math.ceil(activity / activityResistance)
-        const maxAllowed = speed < fastSpeedThreshold ? 1 : activityLevel
+
+        const activityLevel = Math.ceil(playStatusForRange.activity / activityResistance)
+
+        const lastOscValue = playStatusForRange.lastOscValue
+        const rawDistance = lastOscValue === null ? 0 : Math.abs(value - lastOscValue)
+        const roundedDistance = Math.round(rawDistance * 1000)
+        const averageDistance = playStatusForRange.averageDistance
+        const distance = this.getAverage([averageDistance, roundedDistance])
+
+
+        // console.debug('distance', distance)
+        console.debug('interval', interval)
+        const speed = this.getSpeed(distance)
+        console.debug('speed', speed)
+        const maxAllowed = this.getMaxInstrumentsAllowed({ speed, activityLevel })
         const itemsPlayingInRange = this.getRangeActiveCount(range)
         if (itemsPlayingInRange >= maxAllowed) {
             return
         }
+        playStatusForRange.averageDistance = distance
+        playStatusForRange.lastOscValue = value
+        playStatusForRange.lastTime = time
         const allowLoud = maxAllowed >= loudnessThreshold
         const playableIndexesInRange = this.audioCategories[range].filter(audioIndex => {
-            if (!allowLoud && this.getIsLoud(audioIndex || this.lastPlayed[range] === audioIndex)) {
+            if (!allowLoud && this.getIsLoud(audioIndex || playStatusForRange.lastPlayed === audioIndex)) {
                 return false
             }
             return this.isAudioPlayable(audioIndex)
@@ -119,28 +155,28 @@ class AudioManager {
         // console.debug('---------------')
         // console.debug('---------------')
         // console.debug('range', range)
-        // console.debug('direction', direction)
-        // console.debug('startDirection', startDirection)
+        console.debug('direction', direction)
+        console.debug('startDirection', playStatusForRange.startDirection)
         // console.debug('activity', activity)
-        // console.debug('activityLevel', activityLevel)
+        console.debug('activityLevel', activityLevel)
         // console.debug('speed', speed)
-        // console.debug('speed', speed)
-        // console.debug('maxAllowed', maxAllowed)
+        console.debug('maxAllowed', maxAllowed)
         // console.debug('allowLoud', allowLoud)
 
+
         // Use instruments assigned to direction of initial wheel movement until the specified amount of activity has occurred
-        const directionToUse = activityLevel < durationThreshold ? startDirection : direction
+        const directionToUse = activityLevel < inactivityThreshold ? playStatusForRange.startDirection : direction
         const filteredForGroup = playableIndexesInRange.filter(audioInd => [directionToUse, 'both'].includes(this.groupsForDirection[audioInd]))
 
-        const filteredForDuration = maxAllowed <= instrumentFilterThreshold ? filteredForGroup.filter(audioInd => this.relativeDurations[audioInd] === preferredDurationForActivity) : filteredForGroup
-        const selectedIndexes = filteredForDuration.length ? filteredForDuration : playableIndexesInRange
+        // const filteredForDuration = maxAllowed <= instrumentFilterThreshold ? filteredForGroup.filter(audioInd => this.relativeDurations[audioInd] === preferredDurationForActivity) : filteredForGroup
+        const selectedIndexes = filteredForGroup.length ? filteredForGroup : playableIndexesInRange
         const audioItemToPlay = this.randomlySelectItem(selectedIndexes)
         if (!audioItemToPlay) {
             return
         }
         // console.debug('isLoud', this.getIsLoud(audioItemToPlay))
         // console.debug('name', this.composition[audioItemToPlay].audioName)
-        this.lastPlayed[range] = audioItemToPlay
+        playStatusForRange.lastPlayed = audioItemToPlay
         this.setActiveIndex(audioItemToPlay)
     }
 
@@ -390,16 +426,11 @@ class AudioManager {
 
 
     addGroupsForDirection = () => {
-        const tags = {
-            left: ['str', 'pia', 'guitar', 'glass', 'voice'],
-            right: ['win', 'per', 'tuned', 'plucked', 'pizz'],
-            both: ['bra', 'drums']
-        }
         this.groupsForDirection = {}
         this.composition.forEach(item => {
             const { group, audioIndex } = item
 
-            const direction = Object.entries(tags).find(([, values]) => this.doTagsMatchString({ tags: values, str: group }))[0]
+            const direction = Object.entries(directionAssignments).find(([, values]) => this.doTagsMatchString({ tags: values, str: group }))?.[0] || 'both'
             this.groupsForDirection[audioIndex] = direction
         })
     }
@@ -407,9 +438,9 @@ class AudioManager {
     initializeComposition = () => {
         const { rawCompositions, currentCompositionName } = this.props
         this.playStatus = {
-            high: { activity: 0, speedBuffer: 0, speed: 0, startDirection: null },
-            medium: { activity: 0, speedBuffer: 0, speed: 0, startDirection: null },
-            low: { activity: 0, speedBuffer: 0, speed: 0, startDirection: null }
+            high: { lastPlayed: null, lastTime: performance.now(), lastOscValue: null, startDirection: null, averageDistance: null, activity: 0 },
+            medium: { lastPlayed: null, lastTime: performance.now(), lastOscValue: null, startDirection: null, averageDistance: null, activity: 0 },
+            low: { lastPlayed: null, lastTime: performance.now(), lastOscValue: null, startDirection: null, averageDistance: null, activity: 0 }
         }
         const compositionData = rawCompositions[currentCompositionName]
         this.audioItemsByRange = this.getAudioItemsByRange(compositionData.groups)
@@ -422,7 +453,7 @@ class AudioManager {
             this.relatedItems.clear()
             this.initializeStatus(compositionData)
             this.clearTimers()
-            this.isGroupDisabledMemoized.cache.clear()
+            // this.isGroupDisabledMemoized.cache.clear()
             this.initializeTriggers()
             this.addGroupsForDirection()
             const audioLoadPromises = this.loadAllAudio()
@@ -657,20 +688,21 @@ class AudioManager {
     }
 
     setActivityTimer = () => {
+        return
         let timeout = 1000
         const activityDecrement = 10
         const runActivityTimer = () => {
             this.activityTimer = setTimeout(() => {
                 Object.entries(this.playStatus).forEach(([range, { activity }]) => {
-                    const speed = this.playStatus[range].speedBuffer
-                    this.playStatus[range].speedBuffer = 0
-                    this.playStatus[range].speed = speed
-                    const newActivity = speed < inactivityThreshold ? 0 : Math.max(activity - activityDecrement, 0)
+                    // const speed = this.playStatus[range].speedBuffer
+                    // this.playStatus[range].speedBuffer = 0
+                    // this.playStatus[range].speed = speed
+                    const newActivity = 1 // speed < inactivityThreshold ? 0 : activity // Math.max(activity - activityDecrement, 0)
                     if (!newActivity) {
                         this.playStatus[range].startDirection = null
                         this.lastPlayed[range] = null
                     }
-                    this.playStatus[range].activity = newActivity
+                    // this.playStatus[range].activity = newActivity
                     // this.playStatus[range].maxAllowed = Math.max(Math.ceil(newActivity / 50), 1)
                 })
                 runActivityTimer()
@@ -691,7 +723,7 @@ class AudioManager {
     }
 
     onInactivity = () => {
-        this.isGroupDisabledMemoized.cache.clear()
+        // this.isGroupDisabledMemoized.cache.clear()
     }
 
     initializeItemsPlaying = () => {
@@ -757,7 +789,7 @@ class AudioManager {
         return superGroupCount >= this.state.groupLimits[superGroup]
     }
 
-    isGroupDisabledBase = ({ group, itemsPlayingCount }) => {
+    isGroupDisabledBase = (group) => {
         if (this.isGroupFull(group)) {
             return true
         }
@@ -770,8 +802,8 @@ class AudioManager {
 
     isGroupDisabledMemoized = memoize(this.isGroupDisabledBase)
 
-    isGroupDisabled = group =>
-        this.isGroupDisabledMemoized({ group, itemsPlayingCount: this.state.itemsPlayingCount })
+    isGroupDisabled = group => isInstallation ? this.isGroupDisabledBase(group) :
+        this.isGroupDisabledMemoized(group)
 
     isMaxActiveAudio = () => {
         return this.getItemPlayingCount() >= this.state.maxSoundCount

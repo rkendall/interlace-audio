@@ -104,9 +104,9 @@ export default class Trigger extends PureComponent {
     clearTimeout(this.longPressTimer)
     clearTimeout(this.disableCursorTimer)
     this.disabledElement?.current?.removeEventListener('animationiteration', this.disabledAnimationDone, false)
-    if (this.gesture) {
-      this.gesture.destroy()
-    }
+    // if (this.gesture) {
+    //   this.gesture.destroy()
+    // }
   }
 
   render() {
@@ -145,7 +145,7 @@ export default class Trigger extends PureComponent {
             <div className={classNames(poemStyle || '', isTopRow ? 'topRow' : 'lowerRow')}>{text}</div>
           </div>
         </CSSTransition>
-        <CSSTransition
+        {!isInstallation && <CSSTransition
           in={isSquareTriggered}
           timeout={300}
           classNames="squareHovered"
@@ -191,7 +191,7 @@ export default class Trigger extends PureComponent {
               </CSSTransition>
             </CSSTransition>
           </div>
-        </CSSTransition>
+        </CSSTransition>}
         <CSSTransition
           in={activateSecondary}
           timeout={{ enter: 1000, exit: 0 }}
@@ -224,14 +224,14 @@ export default class Trigger extends PureComponent {
             </CSSTransition>
           </div>
         </CSSTransition>
-        <div className="sensor"
+        {!isInstallation && <div className="sensor"
           ref={this.sensor}
           onMouseEnter={this.handleInteraction}
           onMouseLeave={this.handleInteraction}
           onMouseDown={this.handleInteraction}
           onMouseUp={this.handleInteraction}
           onTouchStart={this.handleInteraction}
-          onTouchEnd={this.handleInteraction} />
+          onTouchEnd={this.handleInteraction} />}
       </div>
     )
   }

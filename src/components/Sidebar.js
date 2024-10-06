@@ -26,10 +26,12 @@ class SideBar extends Component {
   componentDidMount() {
     const { selectedInd } = this.state
     this.scrollToSelection({ selectedInd })
-    const options = [...this.menu.current.children]
-    options.forEach((child, ind) => {
-      this.addTouchListeners(child, ind)
-    })
+    if (!isInstallation) {
+      const options = [...this.menu.current.children]
+      options.forEach((child, ind) => {
+        this.addTouchListeners(child, ind)
+      })
+    }
   }
 
   componentDidUpdate(prevProps) {
