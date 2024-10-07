@@ -13,7 +13,7 @@ class MusicPane extends Component {
   constructor() {
     super()
     this.manager = new AudioManager(this.props)
-    this.lastReceived = { 1: null, 2: null, 3: null }
+    // this.lastReceived = { 1: null, 2: null, 3: null }
   }
 
   componentDidMount() {
@@ -28,24 +28,29 @@ class MusicPane extends Component {
       url: 'ws://localhost:3000', // URL to your Web Socket server.
       metadata: true,
     })
-    oscPort.open()
     oscPort.on('message', (oscMsg) => {
-      const { address, args } = oscMsg
-      if (address.startsWith('/lx/modulation/Angles/')) {
-        const time = performance.now()
-        const value = args?.[0]?.value
-        const rangeInd = Number(address.slice(-1))
-        if (value === this.lastReceived[rangeInd]) {
-          return
-        }
-        this.lastReceived[rangeInd] = value
-        // console.log('oscMsg!', value, rangeInd);
-        this.manager.manageInput({ value, rangeInd, time })
+      try {
+        this.manager.manageInput(oscMsg)
+      } catch (error) {
+        console.error('Error processing OSC message', error)
       }
+      // const { address, args } = oscMsg
+      // if (address.startsWith('/lx/modulation/Angles/')) {
+      //   const time = performance.now()
+      //   const value = args?.[0]?.value
+      //   const rangeInd = Number(address.slice(-1))
+      //   if (value === this.lastReceived[rangeInd]) {
+      //     return
+      //   }
+      //   this.lastReceived[rangeInd] = value
+      //   // console.log('oscMsg!', value, rangeInd);
+      //   this.manager.manageInput({ value, rangeInd, time })
+      // }
     })
     oscPort.on('error', (error) => {
       console.error('OSC error', error)
     })
+    oscPort.open()
   }
 
   componentDidUpdate(prevProps) {
@@ -74,6 +79,10 @@ class MusicPane extends Component {
     this.manager.clearTimers()
     this.manager.clearAudio()
     this.manager.mounted = false
+    performance.removeEventListener(
+      "resourcetimingbufferfull",
+      this.manager.clearPerformanceBuffer)
+
   }
 
   render() {

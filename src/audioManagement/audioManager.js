@@ -10,14 +10,11 @@ import poetry from '../poetry'
 import { getSizedAudioItemsArray } from './helpers'
 import mode from '../mode'
 import config from '../config'
-import { NoSim } from '@material-ui/icons'
 
 const {
-    mediumActivityThreshold,
     loudnessThreshold,
     activityResistance,
-    slowIntervalThreshold,
-    mediumIntervalThreshold,
+    speedThreshold,
     inactivityThreshold,
     directionAssignments,
     idleTimeout,
@@ -79,6 +76,16 @@ class AudioManager {
         this.lastPointerId = null
         this.relatedItems = new Map()
         this.ensembleSections = {}
+        this.lastReceived = { 1: null, 2: null, 3: null }
+        performance.setResourceTimingBufferSize(250)
+        this.clearPerformanceBuffer = () => {
+            console.error('Resource timing buffer is full')
+            performance.clearResourceTimings()
+            console.error('Resource timing buffer cleared')
+        }
+        performance.addEventListener(
+            "resourcetimingbufferfull",
+            this.clearPerformanceBuffer)
     }
 
     getIsLoud = (audioIndex) =>
@@ -99,34 +106,53 @@ class AudioManager {
     }
 
     getMaxInstrumentsAllowed = ({ speed, activityLevel }) => {
-        if (speed <= 1 || activityLevel < mediumActivityThreshold) {
+        if (speed === 1) {
+            // return Math.min(2, activityLevel)
             return 1
-        }
-        if (speed <= 2) {
-            return Math.min(2, activityLevel)
         }
         return activityLevel
     }
 
-    getSpeed = ({ distance, interval }) => {
+    getSpeed = ({ interval, range }) => {
+        const intervals = this.playStatus[range].intervals
+        intervals.push(interval)
+        if (intervals.length > 5) {
+            intervals.shift()
+        }
+        const longestInterval = Math.max(...intervals)
+
         // Slow
-        // if (interval > slowIntervalThreshold || distance < 8) {
-        if (interval > slowIntervalThreshold) {
+        if (longestInterval > speedThreshold) {
             return 1
         }
-        // Medium speed
-        // if (interval > mediumIntervalThreshold || distance < 15) {
-        if (interval > mediumIntervalThreshold) {
-            return 2
-        }
-        // Fast
-        return 3
+        // Fast speed
+        return 2
     }
 
     getAverage = (array) =>
         array.reduce((sum, currentValue) => sum + currentValue, 0) / array.length
 
-    manageInput = ({ value, rangeInd, time }) => {
+    parseOscMessage = (oscMsg) => {
+        const { address, args } = oscMsg
+        if (address.startsWith('/lx/modulation/Angles/')) {
+            const time = performance.now()
+            const value = args?.[0]?.value
+            const rangeInd = Number(address.slice(-1))
+            if (value === this.lastReceived[rangeInd]) {
+                return null
+            }
+            this.lastReceived[rangeInd] = value
+            return { value, rangeInd, time }
+        }
+        return null
+    }
+
+    manageInput = (oscMsg) => {
+        const parsedMessage = this.parseOscMessage(oscMsg)
+        if (!parsedMessage) {
+            return
+        }
+        const { value, rangeInd, time } = parsedMessage
         clearTimeout(this.inactivityTimer)
         this.inactivityTimer = null
         const ranges = ['low', 'medium', 'high']
@@ -135,42 +161,37 @@ class AudioManager {
         const previousValue = playStatusForRange.lastOscValue
         // console.debug('value', value)
         // console.debug('previousValue', previousValue)
+        playStatusForRange.lastOscValue = value
         if (previousValue === null || value === previousValue) {
-            playStatusForRange.lastOscValue = value
+            return
+        }
+
+        const interval = time - playStatusForRange.lastTime
+        playStatusForRange.lastTime = time
+        if (interval > 3000) {
+            playStatusForRange.lastOscValue = null
+            playStatusForRange.startDirection = null
+            playStatusForRange.activity = 0
             return
         }
         const direction = previousValue < value ? 'right' : 'left'
-        const rawInterval = time - playStatusForRange.lastTime
-        const averageInterval = playStatusForRange.averageInterval
-        const interval = this.getAverage([averageInterval, rawInterval])
-
-        playStatusForRange.lastTime = time
-        if (rawInterval > 3000) {
-            playStatusForRange.activity = 0
+        playStatusForRange.activity += 1
+        if (!playStatusForRange.startDirection) {
             playStatusForRange.startDirection = direction
-        } else {
-            playStatusForRange.activity += 1
         }
 
         const activityLevel = Math.ceil(
             playStatusForRange.activity / activityResistance,
         )
 
-        // const rawDistance =
-        //     previousValue === null ? 0 : Math.abs(value - previousValue)
-        // const roundedDistance = Math.round(rawDistance * 1000)
-        // const averageDistance = playStatusForRange.averageDistance
-        // const distance = this.getAverage([averageDistance, roundedDistance])
-        // playStatusForRange.averageDistance = distance
-
-
-        const speed = this.getSpeed({ distance: null, interval })
+        const speed = this.getSpeed({ interval, range })
         const maxAllowed = this.getMaxInstrumentsAllowed({ speed, activityLevel })
         const itemsPlayingInRange = this.getRangeActiveCount(range)
         // console.debug('---------------')
         // console.debug('interval', interval)
         // console.debug('activity', playStatusForRange.activity)
         // console.debug('activityLevel', activityLevel)
+        // console.debug('speed', speed)
         // console.debug('maxAllowed', maxAllowed)
         // console.debug('direction', direction)
         // console.debug('startDirection', playStatusForRange.startDirection)
@@ -194,7 +215,6 @@ class AudioManager {
         // console.debug('distance', distance)
         // console.debug('---------------')
         // console.debug('range', range)
-        // console.debug('speed', speed)
         // console.debug('speed', speed)
         // console.debug('allowLoud', allowLoud)
 
@@ -511,7 +531,7 @@ class AudioManager {
                 startDirection: null,
                 averageDistance: null,
                 activity: 0,
-                averageInterval: 0
+                intervals: []
             },
             medium: {
                 lastPlayed: null,
@@ -520,7 +540,7 @@ class AudioManager {
                 startDirection: null,
                 averageDistance: null,
                 activity: 0,
-                averageInterval: 0
+                intervals: []
             },
             low: {
                 lastPlayed: null,
@@ -529,7 +549,7 @@ class AudioManager {
                 startDirection: null,
                 averageDistance: null,
                 activity: 0,
-                averageInterval: 0
+                intervals: []
             },
         }
         const compositionData = rawCompositions[currentCompositionName]
@@ -538,6 +558,7 @@ class AudioManager {
         this.setState({ fadeAllSquares: false, isPoetry, loading: true }, () => {
             this.composition = []
             this.clearAudio()
+            performance.clearResourceTimings()
             this.itemsPlaying.clear()
             this.itemsLooping.clear()
             this.relatedItems.clear()
